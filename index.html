@@ -1,0 +1,19 @@
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+  </script>
+
+  <script type="text/javascript">    
+    $( document ).ready(function() {
+	$("#img-container1").html("<img id='image' src='corr_img.jpg'>");
+	$("#image").click(function() {
+	    $(this).after("<img id='image2' src='corr_img.jpg'>");
+	});
+    });
+  </script>
+</head>
+<body>
+    <div align="right" id="img-container1"></div>
+    <div align="right" id="img-container2"></div>
+</body>
+</html>
