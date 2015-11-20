@@ -13,57 +13,70 @@
 <html>
 <head>
    <meta charset="ISO-8859-1">
-   
+
    <!-- BOOTSTRAP CSS -->
    <!-- Latest compiled and minified CSS -->
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
    <!-- JQUERY -->
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-   
+
    <!-- BOOSTRAP JS -->
    <!-- Latest compiled and minified JavaScript -->
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
-   
+
    <style>
-   a :hover { color: red;}
-
-   h1 { color: red;}
-   h2 { color: blue;}
-   h3 { color: red;}
-
+   a {
+     text-decoration: underline;
+   }
+   a:hover {
+     color: darkblue;
+   }
    .right {
       text-align: right;
+      float: right;
    }
    .left {
-      text-align: center;
-      float: left;
+      text-align: left;
       width: 50%;
-      height: 580px;
+      float: left;
       display: block;
    }
    .link-section {
       background: lightgrey;
       clear: both;
    }
-   .mads {
+   .individual-section {
       padding: 20px;
       text-align: justify;
-      color: darkblue;
    }
    .center {
       text-align: center;
+   }
+   li {font-size: 12px;
+       text-transform: none;
+   }
+   .vislink {
+     font-size: 16px;
+     text-transform: uppercase;
+   }
+   .positive {color:green}
+   .negative {color:red}
+   #image {
+     width = 500px;
+     height: 500px;
    }
    </style>
 
    <script type="text/javascript">
    $( document ).ready(function() {
-      $("body").html("<div id='img-container' class='col-md-6 right'> <img src='corr_img.jpg' id='image' width='600' height='561'></div>" + $("body").html());
+      $("body").html("<div id='img-container' class='col-md-6 right'> <img src='corr_img.jpg' id='image' ></div>" + $("body").html());
 
       $("#img-container").before(
-	 "<div class='col-md-6'>" +
-	    "<h2>Visualizations substantiates the thruth</h2>" +
+	 "<div class='col-md-6 left'>" +
+	    "<h2>Visualizations substantiates the thruth<sup>**</sup></h2>" +
 	    "<p>It follows that every statistics seen on the web is true, if visualized properly. A perfect example is given in the image on the right side: there is a clear correlation between US spendings in science, space and technology one one side, and suicides by hanging, strangulation and suffocation in the US.</p>" +
-	    "<p>If you think the image is too big, just <b>click</b> on it a few times!</p>" +
+	    "<p>* If you think the image is too big, just <b>click</b> on it a few times!</p>" +
+	    "<p>** A little something called manipulation</p>" +
 	    "</div><br/>");
 
       $("#image").click(function(){
@@ -76,66 +89,69 @@
    <title>Interactive Data Exploration - Assigment 1</title>
 </head>
 <body>
-   <div class='col-md-12 link-section'>
-      <h2>Four awesome links to visualizations and guides on the web</h2>
-      <ol>
-         <li><a href="http://www.payscale.com/college-salary-report/degrees-and-majors-lifetime-earnings">How Do Major and Degree Affect Lifetime Earnings?</a>
-            <ol>
-               <li>Positive aspects: TODO</li>
-               <li>Negative aspects: TODO</li>
-            </ol>
-         </li>
-         <li>TODO</li>
-	 <li><a href="http://www.sitepoint.com/twelve-javascript-libraries-data-visualization/"> Javascript libraries for data visualization </a></li>
-	 <li><a href="http://visjs.org/"> visjs.com</a></li>
-      </ol>
-   </div>
+  <div class='col-md-12 link-section'>
+    <h2>Four awesome links to visualizations and guides on the web</h2>
+    <ol>
+      <li class="vislink"><a href="http://www.payscale.com/college-salary-report/degrees-and-majors-lifetime-earnings">How Do Major and Degree Affect Lifetime Earnings?</a>
+        <ol>
+           <li>Positive aspects: TODO</li>
+           <li>Negative aspects: TODO</li>
+        </ol>
+      </li>
+      <li class="vislink">TODO</li>
+			<li class="vislink">
+				<a href="http://virostatiq.com/data/prism/"> The PRISM scandal (Snowden menagerie)</a>
+	     	<ul>
+		    	<li class="positive">Interresting subject</li>
+	       	<li class="positive">Interactivity makes you want to 'click' everything</li>
+	       	<li class="positive">Attempts to visualize a <em>very</em> complex topic</li>
+	       	<li class="positive">Densely packed with information including links to articles</li>
+	       	<li class="negative">Sadly fails to provide an overview</li>
+	       	<li class="negative">Visualization is too complex</li>
+	     	</ul>
+	    </li>
+			<li class="vislink">
+				<a href="http://www.nikon.com/about/feelnikon/universcale/scale.htm#">UniverScale</a>
+        <ul>
+	  	   	<li class="positive">Simple but effective interactivity, zoom away!</li>
+	  	    <li class="positive">Compares different scales</li>
+          <li class="negative">Some functions does not work as intended</li>
+          <li class="negative">Lacks color (or visualization not fully supported by my browser?)</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
 
-   <div class='col-md-12 individual-section'>
-      <h2>Individual Part</h2>
+  <div class='col-md-12 individual-section'>
+    <h2>Individual Part</h2>
 
-      <div class="col-md-6 mads">
-	 <h3>Thorbjørn Christensen</h3>
-         <p>The best Danish football league 'The Danish Superliga' was established in 1991, and currently the best 12 teams in Denmark are participating in the 26th season of the league.</p>
-	 <p>Each season of the league is easily summed up in a table showing the final standing, even the all-time standing (how the teams has performed when combining all 26 seasons) can (and is) summed up in a table. These standings are fine when we are interested in the outcome of a season (who won the title? who was relegated? etc.),  but in my opinion they lack an interesting piece of information: How was the route of a team to its final position? Was the bronze winner placed in the lower part of league in first half of the season, and did a magnificent comeback to archieve the bronze medals, or was they placed in the first place in most of the season, just to see their championship dreams falling a part in the last matches?</p>
-	 <p>
-	   My idea is the make an interactive view, which show every teams position after each round of any season. It should be possible to select which season to view, and which teams to explorer. Here is a mockup showing the idea, where a single season and 3 teams selected.   
-	 </p>
-	 <div class="center">
-	   <img src="mockup.svg" width="700px">
-	 </div>
-         <p>An addition feature could be to combine seasons, and e.g. show the view from round 1 in season 1992/1993 to round 33 in season 1999/2000. If this feature exists, it is important to state how we convert results between seasons, since a victory in some seasons give 2 points and 3 points in other.</p>
-         <p>All the data exists on <a href="http://superstats.dk">SuperStats.dk</a>.</p>
-         <p></p>
+    <div class="col-md-6">
+      <h3>Thorbjørn Christensen</h3>
+      <p>The best Danish football league 'The Danish Superliga' was established in 1991, and currently the best 12 teams in Denmark are participating in the 26th season of the league.</p>
+	    <p>Each season of the league is easily summed up in a table showing the final standing, even the all-time standing (how the teams has performed when combining all 26 seasons) can (and is) summed up in a table. These standings are fine when we are interested in the outcome of a season (who won the title? who was relegated? etc.),  but in my opinion they lack an interesting piece of information: How was the route of a team to its final position? Was the bronze winner placed in the lower part of league in first half of the season, and did a magnificent comeback to archieve the bronze medals, or was they placed in the first place in most of the season, just to see their championship dreams falling a part in the last matches?</p>
+	    <p>My idea is the make an interactive view, which show every teams position after each round of any season. It should be possible to select which season to view, and which teams to explorer. Here is a mockup showing the idea, where a single season and 3 teams selected.
+	    </p>
+      <div class="center">
+        <img src="mockup.svg" width="500px">
+	    </div>
+      <p>An addition feature could be to combine seasons, and e.g. show the view from round 1 in season 1992/1993 to round 33 in season 1999/2000. If this feature exists, it is important to state how we convert results between seasons, since a victory in some seasons give 2 points and 3 points in other.</p>
+      <p>All the data exists on <a href="http://superstats.dk">SuperStats.dk</a>.</p>
+    </div>
 
-
-      </div>
-
-
-      
-      <div class="col-md-6 mads">
-	 <h3>Mads Thoudahl</h3>
-
-	 <p>During the danish elections in the early summer 2015, I noted a for me,
-				new tree-ish like visualization communicating where the voters are voting
-				and relations with their voting history.
-				I have added a <a href="http://www.dr.dk/nyheder/politik/valg2015/vaelgervandringer#O2015-seneste">link</a>
-				to the visualization posted on dr.dk.
-				Interactivity could be introduced by fine-graining the view to zoom in at
-				geographic areas, educations, institutions, etc.</p>
-
-	 <p>I imagine the same kind of visualization could produce some very convincing,
-				storytelling of social inheritance, educational level of young citizens,
-				pace of education, stress disorders and other interesting markers, this
-				should be visualized over several years, identifying whether the implemented
-				policies work as intended.</p>
-
-	 <p>The intended audience should be the politicians and voters, documenting the
-				consequences of those decisions made.</p>
-
-	 <p>This dataset, is probably collected by 'danmarks statistik' for national data,
-				but local educational institutions, would have to collect and report the data.</p>
-      </div>
-   </div>
+    <div class="col-md-6">
+	    <h3>Mads Thoudahl</h3>
+      <p>During the danish elections in the early summer 2015, I noted a for me, new tree-ish like visualization communicating where the voters are voting and relations with their voting history. I have added a <a href="http://www.dr.dk/nyheder/politik/valg2015/vaelgervandringer#K2015">link to the visualization, here </a>, otherwise click the image below.</p>
+      <p>	Interactivity could be introduced by fine-graining the view to zoom in at geographic areas, educations, institutions, etc.</p>
+      <p>I imagine the same kind of visualization could produce some very convincing, storytelling of social inheritance, educational level of young citizens,	pace of education, stress disorders and other interesting markers, this should be visualized over several years, identifying whether the implemented	policies work as intended.</p>
+      <p>The intended audience should be the politicians and voters, documenting the	consequences of those decisions made.</p>
+      <p>This dataset, is probably collected by 'danmarks statistik' for national data, but local educational institutions, would have to collect and report the data.</p>
+      <p>
+        <div class="center">
+          <a href="http://www.dr.dk/nyheder/politik/valg2015/vaelgervandringer#K2015"> <img src="dr_vis.png" style="width:500px" />
+          </a>
+	      </div>
+      </p>
+    </div>
+  </div>
 </body>
 </html>
