@@ -1,3 +1,15 @@
+<!-- 1 .Get write access to a publicly accessible webserver. Describe how you get access (upload files) and which limitations the server has that could be relevant for deploying web-visualizations (e.g. traffic limitations, disk quota, etc.).  -->
+
+<!-- 2. Place a small and interesting image in the lower or upper right corner of the page. Do this using only javascript (i.e. nothing in the <body>..</body> section should reflect the existence of the image).  -->
+
+<!-- 3. List at least 4 links to interactive visualizations (not made by you) and describe positive and negative aspects for each of them.  -->
+<!-- 4. Individual part: For each member in the group, describe an interactive visualization that you would like to be able to build after this course has finished. If possible include elements like: -->
+<!-- What should the accompanying text say about the visualization -->
+<!-- What story would the combination of text and visualization tell. -->
+<!-- Who is the intended audience. -->
+<!-- Where would you get the dataset from.  -->
+<!-- A sketch or mockup of the visualization -->
+
 <html>
 <head>
    <meta charset="ISO-8859-1">
@@ -38,22 +50,26 @@
       text-align: justify;
       color: darkblue;
    }
+   .center {
+      text-align: center;
+   }
    </style>
 
    <script type="text/javascript">
    $( document ).ready(function() {
       $("body").html("<div id='img-container' class='col-md-6 right'> <img src='corr_img.jpg' id='image' width='600' height='561'></div>" + $("body").html());
+
       $("#img-container").before(
 	 "<div class='col-md-6'>" +
 	    "<h2>Visualizations substantiates the thruth</h2>" +
 	    "<p>It follows that every statistics seen on the web is true, if visualized properly. A perfect example is given in the image on the right side: there is a clear correlation between US spendings in science, space and technology one one side, and suicides by hanging, strangulation and suffocation in the US.</p>" +
 	    "<p>If you think the image is too big, just <b>click</b> on it a few times!</p>" +
-	    "</div><br/>")
+	    "</div><br/>");
 
-	 $("#image").click(function(){
-	    $(this).css('width',$(this).width()*0.95);
-	    $(this).css('height',$(this).height()*0.95);
-	 });
+      $("#image").click(function(){
+         $(this).css('width',$(this).width()*0.95);
+         $(this).css('height',$(this).height()*0.95);
+      });
    });
    </script>
 
@@ -63,6 +79,13 @@
    <div class='col-md-12 link-section'>
       <h2>Four awesome links to visualizations and guides on the web</h2>
       <ol>
+         <li><a href="http://www.payscale.com/college-salary-report/degrees-and-majors-lifetime-earnings">How Do Major and Degree Affect Lifetime Earnings?</a>
+            <ol>
+               <li>Positive aspects: TODO</li>
+               <li>Negative aspects: TODO</li>
+            </ol>
+         </li>
+         <li>TODO</li>
 	 <li><a href="http://www.sitepoint.com/twelve-javascript-libraries-data-visualization/"> Javascript libraries for data visualization </a></li>
 	 <li><a href="http://visjs.org/"> visjs.com</a></li>
       </ol>
@@ -73,8 +96,23 @@
 
       <div class="col-md-6 mads">
 	 <h3>Thorbjørn Christensen</h3>
-         <p>TODO</p>
+         <p>The best Danish football league 'The Danish Superliga' was established in 1991, and currently the best 12 teams in Denmark are participating in the 26th season of the league.</p>
+	 <p>Each season of the league is easily summed up in a table showing the final standing, even the all-time standing (how the teams has performed when combining all 26 seasons) can (and is) summed up in a table. These standings are fine when we are interested in the outcome of a season (who won the title? who was relegated? etc.),  but in my opinion they lack an interesting piece of information: How was the route of a team to its final position? Was the bronze winner placed in the lower part of league in first half of the season, and did a magnificent comeback to archieve the bronze medals, or was they placed in the first place in most of the season, just to see their championship dreams falling a part in the last matches?</p>
+	 <p>
+	   My idea is the make an interactive view, which show every teams position after each round of any season. It should be possible to select which season to view, and which teams to explorer. Here is a mockup showing the idea, where a single season and 3 teams selected.   
+	 </p>
+	 <div class="center">
+	   <img src="mockup.svg" width="700px">
+	 </div>
+         <p>An addition feature could be to combine seasons, and e.g. show the view from round 1 in season 1992/1993 to round 33 in season 1999/2000. If this feature exists, it is important to state how we convert results between seasons, since a victory in some seasons give 2 points and 3 points in other.</p>
+         <p>All the data exists on <a href="http://superstats.dk">SuperStats.dk</a>.</p>
+         <p></p>
+
+
       </div>
+
+
+      
       <div class="col-md-6 mads">
 	 <h3>Mads Thoudahl</h3>
 
