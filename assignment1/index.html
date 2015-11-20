@@ -153,5 +153,11 @@
       </p>
     </div>
   </div>
+  <div class='col-md-12 individual-section'>
+    <h2>Accessing the server</h2>
+    <p>The server used to host the website is a private server located at Mads' home in Helsingør. The server has lots of diskspace available, and enough <abbr title="Random Access Memory">RAM</abbr> to launch hundreds of threads simultaneously (4GB), and as it is private, the entire system is at our hands, no qoutas. The CPU is not very fast though (Intel Celeron 2 cores, 2.1GHz, 64bit), and no serverfarm is backing up the site on the computational side. The <abbr title="Internet Service Provider">ISP</abbr> connection could also be a potential bottleneck, if the local network is busy doing other private transactions over the internet. The connection is something like 15/2 Mbps, so just 2 Mbit per second upload. If we refrain from serving videos and the like, the data transactions from this machine should be limited amounts of raw data, the purpose of using javascript is to make the visualizations happen locally on the clients, not the server.</p>
+    <p>The server is accessed via ssh, and the files are moved to the server by 'pulling' a git repository when logged on to the server. The git repo is hosted on github.
+    </p>
+  </div>
 </body>
 </html>
