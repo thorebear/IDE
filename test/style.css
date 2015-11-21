@@ -1,0 +1,17 @@
+body {
+	background-color: lightgrey;
+}
+
+a {
+	color: olive;
+}
+
+a:hover {
+	color: blue;
+
+}
+
+p {
+	border-bottom-style: solid;
+	border-bottom-color: red;
+}
