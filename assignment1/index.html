@@ -93,21 +93,30 @@
     <h2>Four awesome links to visualizations and guides on the web</h2>
     <ol>
       <li class="vislink"><a href="http://www.payscale.com/college-salary-report/degrees-and-majors-lifetime-earnings">How Do Major and Degree Affect Lifetime Earnings?</a>
-        <ol>
-           <li>Positive aspects: TODO</li>
-           <li>Negative aspects: TODO</li>
-        </ol>
+        <ul>
+          <li class="positive">Possible to select exactly which (or how much) data to show and compare (out of a huge dataset)</li>
+	  <li class="positive">Different degrees (bachelor, master, pdf etc.) are easy to separate by they colors.</li>
+	  <li class="positive">Hovering a line with the mouse gives precise information about what (degree, major, experience level) the line is representing.
+          <li class="negative">"Undynamic" colors: E.g. if you compare bachelor degrees for different majors all lines will have the same color.</li>
+	  <li class="negative">No instructions on how to select multiple majors and/or degrees, without deselecting the rest. It is possible by holding down <b>CTRL</b>, but when no instructons are given it is hard to know. 
+        </ul>
       </li>
-      <li class="vislink">TODO</li>
+      <li class="vislink"><a href="https://www.google.com/trends/explore#q=poker%2C%20bridge&cmpt=q&tz=Etc%2FGMT-1">Google Trends</a></li>
+      <ul>
+         <li class="positive">Simple interface, which is easy to understand</li>
+         <li class="positive">Highly customizable (select any terms and any number of terms)</li>
+         <li class="positive">Good overview to compare search interests on a specific term in different continents and/or countries in the section "Regional interest"
+         <li class="negative">No text on how to understand the numbers. E.g. was does the number 100 mean on a country in "Regional interest"?
+      </ul>
 			<li class="vislink">
 				<a href="http://virostatiq.com/data/prism/"> The PRISM scandal (Snowden menagerie)</a>
 	     	<ul>
 		    	<li class="positive">Interresting subject</li>
-	       	<li class="positive">Interactivity makes you want to 'click' everything</li>
-	       	<li class="positive">Attempts to visualize a <em>very</em> complex topic</li>
-	       	<li class="positive">Densely packed with information including links to articles</li>
-	       	<li class="negative">Sadly fails to provide an overview</li>
-	       	<li class="negative">Visualization is too complex</li>
+	       		<li class="positive">Interactivity makes you want to 'click' everything</li>
+	       		<li class="positive">Attempts to visualize a <em>very</em> complex topic</li>
+	       		<li class="positive">Densely packed with information including links to articles</li>
+	       		<li class="negative">Sadly fails to provide an overview</li>
+	       		<li class="negative">Visualization is too complex</li>
 	     	</ul>
 	    </li>
 			<li class="vislink">
@@ -129,13 +138,15 @@
       <h3>Thorbjørn Christensen</h3>
       <p>The best Danish football league 'The Danish Superliga' was established in 1991, and currently the best 12 teams in Denmark are participating in the 26th season of the league.</p>
 	    <p>Each season of the league is easily summed up in a table showing the final standing, even the all-time standing (how the teams has performed when combining all 26 seasons) can (and is) summed up in a table. These standings are fine when we are interested in the outcome of a season (who won the title? who was relegated? etc.),  but in my opinion they lack an interesting piece of information: How was the route of a team to its final position? Was the bronze winner placed in the lower part of league in first half of the season, and did a magnificent comeback to archieve the bronze medals, or was they placed in the first place in most of the season, just to see their championship dreams falling a part in the last matches?</p>
-	    <p>My idea is the make an interactive view, which show every teams position after each round of any season. It should be possible to select which season to view, and which teams to explorer. Here is a mockup showing the idea, where a single season and 3 teams selected.
+	    <p>My idea is the make an interactive view, which show every teams position after each round of any season. It should be possible to select which season to view, and which teams to explorer. Here is a mockup* showing the idea, where a single season and 3 teams selected.
 	    </p>
       <div class="center">
         <img src="mockup.svg" width="500px">
 	    </div>
       <p>An addition feature could be to combine seasons, and e.g. show the view from round 1 in season 1992/1993 to round 33 in season 1999/2000. If this feature exists, it is important to state how we convert results between seasons, since a victory in some seasons give 2 points and 3 points in other.</p>
       <p>All the data exists on <a href="http://superstats.dk">SuperStats.dk</a>.</p>
+
+      <i>*Only mockups allow two teams to be in the same position after the same number of rounds (Esbjerg and Odense in round 3), the <a href="http://dbu.dk">Danish Football Association</a> does not. 
     </div>
 
     <div class="col-md-6">
