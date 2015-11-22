@@ -1,28 +1,17 @@
-<!-- 1 .Get write access to a publicly accessible webserver. Describe how you get access (upload files) and which limitations the server has that could be relevant for deploying web-visualizations (e.g. traffic limitations, disk quota, etc.).  -->
-
-<!-- 2. Place a small and interesting image in the lower or upper right corner of the page. Do this using only javascript (i.e. nothing in the <body>..</body> section should reflect the existence of the image).  -->
-
-<!-- 3. List at least 4 links to interactive visualizations (not made by you) and describe positive and negative aspects for each of them.  -->
-<!-- 4. Individual part: For each member in the group, describe an interactive visualization that you would like to be able to build after this course has finished. If possible include elements like: -->
-<!-- What should the accompanying text say about the visualization -->
-<!-- What story would the combination of text and visualization tell. -->
-<!-- Who is the intended audience. -->
-<!-- Where would you get the dataset from.  -->
-<!-- A sketch or mockup of the visualization -->
-
+<!DOCTYPE html>
 <html>
 <head>
-   <meta charset="ISO-8859-1">
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
    <!-- BOOTSTRAP CSS -->
    <!-- Latest compiled and minified CSS -->
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
    <!-- JQUERY -->
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"/>
 
    <!-- BOOSTRAP JS -->
    <!-- Latest compiled and minified JavaScript -->
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+   <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"/>
 
    <style>
    a {
@@ -135,7 +124,7 @@
     <h2>Individual Part</h2>
 
     <div class="col-md-6">
-      <h3>Thorbjørn Christensen</h3>
+      <h3>ThorbjÃ¸rn Christensen</h3>
       <p>The best Danish football league 'The Danish Superliga' was established in 1991, and currently the best 12 teams in Denmark are participating in the 26th season of the league.</p>
       <p>Each season of the league is easily summed up in a table showing the final standing, even the all-time standing (how the teams has performed when combining all 26 seasons) can (and is) summed up in a table. These standings are fine when we are interested in the outcome of a season (who won the title? who was relegated? etc.),  but in my opinion they lack an interesting piece of information: How was the route of a team to its final position? Was the bronze winner placed in the lower part of league in first half of the season, and did a magnificent comeback to achieve the bronze medals, or was they placed in the first place in most of the season, just to see their championship dreams falling a part in the last matches?</p>
 	    <p>My idea is the make an interactive view, which show every teams position after each round of any season. It should be possible to select which season to view, and which teams to explorer. Here is a mockup* showing the idea, where a single season and 3 teams selected.
@@ -166,7 +155,7 @@
   </div>
   <div class='col-md-12 individual-section'>
     <h2>Accessing the server</h2>
-    <p>The server used to host the website is a private server located at Mads' home in Helsingør. The server has lots of diskspace available, and enough <abbr title="Random Access Memory">RAM</abbr> to launch hundreds of threads simultaneously (4GB), and as it is private, the entire system is at our hands, no quotas. The CPU is not very fast though (Intel Celeron 2 cores, 2.1GHz, 64bit), and no serverfarm is backing up the site on the computational side. The <abbr title="Internet Service Provider">ISP</abbr> connection could also be a potential bottleneck, if the local network is busy doing other private transactions over the internet. The connection is something like 15/2 Mbps, so just 2 Mbit per second upload. If we refrain from serving videos and the like, the data transactions from this machine should be limited amounts of raw data, the purpose of using javascript is to make the visualizations happen locally on the clients, not the server.</p>
+    <p>The server used to host the website is a private server located at Mads' home in HelsingÃ¸r. The server has lots of diskspace available, and enough <abbr title="Random Access Memory">RAM</abbr> to launch hundreds of threads simultaneously (4GB), and as it is private, the entire system is at our hands, no quotas. The CPU is not very fast though (Intel Celeron 2 cores, 2.1GHz, 64bit), and no serverfarm is backing up the site on the computational side. The <abbr title="Internet Service Provider">ISP</abbr> connection could also be a potential bottleneck, if the local network is busy doing other private transactions over the internet. The connection is something like 15/2 Mbps, so just 2 Mbit per second upload. If we refrain from serving videos and the like, the data transactions from this machine should be limited amounts of raw data, the purpose of using javascript is to make the visualizations happen locally on the clients, not the server.</p>
     <p>The server is accessed via ssh, and the files are moved to the server by 'pulling' a git repository when logged on to the server. The git repo is hosted on github.
     </p>
   </div>
