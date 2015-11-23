@@ -51,20 +51,18 @@
       var norm_vals = values.map(function(d) {
          return (d - min_val) / (max_val - min_val)
       });
-      
- //     console.log(data.map(accessor));
-//      console.log(min_val);
-      console.log(norm_vals);
+
+      var label_font_size = 14;
       var max_bar_height = getHeight(max_val);
-      var bar_width = 10;
+      var bar_width = 20;
       var bar_offset = 2;
       var chart_offset_left = 10;
-      var svg_height = max_bar_height + 30;
+      var svg_height = max_bar_height + 2 * bar_width;
       
       var svg = d3.select("body")
          .append("svg")
          .attr("height", svg_height)
-         .attr("width", num_vals*(bar_width+bar_offset));
+         .attr("width", chart_offset_left + num_vals*(bar_width+bar_offset) + 10);
       
       svg.selectAll("rect")
          .data(data)
@@ -100,14 +98,14 @@
          .attr("y",function(d,i)
             {
                if (i%2 === 0){
-                  return max_bar_height + 10;
+                  return max_bar_height + 1 * bar_width;
                } 
                else {
-                  return max_bar_height + 20;
+                  return max_bar_height + 2 * bar_width;
                }
             }
          )
-         .attr("font-size", 6);
+         .attr("font-size", label_font_size);
       
       function getHeight(val){
          return 120 + parseInt(val)*20;
