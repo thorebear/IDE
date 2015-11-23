@@ -26,6 +26,7 @@
          if (error) throw error;
          
          data.forEach(function(row) {
+            d = {};
             d.year = row.year;
             aalborg_data.append(d);
          });
