@@ -27,22 +27,34 @@
    <script type="text/javascript">
    d3.select(window).on('load', init);
 
+   data = [];
+   
    function init(){
       d3.csv("aalborg.csv", function(error, d) {
          if (error) throw error;
-         var data = [];         
+
          d.forEach(function(row) {
             data.push(row);
          });
 
-         onDataLoaded(data, function(d) { return d.DEC });
+         drawBarChart(data, function(d) { return d.DEC });
       });
    }
 
-   function onDataLoaded(data, accessor){
+   function drawBarChart(data, accessor){
+      var values = data.map(accessor).map(parseFloat);
       var num_vals = data.length;
-      var max_val = d3.max(data, accessor );
-      var min_val = d3.min(data, accessor );
+      var max_val = d3.max(values);
+      var min_val = d3.min(values);
+
+      // Compute normalized data in range [0,1]
+      var norm_vals = values.map(function(d) {
+         return (d - min_val) / (max_val - min_val)
+      });
+      
+ //     console.log(data.map(accessor));
+//      console.log(min_val);
+      console.log(norm_vals);
       var max_bar_height = getHeight(max_val);
       var bar_width = 10;
       var bar_offset = 2;
@@ -52,10 +64,10 @@
       var svg = d3.select("body")
          .append("svg")
          .attr("height", svg_height)
-         .attr("width", num_vals*(bar_width+bar_offset))
-         .selectAll("rect");
+         .attr("width", num_vals*(bar_width+bar_offset));
       
-      svg.data(data)
+      svg.selectAll("rect")
+         .data(data)
          .enter()
          .append("rect")
          .attr("y", function(d){
@@ -68,11 +80,13 @@
             return getHeight(accessor(d));
          })
          .attr("width", bar_width)
-         .style('fill', function(d,i) { 
-            return "rgb(" + Math.floor(Math.random()*255) + ", 0, " + Math.floor(Math.random()*255) + ")"});
+         .style('fill', function(d,i) {
+            console.log(norm_vals*255);
+            return "rgb(" + Math.floor(norm_vals[i] * 255) + "," + 
+               "0," +
+               "0)"});
 
-      d3.select("svg")
-         .selectAll("text")
+      svg.selectAll("text")
          .data(data)
          .enter()
          .append("text")
@@ -97,7 +111,7 @@
       
       function getHeight(val){
          return 120 + parseInt(val)*20;
-      }
+      };
    };
 
    </script>
