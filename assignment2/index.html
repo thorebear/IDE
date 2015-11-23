@@ -16,6 +16,16 @@
    <!-- D3 -->
    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
+   <style>
+   body {
+      height: 1000px;
+      width: 100%;
+   }
+   svg {
+      width: 100%;
+   }
+   </style>
+   
    <!-- Our javascript -->
    <script type="text/javascript">
    d3.select(window).on('load', init);
@@ -27,9 +37,7 @@
          if (error) throw error;
          
          data.forEach(function(row) {
-            d = {};
-            d.year = row.YEAR;
-            aalborg_data.push(d);
+            aalborg_data.push(row);
          });
 
          onDataLoaded();
@@ -37,15 +45,59 @@
    }
 
    function onDataLoaded(){
-      d3.select("body")
-         .selectAll("p")
+      var svg_height = 200;
+      
+      var svg = d3.select("body")
+         .append("svg")
+         .attr("height", svg_height + 30)
+         .selectAll("rect");
+
+      
+      svg.data(aalborg_data)
+         .enter()
+         .append("rect")
+         .attr("y", function(d){
+            return svg_height - getHeight(d);
+         })
+         .attr("x", function(d,i){
+            return i*12;
+         })
+         .attr("height", function(d){
+            return getHeight(d);
+         })
+         .attr("width", 10)
+         .style('fill', function(d,i) { 
+            return "rgb(" + Math.floor(Math.random()*255) + ", 0, " + Math.floor(Math.random()*255) + ")"});
+
+      d3.select("svg")
+         .selectAll("text")
          .data(aalborg_data)
          .enter()
-         .append("p")
-         .text(function(d) { 
-            return "" + d 
-         });
-   }
+         .append("text")
+         .text(function(d){
+            return d.YEAR;
+         })
+         .attr("x",function(d, i)
+            {
+               return i * 12;
+            })
+         .attr("y",function(d,i)
+            {
+               if (i%2 === 0){
+                  return svg_height + 10;
+               } 
+               else {
+                  return svg_height + 20;
+               }
+            }
+         )
+         .attr("font-size",6);
+      
+      function getHeight(d){
+         return 120 + parseInt(d.JAN)*20;
+      }
+   };
+
    </script>
    <title>Interactive Data Exploration - Assigment 2</title>
 </head>
