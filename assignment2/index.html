@@ -21,57 +21,59 @@
       height: 1000px;
       width: 100%;
    }
-   svg {
-      width: 100%;
-   }
    </style>
    
    <!-- Our javascript -->
    <script type="text/javascript">
    d3.select(window).on('load', init);
 
-   var aalborg_data = [];
-
    function init(){
-      d3.csv("aalborg.csv", function(error, data) {
+      d3.csv("aalborg.csv", function(error, d) {
          if (error) throw error;
-         
-         data.forEach(function(row) {
-            aalborg_data.push(row);
+         var data = [];         
+         d.forEach(function(row) {
+            data.push(row);
          });
 
-         onDataLoaded();
+         onDataLoaded(data, function(d) { return d.DEC });
       });
    }
 
-   function onDataLoaded(){
-      var svg_height = 200;
+   function onDataLoaded(data, accessor){
+      var num_vals = data.length;
+      var max_val = d3.max(data, accessor );
+      var min_val = d3.min(data, accessor );
+      var max_bar_height = getHeight(max_val);
+      var bar_width = 10;
+      var bar_offset = 2;
+      var chart_offset_left = 10;
+      var svg_height = max_bar_height + 30;
       
       var svg = d3.select("body")
          .append("svg")
-         .attr("height", svg_height + 30)
+         .attr("height", svg_height)
+         .attr("width", num_vals*(bar_width+bar_offset))
          .selectAll("rect");
-
       
-      svg.data(aalborg_data)
+      svg.data(data)
          .enter()
          .append("rect")
          .attr("y", function(d){
-            return svg_height - getHeight(d);
+            return max_bar_height - getHeight(accessor(d));
          })
          .attr("x", function(d,i){
-            return i*12;
+            return chart_offset_left + i*(bar_width+bar_offset);
          })
          .attr("height", function(d){
-            return getHeight(d);
+            return getHeight(accessor(d));
          })
-         .attr("width", 10)
+         .attr("width", bar_width)
          .style('fill', function(d,i) { 
             return "rgb(" + Math.floor(Math.random()*255) + ", 0, " + Math.floor(Math.random()*255) + ")"});
 
       d3.select("svg")
          .selectAll("text")
-         .data(aalborg_data)
+         .data(data)
          .enter()
          .append("text")
          .text(function(d){
@@ -79,22 +81,22 @@
          })
          .attr("x",function(d, i)
             {
-               return i * 12;
+               return chart_offset_left + i * (bar_width+bar_offset);
             })
          .attr("y",function(d,i)
             {
                if (i%2 === 0){
-                  return svg_height + 10;
+                  return max_bar_height + 10;
                } 
                else {
-                  return svg_height + 20;
+                  return max_bar_height + 20;
                }
             }
          )
-         .attr("font-size",6);
+         .attr("font-size", 6);
       
-      function getHeight(d){
-         return 120 + parseInt(d.JAN)*20;
+      function getHeight(val){
+         return 120 + parseInt(val)*20;
       }
    };
 
