@@ -21,6 +21,18 @@
       height: 1000px;
       width: 100%;
    }
+
+   .axis path,
+   .axis line {
+      fill: none;
+      stroke: black;
+      shape-rendering: crispEdges;
+   }
+
+   .axis text {
+      font-family: sans-serif;
+      font-size: 13px;
+   }
    </style>
    
    <!-- Our javascript -->
@@ -47,22 +59,44 @@
       var max_val = d3.max(values);
       var min_val = d3.min(values);
 
-      // Compute normalized data in range [0,1]
-      var norm_vals = values.map(function(d) {
-         return (d - min_val) / (max_val - min_val)
-      });
-
       var label_font_size = 14;
-      var max_bar_height = getHeight(max_val);
+      var max_bar_height = 350;
       var bar_width = 20;
       var bar_offset = 2;
-      var chart_offset_left = 10;
+      var chart_offset_left = 30;
       var svg_height = max_bar_height + 2 * bar_width;
+      var chart_width = num_vals * (bar_width + bar_offset) - bar_offset;
+
+      // A scale for determine the heigh of svg elements
+      var yScale = d3.scale.linear()
+         .domain([min_val, max_val])
+         .range([10, max_bar_height])
+         .nice();
+
+      var xScale = d3.scale.linear()
+         .domain([1949,2015])
+         .range([0, chart_width]);
+
+      var xAxis = d3.svg.axis()
+	 .scale(xScale)
+	 .orient("bottom")
+         .ticks(14)
+         .tickFormat(d3.format("d"));
+
+      var yAxis = d3.svg.axis()
+         .scale(yScale)
+         .orient("left")
+         .ticks(5);
+
+      // A normilization scale used for color encoding
+      var norm_scale = d3.scale.linear()
+         .domain([min_val, max_val])
+         .range([0,1]);      
       
       var svg = d3.select("body")
          .append("svg")
          .attr("height", svg_height)
-         .attr("width", chart_offset_left + num_vals*(bar_width+bar_offset) + 10);
+         .attr("width", chart_offset_left + num_vals*(bar_width+bar_offset) + 30);
       
       svg.selectAll("rect")
          .data(data)
@@ -78,37 +112,33 @@
             return getHeight(accessor(d));
          })
          .attr("width", bar_width)
-         .style('fill', function(d,i) {
-            console.log(norm_vals*255);
-            return "rgb(" + Math.floor(norm_vals[i] * 255) + "," + 
+         .style('fill', function(d) {
+            return "rgb(" + Math.floor(norm_scale(accessor(d)) * 255) + "," + 
                "0," +
                "0)"});
 
-      svg.selectAll("text")
-         .data(data)
-         .enter()
-         .append("text")
-         .text(function(d){
-            return d.YEAR;
-         })
-         .attr("x",function(d, i)
-            {
-               return chart_offset_left + i * (bar_width+bar_offset);
-            })
-         .attr("y",function(d,i)
-            {
-               if (i%2 === 0){
-                  return max_bar_height + 1 * bar_width;
-               } 
-               else {
-                  return max_bar_height + 2 * bar_width;
-               }
-            }
-         )
-         .attr("font-size", label_font_size);
-      
+      svg.append("line")
+         .attr("x1", chart_offset_left)
+         .attr("y1", getHeight(0))
+         .attr("x2", chart_offset_left + chart_width)
+         .attr("y2", getHeight(0))
+         .style("stroke", "rgb(0,0,0)")
+         .style("stroke-width", 0.5);
+
+      svg.append("g")
+         .attr("class", "axis")
+         .attr("transform",
+            "translate(" + chart_offset_left + "," + max_bar_height + ")")
+         .call(xAxis);
+
+      svg.append("g")
+         .attr("class", "axis")
+         .attr("transform",
+            "translate(" + chart_offset_left + "," + 0 + ")")
+         .call(yAxis);
+   
       function getHeight(val){
-         return 120 + parseInt(val)*20;
+         return yScale(val);
       };
    };
 
