@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html><head>
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />   
 
@@ -49,27 +48,48 @@
             data.push(row);
          });
 
-         drawBarChart(data, function(d) { return d.DEC });
+         drawBarChart(data, function(d) {
+            return (parseFloat(d.JAN) +
+               parseFloat(d.FEB) +
+               parseFloat(d.MAR) +
+               parseFloat(d.APR) +
+               parseFloat(d.MAY) +
+               parseFloat(d.JUN) +
+               parseFloat(d.JUL) +
+               parseFloat(d.AUG) +
+               parseFloat(d.SEP) +
+               parseFloat(d.OCT) +
+               parseFloat(d.NOV) +
+               parseFloat(d.DEC)) / 12;
+         });
       });
    }
 
    function drawBarChart(data, accessor){
+      var svg_width = 600;
+      var svg_height = 500;
       var values = data.map(accessor).map(parseFloat);
+      console.log(values);
       var num_vals = data.length;
       var max_val = d3.max(values);
       var min_val = d3.min(values);
-
+      console.log("min val: " + min_val);
+      console.log("max val: " + max_val);
       var label_font_size = 14;
-      var max_bar_height = 350;
-      var bar_width = 20;
-      var bar_offset = 2;
+      var max_bar_height = svg_height*0.8;
+      var bar_width = 0.9 * (svg_width / num_vals);
+      var bar_offset = 0.1 * (svg_width/ num_vals);
       var chart_offset_left = 30;
-      var svg_height = max_bar_height + 2 * bar_width;
       var chart_width = num_vals * (bar_width + bar_offset) - bar_offset;
 
       // A scale for determine the heigh of svg elements
       var yScale = d3.scale.linear()
          .domain([min_val, max_val])
+         .range([10, max_bar_height])
+         .nice();
+
+      var yScaleAxis = d3.scale.linear()
+         .domain([max_val, min_val])
          .range([10, max_bar_height])
          .nice();
 
@@ -84,7 +104,7 @@
          .tickFormat(d3.format("d"));
 
       var yAxis = d3.svg.axis()
-         .scale(yScale)
+         .scale(yScaleAxis)
          .orient("left")
          .ticks(5);
 
@@ -115,13 +135,14 @@
          .style('fill', function(d) {
             return "rgb(" + Math.floor(norm_scale(accessor(d)) * 255) + "," + 
                "0," +
-               "0)"});
+               "0)"
+         });
 
       svg.append("line")
          .attr("x1", chart_offset_left)
-         .attr("y1", getHeight(0))
+         .attr("y1", max_bar_height - getHeight(0))
          .attr("x2", chart_offset_left + chart_width)
-         .attr("y2", getHeight(0))
+         .attr("y2", max_bar_height - getHeight(0))
          .style("stroke", "rgb(0,0,0)")
          .style("stroke-width", 0.5);
 
