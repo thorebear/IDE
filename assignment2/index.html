@@ -41,7 +41,7 @@
    data = [];
    
    function init(){
-      d3.csv("aalborg.csv", function(error, d) {
+      d3.csv("copenhagen.csv", function(error, d) {
          if (error) throw error;
 
          d.forEach(function(row) {
@@ -94,7 +94,7 @@
          .nice();
 
       var xScale = d3.scale.linear()
-         .domain([1949,2015])
+         .domain([1880,2012])
          .range([0, chart_width]);
 
       var xAxis = d3.svg.axis()
