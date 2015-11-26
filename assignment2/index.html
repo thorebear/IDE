@@ -9,16 +9,16 @@
    <!-- JQUERY -->
    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
-   <!-- Highcharts  -->
-   <script src="http://code.highcharts.com/highcharts.js"></script>
-   <script src="http://code.highcharts.com/modules/exporting.js"></script>
-
    <!-- BOOSTRAP JS -->
    <!-- Latest compiled and minified JavaScript -->
    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
    <!-- D3 -->
    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+   <!-- C3 -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
 
    <style>
    body {
@@ -41,11 +41,6 @@
    svg {
       border-style: solid;
       border-width: 1px;
-      display: block;
-      margin: auto;
-   }
-
-   #highchart {
       display: block;
       margin: auto;
    }
@@ -79,39 +74,40 @@
 
          var _avg = moving_avg(data, avg_temp);
          var _years = data.map(function (d) { return parseFloat(d.YEAR)});
-
-         $('#highchart').css('width', $('#graph1').width() * 0.9);
-         $('#highchart').highcharts({
-            title: {
-               text: 'Copenhagen: Yearly moving average temperature',
-               x: -20 //center
+            
+         
+         var chart = c3.generate({
+            bindto: "#graph3",
+            data: {
+               x: 'x',
+               columns: [
+                  ['x'].concat(_years),
+                  ['Average temperature'].concat(_avg)
+               ]
             },
-            xAxis: {
-               categories: _years
-            },
-            yAxis: {
-               title: {
-                  text: 'Temperature (°C)'
+            axis: {
+               x: {
+                  label: 'Year',
+                  position: 'outer-center',
+                  tick: {
+                     fit: true
+                  }
                },
-               plotLines: [{
-                  value: 0,
-                  width: 1,
-                  color: '#808080'
-               }]
-            },
-            tooltip: {
-               valueSuffix: '°C',
-               formatter: function() {
-                  return 'Average temperatur from <b>1880</b> to <b>' + this.x + '</b> is <b>' + this.y.toFixed(2) + ' °C</b>';
+               y: {
+                  label: 'Temperature (°C)'
                }
             },
-            series: [{
-               name: 'Moving average',
-               data: _avg
-            }]
+            size: {
+               width: parseFloat($('#graph1').css('width'))*0.9,
+               height: 500
+            },
+            tooltip: {
+               format: {
+                  value: function (value, ratio, id, index) { return value.toFixed(2) + '°C'; }
+               }
+            }
          });
-
-                  
+         
          var g2_div = d3.select("#graph2");
 
          data_2000_2010 = data.filter(function(d) {
@@ -302,12 +298,14 @@
       <p>The following chart shows the <a href="#" data-toggle="tooltip" title="The average is computed as the average of the average temperature of each month, e.g. January and February contributes equally to the average, even through the number of days is different">average yearly temperatur</a> measured in Copenhagen from 1880 to 2011.</p>
       <div id="graph1" class="graph">
       </div>
-      <p>We see that the early 1940s was some of coldest years, while the 1990s and 2000s had some of the warmest years in the Danish capital (after 1880).   
-To get a better overview of how the average temperature has </p>
-      <h2>Blabla</h2>
-      <div id="highchart" class="graph">
-      </div>
-      <h2>Let us look at the 00</h2>
+      <p>We see that the early 1940s was some of coldest years, while the 1990s and 2000s had some of the warmest years in the Danish capital (after 1880).
+         <br/><br/>
+To get a better overview of how the temperature has  progressed over the years, the following chart shows how the average yearly temperature from the 1880 for each year:</p>
+         <div id="graph3" class="graph"></div>
+      <p>
+         So the average temperature in Copenhagen from 1880 to 2011 was 8.48 °C. While average was more or less steady in the period from 1950 to 1970, and only increased a little from 1970 to 1980, we see that the average increased a lot in 1990s and even more in the 2000s (decade). Since the decade from 2000 to 2010 seems to have such a huge impact on the average temperature (for more than 100 years) the period most have been extraordinary warm, so let us take a closer look at this period.
+      </p>
+      <h2>Was the 2000s really that warm?</h2>
       <p>Tekst her... lalalalallalala</p>
       <div id="graph2" class="graph">
       </div>
