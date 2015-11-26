@@ -45,8 +45,17 @@
       margin: auto;
    }
 
+   #highchart {
+      display: block;
+      margin: auto;
+   }
+
    .container {
       width: 1000px;
+   }
+
+   .graph {
+      margin-bottom: 10px;
    }
    </style>
    
@@ -71,13 +80,11 @@
          var _avg = moving_avg(data, avg_temp);
          var _years = data.map(function (d) { return parseFloat(d.YEAR)});
 
+         $('#highchart').css('width', $('#graph1').width() * 0.9);
          $('#highchart').highcharts({
             title: {
                text: 'Copenhagen: Yearly moving average temperature',
                x: -20 //center
-            },
-            chart: {
-               width: $('#highchart').width() * 0.8
             },
             xAxis: {
                categories: _years
@@ -93,7 +100,10 @@
                }]
             },
             tooltip: {
-               valueSuffix: '°C'
+               valueSuffix: '°C',
+               formatter: function() {
+                  return 'Average temperatur from <b>1880</b> to <b>' + this.x + '</b> is <b>' + this.y.toFixed(2) + ' °C</b>';
+               }
             },
             series: [{
                name: 'Moving average',
@@ -101,6 +111,7 @@
             }]
          });
 
+                  
          var g2_div = d3.select("#graph2");
 
          data_2000_2010 = data.filter(function(d) {
@@ -143,7 +154,7 @@
    
 
    function drawBarChart(data, div, title, accessor){
-      var svg_width = parseInt(div.style("width")) * 0.8;
+      var svg_width = parseInt(div.style("width")) * 0.9;
       var svg_height = 500;
       var values = data.map(accessor).map(parseFloat);
 
@@ -154,10 +165,15 @@
       var label_font_size = 14;
       var max_bar_height = svg_height*0.8;
       var chart_offset_top = svg_height*0.1;
-      var bar_width = 0.9 * (svg_width / num_vals);
-      var bar_offset = 0.1 * (svg_width/ num_vals);
+
       var chart_offset_left = 50;
+      var chart_offset_right = 20;
+
+
+      var bar_width = 0.9 * ((svg_width - chart_offset_left - chart_offset_right) / num_vals);
+      var bar_offset = 0.1 * ((svg_width - chart_offset_left - chart_offset_right) / num_vals);
       var chart_width = num_vals * (bar_width + bar_offset) - bar_offset;
+      
       var years = data.map(function(d) { return d.YEAR }).map(parseFloat);
       console.log(years);
       var min_year = d3.min(years);
@@ -198,8 +214,8 @@
       var svg = div
          .append("svg")
          .attr("height", svg_height)
-         .attr("width", chart_offset_left + num_vals*(bar_width+bar_offset) + 30);
-
+         .attr("width", svg_width);
+      
       // Add 'bar' for every data point
       svg.selectAll("rect")
          .data(data)
@@ -282,10 +298,12 @@
 <body>
    <article>
    <div class="container">
-      <h2>Copenhagen overview</h2>
-      <p class="lead">Tekst her .... lala</p>
+      <h2>A historical look: Weather in Copenhagen <small>1880-2011</small></h2>
+      <p>The following chart shows the <a href="#" data-toggle="tooltip" title="The average is computed as the average of the average temperature of each month, e.g. January and February contributes equally to the average, even through the number of days is different">average yearly temperatur</a> measured in Copenhagen from 1880 to 2011.</p>
       <div id="graph1" class="graph">
       </div>
+      <p>We see that the early 1940s was some of coldest years, while the 1990s and 2000s had some of the warmest years in the Danish capital (after 1880).   
+To get a better overview of how the average temperature has </p>
       <h2>Blabla</h2>
       <div id="highchart" class="graph">
       </div>
