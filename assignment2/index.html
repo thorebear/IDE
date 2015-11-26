@@ -74,7 +74,9 @@
 
          var _avg = moving_avg(data, avg_temp);
          var _years = data.map(function (d) { return parseFloat(d.YEAR)});
-            
+
+         // DEBUG:
+         console.log(data.map(function(d) { return d.YEAR + ": " + avg_temp(d)}));
          
          var chart = c3.generate({
             bindto: "#graph3",
@@ -171,20 +173,20 @@
       var chart_width = num_vals * (bar_width + bar_offset) - bar_offset;
       
       var years = data.map(function(d) { return d.YEAR }).map(parseFloat);
-      console.log(years);
+
       var min_year = d3.min(years);
       var max_year = d3.max(years);
 
       
       // A scale for determine the heigh of svg elements
-      var yScale = d3.scale.linear()
-         .domain([min_val, max_val])
-         .range([10, max_bar_height])
-         .nice();
+//      var yScale = d3.scale.linear()
+  //       .domain([min_val, max_val])
+    //     .range([10, max_bar_height])
+      //   .nice();
 
-      var yScaleAxis = d3.scale.linear()
+      var yScale = d3.scale.linear()
          .domain([max_val, min_val])
-         .range([10, max_bar_height])
+         .range([0, max_bar_height])
          .nice();
 
       var xScale = d3.scale.linear()
@@ -198,7 +200,7 @@
          .tickFormat(d3.format("d"));
 
       var yAxis = d3.svg.axis()
-         .scale(yScaleAxis)
+         .scale(yScale)
          .orient("left")
          .ticks(5);
 
@@ -218,13 +220,13 @@
          .enter()
          .append("rect")
          .attr("y", function(d){
-            return chart_offset_top + max_bar_height - getHeight(accessor(d));
+            return chart_offset_top + yScale(accessor(d));
          })
          .attr("x", function(d,i){
             return chart_offset_left + i*(bar_width+bar_offset);
          })
          .attr("height", function(d){
-            return getHeight(accessor(d));
+            return max_bar_height - yScale(accessor(d));
          })
          .attr("width", bar_width)
          .style('fill', function(d) {
@@ -233,18 +235,10 @@
                "0)"
          });
 
-      // TODO
-      svg.append("line")
-         .attr("x1", chart_offset_left)
-         .attr("y1", max_bar_height - getHeight(0))
-         .attr("x2", chart_offset_left + chart_width)
-         .attr("y2", max_bar_height - getHeight(0))
-         .style("stroke", "rgb(0,0,0)")
-         .style("stroke-width", 0.5);
 
       // Add title to chart
       svg.append("text")
-         .attr("x", chart_offset_left + svg_width / 2)
+         .attr("x", svg_width / 2)
          .attr("y", chart_offset_top / 2)
          .style("text-anchor", "middle")
          .style("font-size", 20)
@@ -282,35 +276,44 @@
          .style("text-anchor", "middle")
          .text("Temperature (°C)");
 
-   
-      function getHeight(val){
-         return yScale(val);
-      };
+      svg.append("line")		
+         .attr("x1", chart_offset_left)	
+         .attr("y1", chart_offset_top + yScale(10))
+	 .attr("x2", svg_width - chart_offset_right)
+         .attr("y2", chart_offset_top + yScale(10))
+         .style("stroke", "rgb(0,0,0)")		          
+         .style("stroke-width", 0.3);
    };
 
    </script>
    <title>Interactive Data Exploration - Assigment 2</title>
 </head>
 <body>
-   <article>
    <div class="container">
+      <h1>Group part</h1>
       <h2>A historical look: Weather in Copenhagen <small>1880-2011</small></h2>
       <p>The following chart shows the <a href="#" data-toggle="tooltip" title="The average is computed as the average of the average temperature of each month, e.g. January and February contributes equally to the average, even through the number of days is different">average yearly temperatur</a> measured in Copenhagen from 1880 to 2011.</p>
       <div id="graph1" class="graph">
       </div>
+
       <p>We see that the early 1940s was some of coldest years, while the 1990s and 2000s had some of the warmest years in the Danish capital (after 1880).
          <br/><br/>
 To get a better overview of how the temperature has  progressed over the years, the following chart shows how the average yearly temperature from the 1880 for each year:</p>
          <div id="graph3" class="graph"></div>
-      <p>
+         <p><i>*This chart is build with <a href="http://c3js.org/">C3</a>, which is a D3-based library for reusable charts.</i></p>
+         <p>
          So the average temperature in Copenhagen from 1880 to 2011 was 8.48 °C. While average was more or less steady in the period from 1950 to 1970, and only increased a little from 1970 to 1980, we see that the average increased a lot in 1990s and even more in the 2000s (decade). Since the decade from 2000 to 2010 seems to have such a huge impact on the average temperature (for more than 100 years) the period most have been extraordinary warm, so let us take a closer look at this period.
-      </p>
-      <h2>Was the 2000s really that warm?</h2>
-      <p>Tekst her... lalalalallalala</p>
-      <div id="graph2" class="graph">
-      </div>
-      <p>Mere tekst her... lallala</p>
+         </p>
+         <h2>Was the 2000s really that warm?</h2>
+         <p>The following chart shows the average yearly temperature from 2000 to 2010.</p>
+         <div id="graph2" class="graph">
+         </div>
+         <p>Comparing this charts, with we fact that the average yearly temperature from 1880 to 2011 was 8.48 °C, we see that every single year of the decade was much warmer (> 0.5 °C) than the average. There has been 6 years in the period from 1880 to 2011 where the yearly average temperature in Copenhagen was greater than 10°C, and out of these 6, 4 of them (2000, 2006, 2007 and 2008) was in the period 2000-2010. So by comparing this decade with the approximately 100 years which preceded, we conclude that the decade from 2000 to 2010 was unusually warm in Copenhagen.</p>
+         <h1>Individual part</h1>
+         <h2>Thorbjørn</h2>
+         <p>TODO</p>
+         <h2>Mads</h2>
+         <p>TODO</p>
    </div>
-   </article>
 </body>
 </html>
