@@ -74,9 +74,6 @@
 
          var _avg = moving_avg(data, avg_temp);
          var _years = data.map(function (d) { return parseFloat(d.YEAR)});
-
-         // DEBUG:
-         console.log(data.map(function(d) { return d.YEAR + ": " + avg_temp(d)}));
          
          var chart = c3.generate({
             bindto: "#graph3",
@@ -84,7 +81,7 @@
                x: 'x',
                columns: [
                   ['x'].concat(_years),
-                  ['Average temperature'].concat(_avg)
+                  ['Moving avg. temperature'].concat(_avg)
                ]
             },
             axis: {
@@ -105,7 +102,8 @@
             },
             tooltip: {
                format: {
-                  value: function (value, ratio, id, index) { return value.toFixed(2) + '°C'; }
+                  value: function (value, ratio, id, index) { return value.toFixed(2) + '°C'; },
+                  title: function (x) { return 'From 1880 to ' + x; }
                }
             }
          });
@@ -149,8 +147,6 @@
       }
    }
 
-   
-
    function drawBarChart(data, div, title, accessor){
       var svg_width = parseInt(div.style("width")) * 0.9;
       var svg_height = 500;
@@ -164,9 +160,8 @@
       var max_bar_height = svg_height*0.8;
       var chart_offset_top = svg_height*0.1;
 
-      var chart_offset_left = 50;
+      var chart_offset_left = 60;
       var chart_offset_right = 20;
-
 
       var bar_width = 0.9 * ((svg_width - chart_offset_left - chart_offset_right) / num_vals);
       var bar_offset = 0.1 * ((svg_width - chart_offset_left - chart_offset_right) / num_vals);
@@ -177,12 +172,6 @@
       var min_year = d3.min(years);
       var max_year = d3.max(years);
 
-      
-      // A scale for determine the heigh of svg elements
-//      var yScale = d3.scale.linear()
-  //       .domain([min_val, max_val])
-    //     .range([10, max_bar_height])
-      //   .nice();
 
       var yScale = d3.scale.linear()
          .domain([max_val, min_val])
@@ -311,7 +300,15 @@ To get a better overview of how the temperature has  progressed over the years, 
          <p>Comparing this charts, with we fact that the average yearly temperature from 1880 to 2011 was 8.48 °C, we see that every single year of the decade was much warmer (> 0.5 °C) than the average. There has been 6 years in the period from 1880 to 2011 where the yearly average temperature in Copenhagen was greater than 10°C, and out of these 6, 4 of them (2000, 2006, 2007 and 2008) was in the period 2000-2010. So by comparing this decade with the approximately 100 years which preceded, we conclude that the decade from 2000 to 2010 was unusually warm in Copenhagen.</p>
          <h1>Individual part</h1>
          <h2>Thorbjørn</h2>
-         <p>TODO</p>
+<p>
+   <i>How big data sets are reasonable to load in d3 visualizations? What types of visualizations does a limit like that exclude? Give examples of visualizations that must be based on large data sets and discuss how they deal with this. Could you have reduced the size of the data sets in this assignment.</i>
+   <br/><br />
+   Well since the d3 visualizations are created client-side, will are limited to how much data the server can deliver to client in reasonable time. This is limited by bandwich both at the server side and the client side. The average internet connection speed in Denmark is approximately 11 Mbit/s (<a href="https://en.wikipedia.org/wiki/List_of_countries_by_Internet_connection_speeds">source</a>), so if we assume that the data delivery is limited by the client (and the client is Danish), the client will be able to receive 1 to 1.5 MBytes per second. Opening a websie should probably not take more than a couple of seconds, which will limit the dataset to 3-4 MBytes, when we only care about bandwich limitations.
+   <br /><br />
+   TODO
+
+
+</p>
          <h2>Mads</h2>
          <p>TODO</p>
    </div>
