@@ -214,9 +214,7 @@
             .attr("style", "text-anchor:middle")
             .text("2nd Principal Component");
 
-
-
-      /* create a circle for each datapoint */
+      /* create a circle for each datapoint in the dataset */
       cs = pcasvg
             .selectAll("circle")
             .data(pca)
@@ -224,7 +222,18 @@
             .append("circle")
             .attr("cx", function(d){ return sxScale(d[0]);})
             .attr("cy", function(d){ return h-syScale(d[1]);})
-            .attr("r",circleradius);
+            .attr("r",circleradius)
+            .on("click", function(d,idx){
+                d3.selectAll('circle')
+                  .attr('r',function(d,i){ 
+                    if(idx===i) return 5;
+                    else return circleradius;
+                  })
+                  .attr('fill', function(d,i){ 
+                    if(idx===i) return 'red';
+                    else return 'black';
+                  });
+                });
 
     };
 
