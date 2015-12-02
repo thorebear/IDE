@@ -85,7 +85,7 @@
   <script type="text/javascript">
     /* Initialize variables */
 
-    var w, wt, h, ht, padding, circleradius;       
+    var w, wt, h, ht, padding, circleradius, hoverradius;       
     var handdata, pcadata, info;  /* Handles to datasets    */
     var handmin, handmax, pcamin, pcamax;
     var infosvg, pcasvg, handsvg; /* Handles to svg figures */
@@ -96,8 +96,12 @@
     h = 250;
     padding = 30;
 
+    /* really style defs... should they be moved ? */
     circleradius = 3;
+    hoverradius  = 5;
+    selectioncolor = "red";
 
+    /* It all begins */
     d3.select(window).on('load', init);
 
     /* load data and initialize the svg canvasses */
@@ -223,17 +227,44 @@
             .attr("cx", function(d){ return sxScale(d[0]);})
             .attr("cy", function(d){ return h-syScale(d[1]);})
             .attr("r",circleradius)
-            .on("click", function(d,idx){
-                d3.selectAll('circle')
-                  .attr('r',function(d,i){ 
-                    if(idx===i) return 5;
-                    else return circleradius;
-                  })
-                  .attr('fill', function(d,i){ 
-                    if(idx===i) return 'red';
-                    else return 'black';
-                  });
-                });
+            
+      cs.on("mousemove", function(d,idx){
+        d3.selectAll('circle')
+          .attr('r', function(d,i){ 
+            if(idx===i) return hoverradius;
+            else return circleradius;
+          })
+        });
+
+      cs.on("mouseleave", function(d){
+        d3.selectAll('circle')
+          .attr('r', function(d){ 
+            return circleradius;
+          })
+        });
+
+      cs.on("click", function(d,idx){
+        d3.selectAll('circle')
+          .attr('r', function(d,i){ 
+            if(idx===i) return hoverradius;
+            else return circleradius;
+          })
+          .attr('fill', function(d,i){ 
+            if(idx===i) return selectioncolor;
+            else return 'black';
+          });
+        });
+
+      /* unselect - resetting the environment */
+      bg.on("click", function(d){
+        d3.selectAll('circle')
+          .attr('r', function(d){ 
+            return circleradius;
+          })
+          .attr('fill', function(d){ 
+            return 'black';
+          });
+        });
 
     };
 
