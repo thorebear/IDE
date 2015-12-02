@@ -25,287 +25,188 @@
 
    <!-- Our CSS -->
    <style>
-      body {
-         height: 1000px;
-         width: 100%;
-      }
-
-      .question {
-         font-style: italic;
-      }
-
-      .axis path,
-      .axis line {
-         fill: none;
-         stroke: black;
-         shape-rendering: crispEdges;
-      }
-
-      .axis text {
-         font-family: sans-serif;
-         font-size: 13px;
-      }
-
-      svg {
-         border-style: solid;
-         border-width: 1px;
-         display: block;
-         margin: auto;
-      }
-
-      .container {
-         width: 1000px;
-      }
-
-      .graph {
-         margin-bottom: 10px;
-      }
-   </style>
-
-   <!-- Our javascript -->
-   <script type="text/javascript">
-   d3.select(window).on('load', init);
-
-   var data;
-
-   function init(){
-      d3.csv("data.csv", function(error, d) {
-         if (error) throw error;
-
-         d.forEach(function(row) {
-            data.push(row);
-         });
-
-         var g1_div = d3.select("#graph1");
-         
-         drawBarChart(data, g1_div, "Copenhagen (1880 - 2011)", avg_temp);
-
-         var _avg = moving_avg(data, avg_temp);
-         var _years = data.map(function (d) { return parseFloat(d.YEAR)});
-         
-         var chart = c3.generate({
-            bindto: "#graph3",
-            data: {
-               x: 'x',
-               columns: [
-                  ['x'].concat(_years),
-                  ['Moving avg. temperature'].concat(_avg)
-               ]
-            },
-            axis: {
-               x: {
-                  label: 'Year',
-                  position: 'outer-center',
-                  tick: {
-                     fit: true
-                  }
-               },
-               y: {
-                  label: 'Temperature (°C)'
-               }
-            },
-            size: {
-               width: parseFloat($('#graph1').css('width'))*0.9,
-               height: 500
-            },
-            tooltip: {
-               format: {
-                  value: function (value, ratio, id, index) { return value.toFixed(2) + '°C'; },
-                  title: function (x) { return 'From 1880 to ' + x; }
-               }
-            }
-         });
-         
-         var g2_div = d3.select("#graph2");
-
-         data_2000_2010 = data.filter(function(d) {
-            var y = parseFloat(d.YEAR);
-            return y >= 2000 && y <= 2009;
-         });
-
-         drawBarChart(data_2000_2010, g2_div, "Copenhagen (2000 - 2010)", avg_temp);
-      });
-
-      function moving_avg(data, accessor){
-         var res = [];
-         for (var i = 1; i <= data.length; i++){
-            if (res.length === 0){
-               res.push(accessor(data[i-1]))
-            } else {
-               var sum_so_far = res[i-2]*(i-1);
-               res.push((accessor(data[i-1]) + sum_so_far) / i);
-            }
-         }
-         return res;
-      }
-
-      function avg_temp(d){
-         return (parseFloat(d.JAN) +
-            parseFloat(d.FEB) +
-            parseFloat(d.MAR) +
-            parseFloat(d.APR) +
-            parseFloat(d.MAY) +
-            parseFloat(d.JUN) +
-            parseFloat(d.JUL) +
-            parseFloat(d.AUG) +
-            parseFloat(d.SEP) +
-            parseFloat(d.OCT) +
-            parseFloat(d.NOV) +
-            parseFloat(d.DEC)) / 12;
-      }
+   div.container {
+      width: 1200;
    }
-
-   function drawBarChart(data, div, title, accessor){
-      var svg_width = parseInt(div.style("width")) * 0.9;
-      var svg_height = 500;
-      var values = data.map(accessor).map(parseFloat);
-
-      var num_vals = data.length;
-      var max_val = d3.max(values);
-      var min_val = d3.min(values);
-
-      var label_font_size = 14;
-      var max_bar_height = svg_height*0.8;
-      var chart_offset_top = svg_height*0.1;
-
-      var chart_offset_left = 60;
-      var chart_offset_right = 20;
-
-      var bar_width = 0.9 * ((svg_width - chart_offset_left - chart_offset_right) / num_vals);
-      var bar_offset = 0.1 * ((svg_width - chart_offset_left - chart_offset_right) / num_vals);
-      var chart_width = num_vals * (bar_width + bar_offset) - bar_offset;
-      
-      var years = data.map(function(d) { return d.YEAR }).map(parseFloat);
-
-      var min_year = d3.min(years);
-      var max_year = d3.max(years);
-
-
-      var yScale = d3.scale.linear()
-         .domain([max_val, min_val])
-         .range([0, max_bar_height])
-         .nice();
-
-      var xScale = d3.scale.linear()
-         .domain([min_year, max_year + 1])
-         .range([0, chart_width]);
-
-      var xAxis = d3.svg.axis()
-    .scale(xScale)
-    .orient("bottom")
-         .ticks(14)
-         .tickFormat(d3.format("d"));
-
-      var yAxis = d3.svg.axis()
-         .scale(yScale)
-         .orient("left")
-         .ticks(5);
-
-      // A normalization scale used for color encoding
-      var norm_scale = d3.scale.linear()
-         .domain([min_val, max_val])
-         .range([0,1]);      
-      
-      var svg = div
-         .append("svg")
-         .attr("height", svg_height)
-         .attr("width", svg_width);
-      
-      // Add 'bar' for every data point
-      svg.selectAll("rect")
-         .data(data)
-         .enter()
-         .append("rect")
-         .attr("y", function(d){
-            return chart_offset_top + yScale(accessor(d));
-         })
-         .attr("x", function(d,i){
-            return chart_offset_left + i*(bar_width+bar_offset);
-         })
-         .attr("height", function(d){
-            return max_bar_height - yScale(accessor(d));
-         })
-         .attr("width", bar_width)
-         .style('fill', function(d) {
-            return "rgb(" + Math.floor(norm_scale(accessor(d)) * 255) + "," + 
-               "0," +
-               "0)"
-         });
-
-
-      // Add title to chart
-      svg.append("text")
-         .attr("x", svg_width / 2)
-         .attr("y", chart_offset_top / 2)
-         .style("text-anchor", "middle")
-         .style("font-size", 20)
-         .text(title);
-
-      // Add x-axis
-      svg.append("g")
-         .attr("class", "axis")
-         .attr("transform",
-            "translate(" + chart_offset_left + "," + (chart_offset_top + max_bar_height) + ")")
-         .call(xAxis);
-
-      // Add label for x-axis
-      svg.append("text")
-         .attr("x", chart_offset_left + svg_width / 2 )
-         .attr("y", chart_offset_top + max_bar_height + 30)
-         .style("text-anchor", "middle")
-         .style("font-size", 12)
-         .text("Year");
-      
-      // Add y-axis
-      svg.append("g")
-         .attr("class", "axis")
-         .attr("transform",
-            "translate(" + chart_offset_left + "," + chart_offset_top + ")")
-         .call(yAxis);
-
-      // Add label for y-axis
-      svg.append("text")
-         .attr("transform", "rotate(-90)")
-         .attr("y", 10)
-         .attr("x", - (chart_offset_top + max_bar_height / 2))
-         .attr("dy", "1em")
-         .style("font-size", 12)
-         .style("text-anchor", "middle")
-         .text("Temperature (°C)");
-
-      svg.append("line")		
-         .attr("x1", chart_offset_left)	
-         .attr("y1", chart_offset_top + yScale(10))
-         .attr("x2", svg_width - chart_offset_right)
-         .attr("y2", chart_offset_top + yScale(10))
-         .style("stroke", "rgb(0,0,0)")		          
-         .style("stroke-width", 0.3);
-   };
-
-   </script>
+   .graph {
+      padding: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      margin: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+   }
+   </style>
 
    <title>Interactive Data Exploration - Assignment 3</title>
 
 </head>
 
 <body>
-   <div class="jumbotron" id="hjem">
+
+   <div class="jumbotron" id="home">
      <div class="container text-center">
-       <h1>Look ma I can plot!</h1>      
+       <h1>Assignment 3</h1>      
        <h3> - By Thorbjørn Christensen and Mads Thoudahl</h3>
      </div>
    </div>
 
    <div class="container">
 
-      <div id="graph1" class="graph"> </div>
-      <div id="graph2" class="graph"> </div>
-      <div id="graph3" class="graph"> </div>
-         
-      <h1>Individual part</h1>
-      <h2>Thorbjørn</h2>
-      <h2>Mads</h2>
+      <div class="col-sm-4" class="graph">
+         <div id="pcagraph" class="graph"> 
+            <noscript> Please turn on JavaScript to display svg here </noscript>
+         </div>
+         <div id="infograph" class="graph"> 
+            <noscript> Please turn on JavaScript to display svg here </noscript>
+         </div>
+      </div>
+      
+      <div class="col-sm-8" class="graph">
+         <div id="handgraph" class="graph"> 
+            <noscript> Please turn on JavaScript to display svg here </noscript>
+         </div>
+      </div>   
 
    </div>
+
+   <!-- Our javascript -->
+   <script type="text/javascript">
+      /* Initialize variables */
+
+      var w, wt, h, ht, padding, circleradius;       
+      var handdata, pcadata, info;  /* Handles to datasets    */
+      var handmin, handmax, pcamin, pcamax;
+      var infosvg, pcasvg, handsvg; /* Handles to svg figures */
+      var sxScale, syScale, bxScale, byScale;
+
+      /* Set sizes */
+      w = 200;
+      h = 200;
+      padding = 20;
+      wt = w + 2*padding;
+      ht = h + 2*padding;
+
+      circleradius = 3;
+
+      d3.select(window).on('load', init);
+
+      /* load data and initialize the svg canvasses */
+      function init(){ 
+         d3.text("hands_pca.csv", function(text){
+            var rows  = d3.csv.parseRows(text);
+            pcadata   = rows.map(function(rowt){
+                                 return rowt.map(parseFloat);  
+            });
+
+            pcamin    = Math.min.apply(null, [].concat.apply([], pcadata));
+
+            pcamax    = Math.max.apply(null, [].concat.apply([], pcadata));
+
+            sxScale   = d3.scale.linear()
+                                .domain([pcamin, pcamax])
+                                .range([padding, w+padding]);
+
+            syScale   = d3.scale.linear()
+                                .domain([pcamin, pcamax])
+                                .range([padding, h+padding]);
+
+            initiatePcaGraph(pcadata);
+         });
+
+         d3.text("hands.csv", function(text){
+            var rows        = d3.csv.parseRows(text);
+            var rawhanddata = rows.map(function(row){
+                                  return row.map(parseFloat);  
+            });
+            handdata  = rawhanddata.map(zipRow);
+
+            handmin   = Math.min.apply(null, [].concat.apply([], [].concat.apply([], handdata)));
+
+            handmax   = Math.max.apply(null, [].concat.apply([], [].concat.apply([], handdata)));
+
+            bxScale   = d3.scale.linear()
+                                .domain([handmin, handmax])
+                                .range([padding, 2*w+padding]);
+
+            byScale   = d3.scale.linear()
+                                .domain([handmin, handmax])
+                                .range([padding, 2*h+padding]);
+
+            initiateHandGraph(handdata);
+         });
+
+
+         initiateInfoGraph();
+      };
+
+      function initiatePcaGraph(pca,i){
+         /* create svg and assign to handle */
+         pcasvg = d3.select("#pcagraph")
+                     .append("svg")
+                     .attr("width",wt)
+                     .attr("height",ht);
+
+         pcasvg.append("rect")
+                .attr("width","100%")
+                .attr("height","100%")
+                .attr("fill","white")
+                .attr("stroke-width","1px")
+                .attr("stroke","black");
+
+         /* create a circle for each datapoint */
+         pcasvg.selectAll("circle")
+            .data(pca)
+            .enter()
+            .append("circle")
+            .attr("cx", function(d){ return sxScale(d[0]);})
+            .attr("cy", function(d){ return ht-syScale(d[1]);})
+            .attr("r",circleradius);
+
+      };
+
+      function initiateInfoGraph(){
+         console.log('initInfoGraph Not Implemented')
+         /* create svg and assign to handle */
+         infosvg = d3.select("#infograph")
+                  .append("svg")
+                  .attr("width",wt)
+                  .attr("height",ht)
+
+         infosvg.append("rect")
+                .attr("width","100%")
+                .attr("height","100%")
+                .attr("fill","white")
+                .attr("stroke-width","1px")
+                .attr("stroke","black");
+      };
+
+      function initiateHandGraph(d,i){
+         console.log('initHandGraph Not Implemented')
+         /* create svg and assign to handle */
+         handsvg = d3.select("#handgraph")
+                  .append("svg")
+                  .attr("width",wt*2)
+                  .attr("height",ht*2)
+
+         handsvg.append("rect")
+                .attr("width","100%")
+                .attr("height","100%")
+                .attr("fill","white")
+                .attr("stroke-width","1px")
+                .attr("stroke","black");
+      };
+
+      function zipRow(row){
+         var xs   = row.slice( 0, Math.floor(row.length/2));
+         var ys   = row.slice( Math.floor(row.length / 2), row.length);
+         return d3.zip( xs, ys );
+      };
+
+
+
+   </script>
+
 </body>
+
 </html>
