@@ -85,24 +85,26 @@
   <script type="text/javascript">
     /* Initialize variables */
 
-    var w, wt, h, ht, padding, circleradius, hoverradius;       
+    var w, bw, h, bh, padding, circleradius, hoverradius;       
     var handdata, pcadata, info;  /* Handles to datasets    */
     var handmin, handmax, pcamin, pcamax;
     var infosvg, pcasvg, handsvg; /* Handles to svg figures */
     var sxScale, syScale, bxScale, byScale;
 
     /* Set sizes */
-    w = 300;
-    h = 250;
+    w       = 300;
+    h       = 250;
+    bw      = 2*w;
+    bh      = 2*h;
     padding = 30;
 
     /* really style defs... should they be moved ? */
-    circleradius = 3;
-    hoverradius  = 5;
+    circleradius   = 3;
+    hoverradius    = 5;
     selectioncolor = "red";
 
     /* It all begins */
-    d3.select(window).on('load', init);
+    d3.select(window).on("load", init);
 
     /* load data and initialize the svg canvasses */
     function init(){ 
@@ -120,14 +122,14 @@
         maxy = d3.max(pcadata, function(d){return d[1]});
 
         sxScale = d3.scale.linear()
-                          .domain([minx, maxx])
-                          .range([padding, w-padding]);
+          .domain([minx, maxx])
+          .range([padding, w-padding]);
 
         syScale = d3.scale.linear()
-                          .domain([miny, maxy])
-                          .range([h-padding, padding]);
+          .domain([miny, maxy])
+          .range([h-padding, padding]);
 
-        initiatePcaGraph(pcadata);
+        buildPcaGraph(pcadata);
       });
 
 
@@ -138,95 +140,99 @@
         });
 
         xrows = rows.map( function(row){return row.slice( 0, Math.floor(row.length/2))});
-        yrows = rows.map( function(row){return row.slice( 0, Math.floor(row.length/2))});
+        yrows = rows.map( function(row){return row.slice( Math.floor(row.length/2), row.length)});
+        xs    = xrows.reduce(function(a,b){return a.concat(b)});
+        ys    = yrows.reduce(function(a,b){return a.concat(b)});
 
         var minx, maxx, miny, maxy;
-        minx = d3.min(d3.min(xrows));
-        maxx = d3.max(d3.max(xrows));
-        miny = d3.min(d3.min(yrows));
-        maxy = d3.max(d3.max(yrows));
+        minx  = d3.min(xs);
+        maxx  = d3.max(xs);
+        miny  = d3.min(ys);
+        maxy  = d3.max(ys);
 
         handdata  = rows.map(zipRow);
 
         bxScale   = d3.scale.linear()
                             .domain([minx, maxx])
-                            .range([padding, 2*w-padding]);
+                            .range([padding, bw-padding]);
 
         byScale   = d3.scale.linear()
                             .domain([miny, maxy])
-                            .range([padding, 2*h-padding]);
+                            .range([bh-padding, padding]);
 
-        initiateHandGraph(handdata);
+        buildHandGraph(handdata);
       });
 
 
-      initiateInfoGraph();
+      buildInfoGraph();
+
     };
 
-    function initiatePcaGraph(pca,i){
+
+    function buildPcaGraph(pca,i){
       var bg, xAxis, yAxis, cs;
 
       /* create svg and assign to handle */
       pcasvg = d3.select("#pcagraph")
-                 .append("svg")
-                 .attr("width",w)
-                 .attr("height",h);
+        .append("svg")
+        .attr("width",w)
+        .attr("height",h);
 
       /* create a canvas background */
       bg = pcasvg
-          .append("rect")
-          .attr("width","100%")
-          .attr("height","100%")
-          .attr("fill","white")
-          .attr("stroke-width","1px")
-          .attr("stroke","black");
+        .append("rect")
+        .attr("width","100%")
+        .attr("height","100%")
+        .attr("fill","white")
+        .attr("stroke-width","1px")
+        .attr("stroke","black");
 
       /* create axes */
       xAxis = d3.svg
-                .axis()
-                .scale(sxScale)
-                .orient("bottom")
-                .ticks(5);
+        .axis()
+        .scale(sxScale)
+        .orient("bottom")
+        .ticks(5);
 
       yAxis = d3.svg
-                .axis()
-                .scale(syScale)
-                .orient("left")
-                .ticks(5);
+        .axis()
+        .scale(syScale)
+        .orient("left")
+        .ticks(5);
 
       pcasvg.append("g")
-            .attr("class", "axis")
-            .attr("transform", "translate(0,"+(h-padding)+")")
-            .call(xAxis);
+        .attr("class", "axis")
+        .attr("transform", "translate(0,"+(h-padding)+")")
+        .call(xAxis);
 
       pcasvg.append("g")
-            .attr("class", "axis")
-            .attr("transform", "translate("+padding+",0)")
-            .call(yAxis);
+        .attr("class", "axis")
+        .attr("transform", "translate("+padding+",0)")
+        .call(yAxis);
 
       pcasvg.append("text")
-            .attr("class", "text")
-            .attr("class", "title")
-            .attr("x", ((sxScale.range()[1]-sxScale.range()[0] )/2 + padding)+"")
-            .attr("y", syScale.range()[1]+"")
-            .attr("style", "text-anchor:middle")
-            .text("1st Principal Component");
+        .attr("class", "text")
+        .attr("class", "title")
+        .attr("x", ((sxScale.range()[1]-sxScale.range()[0] )/2 + padding)+"")
+        .attr("y", syScale.range()[1]+"")
+        .attr("style", "text-anchor:middle")
+        .text("1st Principal Component");
 
       pcasvg.append("text")
-            .attr("class", "text")
-            .attr("transform", "translate("+(sxScale.range()[1] + padding*0.5)+","+(h-padding-(syScale.range()[0]-syScale.range()[1])/2)+")rotate(-90)")
-            .attr("style", "text-anchor:middle")
-            .text("2nd Principal Component");
+        .attr("class", "text")
+        .attr("transform", "translate("+(sxScale.range()[1] + padding*0.5)+","+(h-padding-(syScale.range()[0]-syScale.range()[1])/2)+")rotate(-90)")
+        .attr("style", "text-anchor:middle")
+        .text("2nd Principal Component");
 
       /* create a circle for each datapoint in the dataset */
       cs = pcasvg
-            .selectAll("circle")
-            .data(pca)
-            .enter()
-            .append("circle")
-            .attr("cx", function(d){ return sxScale(d[0]);})
-            .attr("cy", function(d){ return h-syScale(d[1]);})
-            .attr("r",circleradius)
+        .selectAll("circle")
+        .data(pca)
+        .enter()
+        .append("circle")
+        .attr("cx", function(d){ return sxScale(d[0]);})
+        .attr("cy", function(d){ return h-syScale(d[1]);})
+        .attr("r",circleradius);
             
       cs.on("mousemove", function(d,idx){
         d3.selectAll('circle')
@@ -269,37 +275,62 @@
     };
 
 
-    function initiateInfoGraph(){
-      console.log('initInfoGraph Not Implemented')
+    function buildInfoGraph(){
+      console.log('buildInfoGraph Not Implemented')
       /* create svg and assign to handle */
       infosvg = d3.select("#infograph")
-                  .append("svg")
-                  .attr("width",w)
-                  .attr("height",h)
+        .append("svg")
+        .attr("width",w)
+        .attr("height",h)
 
       infosvg.append("rect")
-             .attr("width","100%")
-             .attr("height","100%")
-             .attr("fill","white")
-             .attr("stroke-width","1px")
-             .attr("stroke","black");
+        .attr("width","100%")
+        .attr("height","100%")
+        .attr("fill","white")
+        .attr("stroke-width","1px")
+        .attr("stroke","black");
     };
 
-    function initiateHandGraph(d,i){
-      console.log('initHandGraph Not Implemented')
+
+    function buildHandGraph(d,i){
+      console.log('buildHandGraph Not Implemented')
       /* create svg and assign to handle */
       handsvg = d3.select("#handgraph")
-                  .append("svg")
-                  .attr("width",w*2)
-                  .attr("height",h*2)
+        .append("svg")
+        .attr("width",bw)
+        .attr("height",bh);
 
       handsvg.append("rect")
-             .attr("width","100%")
-             .attr("height","100%")
-             .attr("fill","white")
-             .attr("stroke-width","1px")
-             .attr("stroke","black");
+        .attr("width","100%")
+        .attr("height","100%")
+        .attr("fill","white")
+        .attr("stroke-width","1px")
+        .attr("stroke","black");
+
+      /* insert a static set of points */
+      var points = handsvg.selectAll('circle')
+        .data(handdata[0])
+        .enter()
+        .append('circle')
+        .attr('cx',function(d){return bxScale(d[0]);})
+        .attr('cy',function(d){return byScale(d[1]);})
+        .attr('r',circleradius);
+
+      /* insert a static path between the points - NOWORK? */
+      var lineFn = d3.svg.line()
+        .x(function(d) { return d[0]; })
+        .y(function(d) { return d[1]; })
+        .interpolate("linear");
+
+      var lineGraph = handsvg.append("path")
+        .attr("d", lineFn( handdata[0] ) )
+        .attr("stroke", "blue")
+        .attr("stroke-width", 2)
+        .attr("fill", "pink")
+        .attr("opacity", "0.6");
+
     };
+
 
     function zipRow(row){
       var xs   = row.slice( 0, Math.floor(row.length/2));
