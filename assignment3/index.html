@@ -72,7 +72,7 @@
         <noscript> Please turn on JavaScript to display svg here </noscript>
       </div>
     </div>
-    
+
     <div class="col-sm-8" class="graph">
       <div id="handgraph" class="graph"> 
         <noscript> Please turn on JavaScript to display svg here </noscript>
@@ -139,8 +139,10 @@
                               return row.map(parseFloat);  
         });
 
-        xrows = rows.map( function(row){return row.slice( 0, Math.floor(row.length/2))});
-        yrows = rows.map( function(row){return row.slice( Math.floor(row.length/2), row.length)});
+         xrows = rows.map( function(row)
+            {return row.slice( 0, Math.floor(row.length/2))});
+         yrows = rows.map( function(row)
+            {return row.slice( Math.floor(row.length/2), row.length)});
         xs    = xrows.reduce(function(a,b){return a.concat(b)});
         ys    = yrows.reduce(function(a,b){return a.concat(b)});
 
@@ -275,7 +277,9 @@
 
     };
 
-    function updateHand(i){
+  function updateHand(i){
+     d3.select("#handoutline").remove()
+     
       /* purpose is to redraw the hand in the handsvg based on index*/
       var points = handsvg.selectAll('circle')
         .data(handdata[i], function(d){ return d});
@@ -308,6 +312,22 @@
         .attr('cy',bh/2)
         .remove();
 
+       var lineFn = d3.svg.line()
+          .x(function(d) { return bxScale(d[0]); })
+          .y(function(d) { return byScale(d[1]); })
+          .interpolate("cardinal-closed")
+          .tension(0.8);
+       
+     var lineGraph = d3.select("#handsvg").append("path")
+        .transition()
+        .duration(500)
+        .attr("id", "handoutline")
+        .attr("d", lineFn(handdata[i] ) )
+        .attr("stroke", "blue")
+        .attr("stroke-width", 2)
+        .attr("fill", "pink")
+        .attr("opacity", "0.6");
+       
       return points;
     };
 
@@ -332,7 +352,8 @@
       console.log('buildHandGraph Not Implemented')
       /* create svg and assign to handle */
       handsvg = d3.select("#handgraph")
-        .append("svg")
+         .append("svg")
+         .attr("id", "handsvg")
         .attr("width",bw)
         .attr("height",bh);
 
@@ -354,17 +375,7 @@
         .attr('r',circleradius); */
 
       /* insert a static path between the points - NOWORK? */
-      var lineFn = d3.svg.line()
-        .x(function(d) { return d[0]; })
-        .y(function(d) { return d[1]; })
-        .interpolate("linear");
-
-      var lineGraph = handsvg.append("path")
-        .attr("d", lineFn( handdata[0] ) )
-        .attr("stroke", "blue")
-        .attr("stroke-width", 2)
-        .attr("fill", "pink")
-        .attr("opacity", "0.6");
+      
 
     };
 
