@@ -19,23 +19,29 @@ if hands.shape[0]<hands.shape[1]:
 np.savetxt('hands_pca.csv',hands_pca, fmt="%11.8f", delimiter=',')
 
 
-# generer syntetiske håndsæt for de første n PC's 
+# generer syntetiske haandsaet for de foerste n PC's 
 n = 8
 synhand = np.zeros((2+2*n,112))
 
-# gem gennemsnitshånd
+# gem gennemsnitshaand
 synhand[0] = hands_pcs.mean_
 
 # find og gem hver pca formodet forklaret anddel
 sigma = np.sqrt(hands_pcs.explained_variance_)
 synhand[1,:len(sigma)] = sigma
 
-# generer syntetiske håndsæt
-xs = np.zeros((112,40))
+# generer syntetiske haandsaet
+#xs = np.zeros((112,40))
+#for i in range(n):
+#    xs[i]   = 2*sigma[i]**2
+#    xs[i+n] = -2*sigma[i]**2
+#synhand[2:] = hands_pcs.inverse_transform(xs)[:2*n]
+
+scale = 0.5
+
 for i in range(n):
-    xs[i]   =  sigma[i]
-    xs[i+n] = -sigma[i]
-synhand[2:] = hands_pcs.inverse_transform(xs)[:2*n]
+    synhand[2+i]   = hands_pcs.mean_ + hands_pcs.components_[0] * scale
+    synhand[2+i+n] = hands_pcs.mean_ - hands_pcs.components_[0] * scale
 
 # store to file
 np.savetxt('hands_syn.csv',synhand, fmt="%11.8f", delimiter=',')
