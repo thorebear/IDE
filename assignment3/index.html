@@ -30,12 +30,11 @@
   }
   .graph {
      text-align: center;
-    padding: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin: 0;
-    margin-top: 0;
-    margin-bottom: 0;
+     padding-left: 2px;
+     padding-right: 2px;
+     padding-top: 2px;
+     padding-bottom: 2px;
+     margin: 2px 2px 2px 2px;
   }
   .axis path,
   .axis line {
@@ -253,9 +252,11 @@
 
       /* create a canvas background */
       bg = pcasvg
-        .append("rect")
-        .attr("width","100%")
-        .attr("height","100%")
+         .append("rect")
+         .attr("y", 1)
+         .attr("x", 1)
+        .attr("width","99%")
+        .attr("height","99%")
         .attr("fill","white")
         .attr("stroke-width","1px")
         .attr("stroke","black");
@@ -498,12 +499,14 @@
         .attr("width",iw)
         .attr("height",ih);
 
-      infosvg.append("rect")
-        .attr("width","100%")
-        .attr("height","100%")
-        .attr("fill","white")
-        .attr("stroke-width","1px")
-        .attr("stroke","black");
+       infosvg.append("rect")
+          .attr("y", 1)
+          .attr("x", 1)
+          .attr("width","99%")
+          .attr("height","99%")
+          .attr("fill","white")
+          .attr("stroke-width","1px")
+          .attr("stroke","black");
 
       drawInfoHand( d3.zip(d3.range(avghand.length), d3.zip(avghand,avghand)), "avg", avgcolor);
 
@@ -605,10 +608,12 @@
         .attr("height",bh);
 
       handsvg.append("rect")
-        .attr("width","100%")
-        .attr("height","100%")
+         .attr("y", 1)
+         .attr("x", 1)
+        .attr("width","99%")
+        .attr("height","99%")
         .attr("fill","white")
-        .attr("stroke-width","1px")
+        .attr("stroke-width","1")
         .attr("stroke","black");
 
       /* insert a static set of points */
