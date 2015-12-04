@@ -78,7 +78,7 @@
         <noscript> Please turn on JavaScript to display svg here </noscript>
       </div>
       <div class="alert alert-info" role="alert">
-         <p><b>Instructions:</b> Click on a point in the left window to show the corresponding hand in the right window.</p>
+         <p><b>Instructions:</b> Click on a point in the left window to show the outline of the corresponding hand in the right window. To see the actual points of the selected hand, hover the mouse over the hand window.</p>
       </div>
     </div>
     
@@ -130,6 +130,7 @@
      var iw = 800;
      var ih = 600;
      padding = 30;
+     var handoutline;
 
      /* list of principal components being investigated (max is 8) */
      pcs     = d3.range(1,(6+1));
@@ -359,7 +360,7 @@
      };
 
      function updateHand(data, i){
-        d3.select("#handoutline").remove()
+
            
            /* purpose is to redraw the hand in the handsvg based on index*/
            var points = handsvg.selectAll('circle')
@@ -376,21 +377,14 @@
         /* enter new points */
         points.enter()
            .append('circle')
-           .attr('cx',bw/2)
            .attr('cy',bh/2)
            .attr('r',circleradius)
-           .transition()
-           .delay(500)
-           .duration(500)
+           .attr('opacity', '0')
            .attr('cx',function(d){return bxScale(d[0]);})
            .attr('cy',function(d){return byScale(d[1]);});
 
         /* remove exiting (old) points */
         points.exit()
-           .transition()
-           .duration(500)
-           .attr('cx',bw/2)
-           .attr('cy',bh/2)
            .remove();
 
         var lineFn = d3.svg.line()
@@ -398,16 +392,24 @@
            .y(function(d) { return byScale(d[1]); })
            .interpolate("cardinal-closed")
            .tension(0.8);
-        
-        var lineGraph = d3.select("#handsvg").append("path")
-           .transition()
-           .duration(500)
-           .attr("id", "handoutline")
-           .attr("d", lineFn(handdata[i] ) )
-           .attr("stroke", "blue")
-           .attr("stroke-width", 2)
-           .attr("fill", "pink")
-           .attr("opacity", "0.6");
+
+        if (handoutline === undefined){
+           var lineGraph = d3.select("#handsvg").append("path")
+              .transition()
+              .duration(500)
+              .attr("id", "handoutline")
+              .attr("d", lineFn(handdata[i] ) )
+              .attr("stroke", "blue")
+              .attr("stroke-width", 2)
+              .attr("fill", "pink")
+              .attr("opacity", "0.6");
+
+           handoutline = 1;
+        } else {
+           d3.select("#handoutline").transition()
+              .duration(500)
+              .attr("d", lineFn(handdata[i] ));
+        }
         
         return points;
      };
@@ -624,6 +626,16 @@
            .attr("fill","white")
            .attr("stroke-width","1")
            .attr("stroke","black");
+
+        handsvg.on("mouseover", function(){
+           handsvg.selectAll('circle')
+              .attr('opacity','0.6');
+        });
+
+        handsvg.on("mouseout", function(){
+           handsvg.selectAll('circle')
+              .attr('opacity','0.0');
+        });
 
         /* insert a static set of points */
         var points = updateHand(handdata,0); /*[avghand]*/
