@@ -89,7 +89,8 @@
     var handdata, pcadata, avghand, expsdev, nohand;  /* Handles to datasets    */
     var handmin, handmax, pcamin, pcamax;
     var infosvg, pcasvg, handsvg; /* Handles to svg figures */
-    var sxScale, syScale, bxScale, byScale, color;
+  var sxScale, syScale, bxScale, byScale, color;
+  var xScale, yScale;
     var pcs, isOn;
 
     /* Set sizes */
@@ -367,21 +368,25 @@
     };
 
 
-    function drawInfoHand(hand, name, col){
+  function drawInfoHand(hand, name, col){
+     if (hand.length === 0){
+        infosvg.selectAll('.' + name).remove();
+     }
       /* purpose is to redraw the hand in the infosvg based on index*/
       var points = infosvg.selectAll('circle.'+name)
         .data(hand, function(d){ return d});
 
       var head = 1;
       /* update points via a smooth transition */
-      points.transition()
+       /*
+       points.transition() 
         .delay(100)
         .duration(1000)
         .attr('cx',function(d){ return xScale(d[1][head][0]);})
         .attr('cy',function(d){ return yScale(d[1][head][1]);})
         .style("fill", "red");
 
-      /* enter new points */
+
       points.enter()
         .append('circle')
         .attr('class',name)
@@ -394,8 +399,37 @@
         .duration(1000)
         .attr('cx',function(d){return xScale(d[1][head][0]);})
         .attr('cy',function(d){return yScale(d[1][head][1]);})
-        .each('end', function(){ move(this, head); });
+         .each('end', function(){ move(this, head); });
+       */
 
+
+       var lineFn2 = d3.svg.line()
+          .x(function(d) { return xScale(d[1][head][0]); })
+          .y(function(d) { return yScale(d[1][head][1]); })
+          .interpolate("cardinal-closed")
+          .tension(0.8);
+
+       drawOutline();
+       
+       function drawOutline(){
+          var lineGraph = infosvg.append("path")
+             .attr("d", lineFn2(hand ) )
+             .attr("stroke-width", 0)
+             .attr("fill", col)
+             .attr("class", name)
+             .attr("opacity", "0.6");
+          updateOutline();
+          function updateOutline(){
+             head = (head + 1) % 2;
+             lineGraph
+                .transition()
+                .duration(3000)
+                .delay(500)
+                .attr("d", lineFn2(hand))
+                .each("end", updateOutline)
+          };
+       };
+       
       /* remove exiting (old) points */
       points.exit()
         .transition()
