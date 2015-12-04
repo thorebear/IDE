@@ -48,7 +48,13 @@
     font-size: 11px;
   }
 
+  svg.text {
+    font-family: sans-serif;
+    font-size: 11px;
+  }
+
   </style>
+
 
   <title>Interactive Data Exploration - Assignment 3</title>
 
@@ -130,6 +136,8 @@
     circleradius   = 2;
     hoverradius    = 5;
     selectioncolor = "red";
+    avgcolor       = "lightgray";
+
 
     /* It all begins */
     d3.select(window).on("load", init);
@@ -482,7 +490,6 @@
 
 
     function buildInfoGraph(avghand,expsdev,pcsdata){
-      console.log('buildInfoGraph is being implemented')
       /* create svg and assign to handle */
       infosvg = d3.select("#infograph")
         .append("svg")
@@ -496,14 +503,40 @@
         .attr("stroke-width","1px")
         .attr("stroke","black");
 
-      drawInfoHand( d3.zip(d3.range(avghand.length), d3.zip(avghand,avghand)), "avg", "black");
+      drawInfoHand( d3.zip(d3.range(avghand.length), d3.zip(avghand,avghand)), "avg", avgcolor);
+
+      var avgbutton = infosvg.selectAll("rect.avgbutton")
+        .data(avghand)
+        .enter()
+        .append("rect")
+        .attr("class","avgbutton")
+        .attr("class","avg")
+        .attr("x", padding)
+        .attr("y","1")
+        .attr("width",padding)
+        .attr("height",padding)
+        .attr("fill", avgcolor)
+        .attr("stroke-width","1px")
+        .attr("stroke","black")
+        .attr("opacity", "0.5");
+
+      var buttontext = infosvg.selectAll("text.avgbutton")
+        .data(pcs)
+        .enter()
+        .append("text")
+        .attr("class","text")
+        .attr("class","avgbutton")
+        .attr("x", 1.5*padding)
+        .attr("y",0.75*padding)
+        .attr("style", "text-anchor : middle; font-family : Times New Roman; font-size: 12px")
+        .text("avg");
 
       var buttons = infosvg.selectAll("rect.pcbutton")
         .data(pcs)
         .enter()
         .append("rect")
         .attr("class","pcbutton")
-        .attr("class","pc" + function(d){return d})
+        .attr("class","pc" + function(d,i){return i})
         .attr("x", function(d,i){ return (i+2)*padding})
         .attr("y","1")
         .attr("width",padding)
@@ -517,6 +550,7 @@
         .data(pcs)
         .enter()
         .append("text")
+        .attr("class","text")
         .attr("class","pcbutton")
         .attr("x", function(d,i){ return (d+1.5)*padding})
         .attr("y",0.75*padding)
@@ -541,33 +575,20 @@
         .text(function(d){return d});
 
       buttons.on("click", function(d,i){
-            var pchands = d3.zip( d3.range(pcsdata[d].length), d3.zip(pcsdata[d], pcsdata[d+pcsdata.length/2]) ); 
+            var pchands = d3.zip( d3.range(pcsdata[d].length), d3.zip(pcsdata[i], pcsdata[i+pcsdata.length/2]) ); 
             /* switch on/off */
             if (isOn.get(d)) {
               /* shut down */
               isOn.set(d,false);
               d3.select(this)
                 .attr('opacity', "0.5");
-              drawInfoHand(nohand, "pc"+d, "black");
+              drawInfoHand(nohand, "pc"+i, "black");
             } else {
               /* start up */
               isOn.set(d,true);
               d3.select(this)
                 .attr('opacity', "1.0");
-              drawInfoHand(pchands, "pc"+d, color(i));
-
-              /*
-              var head = 0;
-              while (isOn.get(d)) {                
-
-              if (head===0) {
-                head = 1;
-                drawInfoHand(pcplus, "pc"+d);
-              } else { 
-                head = 0;
-                drawInfoHand(pcminus, "pc"+d);
-              }
-              */
+              drawInfoHand(pchands, "pc"+i, color(i));
             }
         });
     };
