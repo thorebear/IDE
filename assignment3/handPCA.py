@@ -31,17 +31,9 @@ sigma = np.sqrt(hands_pcs.explained_variance_)
 synhand[1,:len(sigma)] = sigma
 
 # generer syntetiske haandsaet
-#xs = np.zeros((112,40))
-#for i in range(n):
-#    xs[i]   = 2*sigma[i]**2
-#    xs[i+n] = -2*sigma[i]**2
-#synhand[2:] = hands_pcs.inverse_transform(xs)[:2*n]
-
-scale = 0.5
-
 for i in range(n):
-    synhand[2+i]   = hands_pcs.mean_ + hands_pcs.components_[i] * scale
-    synhand[2+i+n] = hands_pcs.mean_ - hands_pcs.components_[i] * scale
+    synhand[2+i]   = hands_pcs.mean_ + hands_pcs.components_[i] * sigma[i]
+    synhand[2+i+n] = hands_pcs.mean_ - hands_pcs.components_[i] * sigma[i]
 
 # store to file
 np.savetxt('hands_syn.csv',synhand, fmt="%11.8f", delimiter=',')
