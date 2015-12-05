@@ -147,14 +147,12 @@
      isOn    = d3.map({});
      for  (i = 1; i <= pcs.length; i++) { isOn.set(i, false); };
 
-
      /* really style defs... should they be moved ? */
      color = d3.scale.category10();
      circleradius   = 3;
      hoverradius    = 5;
      selectioncolor = "red";
      avgcolor       = "gray";
-
 
        
       d3.text("hands_pca.csv", function(text){
@@ -314,6 +312,7 @@
            .attr("transform", "translate("+(sxScale.range()[1] + padding*0.5)+","+(h-padding-(syScale.range()[0]-syScale.range()[1])/2)+")rotate(-90)")
            .attr("style", "text-anchor:middle")
            .text("2nd Principal Component");
+        
 
         /* create a circle for each datapoint in the dataset */
         cs = pcasvg
@@ -329,13 +328,29 @@
            cs.attr('r', function(d,i){ 
               if(idx===i) return hoverradius;
               else return circleradius;
-           })
+           });
+           tooltip.attr('x', parseFloat(d3.select(this).attr('cx')) - 95);
+           tooltip.attr('y', parseFloat(d3.select(this).attr('cy')) + 10);
+           tooltiptext.attr('x', parseFloat(d3.select(this).attr('cx')) - 95 + 9);
+           tooltiptext.attr('y', parseFloat(d3.select(this).attr('cy')) + 10);
+
+           tooltiptext.text('Row: ' + idx + ', x: ' + d[0].toFixed(3) + ', y: ' + d[1].toFixed(3));
+           
+           if (tooltip.attr('x') < 1){
+              tooltip.attr('x', 1);
+              tooltiptext.attr('x', 10);
+           } else if (parseFloat(tooltip.attr('x')) + 190 > parseFloat(pcasvg.attr('width'))){
+              tooltip.attr('x', parseFloat(pcasvg.attr('width')) - 190);
+              tooltiptext.attr('x', parseFloat(pcasvg.attr('width') - 190 + 9));
+           }
+           tooltipgroup.style('opacity',0.7);
         });
 
         cs.on("mouseleave", function(d){
            cs.attr('r', function(d){ 
               return circleradius;
            })
+           tooltipgroup.style('opacity',0.0);
         });
 
         cs.on("click", function(d,idx){
@@ -363,6 +378,27 @@
            updateHand(handdata, 0); /* [avghand] */
            
         });
+
+        var tooltipgroup = pcasvg.append('g')
+           .style('opacity', 0.5);
+        
+        var tooltip = tooltipgroup.append("rect")
+           .attr("id","pca_tooltip")
+           .attr('x',1)
+           .attr('y',1)
+           .attr('height', 30)
+           .attr('width', 190)
+           .style('fill', 'lightblue')
+           .style('border-style', 'solid')
+           .style('border-width', 1)
+           .style('stroke', 'black');
+
+        var tooltiptext = tooltipgroup.append('text')
+           .attr('x', 10)
+           .attr('y', 1)
+           .attr("dy", "1.35em")
+           .text('Row: 10, x: 3.00, y: 3.12');   
+
 
      };
 
@@ -431,31 +467,6 @@
            .data(hand, function(d){ return d});
 
         var head = 1;
-        /* update points via a smooth transition */
-        /*
-           points.transition() 
-           .delay(100)
-           .duration(1000)
-           .attr('cx',function(d){ return xScale(d[1][head][0]);})
-           .attr('cy',function(d){ return yScale(d[1][head][1]);})
-           .style("fill", "red");
-
-
-           points.enter()
-           .append('circle')
-           .attr('class',name)
-           .attr('cx',w/2)
-           .attr('cy',h/2)
-           .attr('r',circleradius)
-           .style("fill", col)
-           .transition()
-           .delay(500)
-           .duration(1000)
-           .attr('cx',function(d){return xScale(d[1][head][0]);})
-           .attr('cy',function(d){return yScale(d[1][head][1]);})
-           .each('end', function(){ move(this, head); });
-         */
-
 
         var lineFn2 = d3.svg.line()
            .x(function(d) { return ixScale(d[1][head][0]); })
