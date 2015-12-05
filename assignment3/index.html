@@ -70,8 +70,14 @@
 
   <div class="container">
      <div class="col-sm-12">
-        <h2>Intro...</h2>
-        <p>Bla bla bla </p>
+        <h1>Principal component analysis <small>An example</small></h1>
+        <p>Principal component analysis is a technique for converting a point set of dimension <i>n</i>, where some of the <i>n</i> variables could be correlated, into a point set of dimension <i>m</i>, where <i>m ≤ n</i> and the <i>m</i> variables are linear uncorrelated. The variables created from the principal component analysis is called principal components, and they are ordered by their variance, so the 1st principal component has the largest variance and so on. For more details on principal component analysis and how to compute them see <a href="https://en.wikipedia.org/wiki/Principal_component_analysis">PCA on Wikipedia</a>.</p>
+	<h3>An example</h3>
+	<p>
+	  We have a data set with 40 data points, where each point has different variables. Each data point correspond to 56 points in 2 dimensions, which correspond to points on the outline of a hand. To investigate the data set <a href="hands.csv">click here</a>, the first 56 columns correspond to 56 different x-coordinates, and the last 56 columns correspond to corresponding 56 different y-coordinates. <br/>
+	  Since the data set is 112-dimensional, it is impossible to examine the data visual, so we have to perform a principal component analysis on the data to capsure some structure of the data, that we can visualise in lower dimension. After performning the analysis we get <a href="hands_pca.csv">this data set</a>, where the first column correspond to the 1st principal component and so on. Since 1st principal component has the highest variance, and the 2nd one has the 2nd highest variance, we should be able to see some stucture of the data, by plotting each point in two dimensions corresponding the value of the first two principal components. <br/>
+	  In the left chart below each point is plotted with the value of first two principal components, and by clicking on the point, the corresponding outline of the hand is shown to the right. 
+	  </p>
      </div>
     <div class="col-sm-5" class="graph">
       <div id="pcagraph" class="graph"> 
@@ -81,16 +87,16 @@
          <p><b>Instructions:</b> Click on a point in the left window to show the outline of the corresponding hand in the right window. To see the actual points of the selected hand, hover the mouse over the hand window.</p>
       </div>
     </div>
-    
     <div class="col-sm-7" class="graph">
       <div id="handgraph" class="graph"> 
         <noscript> Please turn on JavaScript to display svg here </noscript>
       </div>
     </div>
     <div class="col-sm-12">
-       <p> Teskt her la la Teskt her la la Teskt her la la Teskt her la la Teskt her la la Teskt her la la Teskt her la la Teskt her la la </p>
-       <h2>The average hand and variation in the data</h2>
-       <p>The average hand is projected below, and the colored buttons will overlay a moving visualization of how each principal component (pc) will diverge, TRY IT! So basically, the component explaining most of the variance in the available handdata tells a story of how spread out the fingers are, and the width of the hand near the palm</p>
+      <p> To investigate which underlying stucture of the hand each of the two first principal components correspond to, we can click of different points, which differs much in one of the components, but not such in the other. By doing this is seems that the 1st principal components correspond to the total height of hand (length from the tip of the little finger to the tip of the thumb) or the total area of space in between fingers (which is somewhat correlated with the total height). When the value of the first component is high the area between the fingers is very low, and vice versa. The 2nd component seems to correspond to the angle between the little finger and middle finger (the sum of the angle between the little finger and the ring finger, and the angle between the ring finger and the middle finger). When the 2nd component is very high, this angle is very small and vice versa.</p><br/>
+      To fully examine how these principal components correspond to different structures in the hand, the next section will show how the hand differs, when we the value of the principal component differs. 
+       <h3>The average hand and variation in the data</h3>
+       <p>The average hand is projected below, and the colored buttons will overlay a moving visualization of how each principal component (pc) will diverge, TRY IT! By selecting the first principal component as overlay, we can see that this component correspond to how spread out the fingers are, which we also saw in the previous section.</p>
        <p>The first six pc explains around 68% of the variation in the data, and all of the 40 pcs explain a total of 96.8 % of the variation.</p>
        <p>The first pc explains around 28 % of the variation in the data, the second 15%, the third 10 %, the following three explains about 5% each, and all other explains less than 3.4 % each.</p>
        <div class="alert alert-info" role="alert">
@@ -99,6 +105,7 @@
        <div id="infograph" class="graph"> 
           <noscript> Please turn on JavaScript to display svg here </noscript>
        </div>
+       <p><small>** Footnote TODO</small></p>
     </div>
 
 
