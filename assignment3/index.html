@@ -75,7 +75,7 @@
 	<h3>An example</h3>
 	<p>
 	  We have a data set with 40 data points, where each point has different variables. Each data point correspond to 56 points in 2 dimensions, which correspond to points on the outline of a hand. To investigate the data set <a href="hands.csv">click here</a>, the first 56 columns correspond to 56 different x-coordinates, and the last 56 columns correspond to corresponding 56 different y-coordinates. <br/>
-	  Since the data set is 112-dimensional, it is impossible to examine the data visual, so we have to perform a principal component analysis on the data to capsure some structure of the data, that we can visualise in lower dimension. After performning the analysis we get <a href="hands_pca.csv">this data set</a>, where the first column correspond to the 1st principal component and so on. Since 1st principal component has the highest variance, and the 2nd one has the 2nd highest variance, we should be able to see some stucture of the data, by plotting each point in two dimensions corresponding the value of the first two principal components. <br/>
+	  Since the data set is 112-dimensional, it is impossible to examine the data visual, so we have to perform a principal component analysis on the data to capture some structure of the data, that we can visualise in lower dimension. After performning the analysis we get <a href="hands_pca.csv">this data set</a>, where the first column correspond to the 1st principal component and so on. Since 1st principal component has the highest variance, and the 2nd one has the 2nd highest variance, we should be able to see some stucture of the data, by plotting each point in two dimensions corresponding the value of the first two principal components. <br/>
 	  In the left chart below each point is plotted with the value of first two principal components, and by clicking on the point, the corresponding outline of the hand is shown to the right. 
 	  </p>
      </div>
@@ -84,7 +84,7 @@
         <noscript> Please turn on JavaScript to display svg here </noscript>
       </div>
       <div class="alert alert-info" role="alert">
-         <p><b>Instructions:</b> Click on a point in the left window to show the outline of the corresponding hand in the right window. To see the actual points of the selected hand, hover the mouse over the hand window. When you hover a point, a tooltip will show the which row the point correspond to in the data set, and the values for the first two components.</p>
+         <p><b>Instructions:</b> Click on a point in the left window to show the outline of the corresponding hand in the right window. To see the actual points of the selected hand, hover the mouse over the hand window. When you hover a point, a tooltip will show which row the point correspond to in the data set, and the values for the first two components.</p>
       </div>
     </div>
     <div class="col-sm-7" class="graph">
@@ -93,8 +93,8 @@
       </div>
     </div>
     <div class="col-sm-12">
-      <p> To investigate which underlying stucture of the hand each of the two first principal components correspond to, we can click of different points, which differs much in one of the components, but not such in the other. By doing this is seems that the 1st principal components correspond to the total height of hand (length from the tip of the little finger to the tip of the thumb) or the total area of space in between fingers (which is somewhat correlated with the total height). When the value of the first component is high the area between the fingers is very low, and vice versa. The 2nd component seems to correspond to the angle between the little finger and middle finger (the sum of the angle between the little finger and the ring finger, and the angle between the ring finger and the middle finger). When the 2nd component is very low, this angle is very small and vice versa.</p><br/>
-      To fully examine how these principal components correspond to different structures in the hand, the next section will show how the hand differs, when we the value of the principal component differs. 
+      <p> To investigate which underlying stucture of the hand each of the two first principal components correspond to, we can click on different points, which differs much in one of the components, but not so much in the other. By doing this is seems that the 1st principal components correspond to the total height of hand (length from the tip of the little finger to the tip of the thumb) or the total area of space in between fingers (which is somewhat correlated with the total height). When the value of the first component is high the area between the fingers is very low, and vice versa. The 2nd component seems to correspond to the angle between the little finger and middle finger (the sum of the angle between the little finger and the ring finger, and the angle between the ring finger and the middle finger). When the 2nd component is very low, this angle is very small and vice versa.</p><br/>
+      To fully examine how these principal components correspond to different structures in the hand, the next section will show how the hand differs, when the value of the principal component differs. 
        <h3>The average hand and variation in the data</h3>
        <p>The average hand is projected below, and the colored buttons will overlay a moving visualization of how each principal component (pc) will diverge, TRY IT! By selecting the first principal component as overlay, we can see that this component correspond to how spread out the fingers are, which we also saw in the previous section.</p>
        <p>The first six pc explains around 68% of the variation in the data, and all of the 40 pcs explain a total of 96.8 % of the variation.</p>
