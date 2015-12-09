@@ -52,7 +52,7 @@ function buildDistrictMap(json) {
         .data(ass3.policeDistricts)
         .enter()
 	.append("g")
-	.attr("opacity", "0.5")
+	.style("opacity", "0.7")
 	.each(function(d, group_index){
             var _this = d3.select(this);
             _this.on("mouseover", function() {
@@ -64,7 +64,7 @@ function buildDistrictMap(json) {
             _this.on("mouseout", function() {
 
 		if (!_this.classed("selected")){
-		    _this.attr("opacity", "0.5");
+		    _this.style("opacity", "0.7");
                     _this.select("path").style("stroke-width",0);
 		}
             });
@@ -73,7 +73,7 @@ function buildDistrictMap(json) {
 		// for the clicked group
 		_this
 		    .classed("selected", true)
-		    .attr("opacity", "1.0")
+		    .style("opacity", "1.0")
 		    .select("path")
 		    .style("stroke-width", 3);
 		
@@ -87,7 +87,7 @@ function buildDistrictMap(json) {
 		    .each(function(d) {
 			var _group = d3.select(this);
 			_group
-			    .attr("opacity", "0.5");
+			    .style("opacity", "0.7");
 		    })
                     .select("path").style("stroke-width",0);
 	    });
@@ -112,6 +112,8 @@ function buildDistrictMap(json) {
 
     // Load and add the crime circles to the map
     d3.json("sf_crime.geojson", buildCrimes);
+
+    buildDistrictInfoBox();
 }
 
 function buildCrimes(json) {
@@ -171,9 +173,44 @@ function buildCategoryMenu() {
 	});
 }
 
+function buildDistrictInfoBox() {
+    var infobox_group = ass3
+	.svg1.append("g")
+	.attr("id", "infobox_group");
+    var box_width = 260;
+    var box_height = 500;
+    var districts = ass3.policeDistricts;
+
+    var offset_y = 288;
+    var offset_x = ass3.width - box_width - 1;
+    var boxes = infobox_group
+	.selectAll("g")
+	.data(districts)
+	.enter()
+	.append("g")
+	.style("visibility", "hidden");
+
+    boxes.append("rect")
+	.attr("width", box_width)
+	.attr("height", box_height)
+	.attr("x", offset_x)
+	.attr("y", offset_y)
+	.style("stroke", "black")
+	.style("stroke-width", "1")
+	.style("fill", "white");
+
+    boxes.append("text")
+	.attr("x", offset_x + (box_width/2))
+	.attr("y", offset_y + 36)
+	.style("text-anchor", "middle")
+	.style("font-size", 36)
+	.text(function(d) { return d.properties.district} );
+
+    // TODO:
+    infobox_group.select("g").style("visibility", "visible");
+}
+
 function getCircleClass(cat) {
     // slash cannot be used in d3 selectors, so we replace them in class name
     return cat.replace("/","_").replace(" ","") + "_circle";
 }
-
-    
