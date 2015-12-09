@@ -33,6 +33,11 @@ function init(){
             buildDistrictMap();
         });
     });
+
+    d3.json("categories.json", function(json){
+	ass3.categories = json;
+	buildCategoryMenu();
+    });
 }
 
 function buildDistrictMap(json) {
@@ -121,6 +126,9 @@ function buildCrimes(json) {
 	    .data(filtered)
 	    .enter()
             .append("circle")
+	    .attr("class", function(d) {
+		return getCircleClass(d.properties.Category)
+	    })
 	    .attr("r", 1)
 	/* Use each() instead of setting the attributes directly,
 	   to avoid multiple calls to the projection function for each point. */
@@ -131,6 +139,41 @@ function buildCrimes(json) {
 		_this.attr("cy", coords[1]);
             })
     }
+}
+
+function buildCategoryMenu() {
+    var menu_group = ass3.svg1.append("g").attr("id", "menu_group");
+    var offset_x = 50;
+    var offset_y = 300;
+    menu_group.selectAll("text")
+	.data(ass3.categories)
+	.enter()
+	.append("text")
+	.text(function(cat) { return cat })
+	.style("opacity", 0.5)
+	.style("font-size","11px")
+	.attr("x", offset_x )
+	.attr("y", function(d, i) { return i*12+offset_y})
+	.each(function(d) {
+	    var _this = d3.select(this);
+	    _this.on("mouseover", function() {
+		_this.style("opacity", 1.0);
+		d3.selectAll("." + getCircleClass(d))
+		    .attr("r", 4)
+		    .style("fill", "red");
+	    });
+	    _this.on("mouseout", function(){
+		_this.style("opacity", 0.5);
+		d3.selectAll("." + getCircleClass(d))
+		    .attr("r", 1)
+		    .style("fill", "black");
+	    });			 
+	});
+}
+
+function getCircleClass(cat) {
+    // slash cannot be used in d3 selectors, so we replace them in class name
+    return cat.replace("/","_").replace(" ","") + "_circle";
 }
 
     
