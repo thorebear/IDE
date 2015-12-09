@@ -33,30 +33,71 @@ function init(){
             buildDistrictMap();
         });
     });
-
-
 }
 
 function buildDistrictMap(json) {
     var colors = colorbrewer.Set3[ass3.policeDistricts.length];    
 
-    ass3.svg1.selectAll("path")
+    /*
+      Add one SVG group for each police districts, these groups
+      are used to bound the district path together with all the
+      crime circles in the district to gether
+    */
+    var groups = ass3.svg1.selectAll("path")
         .data(ass3.policeDistricts)
         .enter()
 	.append("g")
-	.each(function(d){
+	.attr("opacity", "0.5")
+	.each(function(d, group_index){
             var _this = d3.select(this);
             _this.on("mouseover", function() {
                 // Move to front (to ensure the stroke isn't overlapped by anything)
                 this.parentNode.appendChild(this);
-                d3.select(this).select("path").style("stroke-width",2);
+                _this.select("path").style("stroke-width",2);
+		_this.attr("opacity", "1.0");
             });
             _this.on("mouseout", function() {
-                d3.select(this).select("path").style("stroke-width",0);
+
+		if (!_this.classed("selected")){
+		    _this.attr("opacity", "0.5");
+                    _this.select("path").style("stroke-width",0);
+		}
             });
+	    _this.on("click", function() {
+
+		// for the clicked group
+		_this
+		    .classed("selected", true)
+		    .attr("opacity", "1.0")
+		    .select("path")
+		    .style("stroke-width", 3);
+		
+		
+		// for each group expect the clicked one:
+		groups
+		    .filter(function(d, i) {
+			return d.properties.district != _this.attr("id")
+		    })
+		    .classed("selected", false)
+		    .each(function(d) {
+			var _group = d3.select(this);
+			_group
+			    .attr("opacity", "0.5");
+		    })
+                    .select("path").style("stroke-width",0);
+	    });
+
         })
+	    /*
+	      Gives the group element ID=<Police district name>,
+	      which we can use to add crime cicles to the correct districts. 
+	    */
 	.attr("id", function(d) { return d.properties.district })
-        .append("path")
+
+    /*
+      Add the path for each district, with the data bounded to the group element
+    */
+    var paths = groups.append("path")
         .attr("d", ass3.geoPath)
         .style("stroke", "black")
         .style("stroke-width", 0)
@@ -64,6 +105,7 @@ function buildDistrictMap(json) {
             return colors[i]
         });
 
+    // Load and add the crime circles to the map
     d3.json("sf_crime.geojson", buildCrimes);
 }
 
@@ -79,6 +121,7 @@ function buildCrimes(json) {
 	    .data(filtered)
 	    .enter()
             .append("circle")
+	    .attr("r", 1)
 	/* Use each() instead of setting the attributes directly,
 	   to avoid multiple calls to the projection function for each point. */
             .each(function(d){
@@ -87,8 +130,7 @@ function buildCrimes(json) {
 		_this.attr("cx", coords[0]);
 		_this.attr("cy", coords[1]);
             })
-		.attr("r", 1)
-    }	
+    }
 }
 
     
