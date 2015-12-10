@@ -22,8 +22,6 @@ function init(){
     
     ass3.geoPath = d3.geo.path().projection(ass3.projection);
 
-
-
     d3.json("sfpd_districts.geojson", function(json){
         d3.csv("population.csv", function(csv_data) {
             ass3.policeDistricts = json.features;
@@ -41,6 +39,8 @@ function init(){
     d3.json("categories.json", function(json){
 	ass3.categories = json;
 	buildCategoryMenu();
+
+	setUpHeatMapCategorySelector();
     });
 }
 
@@ -150,6 +150,15 @@ function buildCrimes(json) {
 	});
 
 	dist.properties.num_of_crimes = filtered.length;
+	dist.properties.num_crime_per_category = {};
+	
+	ass3.categories.forEach(function(category){
+	    dist.properties.num_crime_per_category[category] =
+		filtered.filter(function(crime) {
+		    return crime.properties.Category == category;
+		}).length;
+	});
+	
 
 	d3.select("#" + district_name)
 	    .selectAll("circle")
@@ -310,11 +319,17 @@ function setInfoboxCrimeCount(count) {
 
 /// HEAT MAP STUFF ///
 
-function buildDistrictHeatMap() {
+function buildDistrictHeatMap(category) {
+    d3.select("#heatmap").selectAll("*").remove();
+    
     // Compute the crime pr people rate:
     ass3.policeDistricts.forEach(function(d) {
+	if (category){
 	d.properties.crimePerPeople =
-	    d.properties.num_of_crimes / d.properties.population.Population;
+		1000 * d.properties.num_crime_per_category[category] / d.properties.population.Population;
+	} else {
+	    d.properties.crimePerPeople = 1000 * d.properties.num_of_crimes / d.properties.population.Population;
+	}
     });
 
     console.log(ass3.policeDistricts[0].properties.crimePerPeople);
@@ -359,7 +374,7 @@ function buildDistrictHeatMap() {
 
     var axis_group = ass3.svg_heat.append("g")
 	.attr("class", "axis")
-	.style("transform", "translate(40px,60px)");
+	.style("transform", "translate(60px,60px)");
 
     for (var i = 0; i < scale_length; i++) {
 	axis_group.append("rect")
@@ -407,7 +422,7 @@ function buildDistrictHeatMap() {
     var groups = ass3.svg_heat
 	.append("g")
 	.attr("id", "heatmapgroup")
-	.style("transform", "translate(35px,-35px)")
+	.style("transform", "translate(55px,-30px)")
 	.selectAll("path")
         .data(ass3.policeDistricts)
         .enter()
@@ -424,6 +439,19 @@ function buildDistrictHeatMap() {
         .style("fill", function(d) {
 	    return colorScale(scale(d.properties.crimePerPeople));
 	});
+}
+
+function setUpHeatMapCategorySelector(){
+    _selector = $("#category_selector");
+    ass3.categories.forEach(function(cat){
+	_selector.append($("<option></option>")
+         .attr("value",cat)
+         .text(cat.substring(0,1) + cat.substring(1).toLowerCase()));
+    });
+
+    _selector.change(function(){
+	buildDistrictHeatMap(this.value);
+    });
 }
 
 
