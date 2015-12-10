@@ -8,7 +8,7 @@ function init(){
 
     ass3.width = 1040;
     ass3.height = 680;
-
+    
     ass3.svg1 = d3.select("#map_1")
         .append("svg")
         .attr("width", ass3.width)
@@ -18,8 +18,11 @@ function init(){
         .scale(300000).rotate( [122.43, -37.78, 0.0] )
         .translate([ass3.width / 2, ass3.height / 2 ])
         .clipAngle(90).precision(.1);
+
     
     ass3.geoPath = d3.geo.path().projection(ass3.projection);
+
+
 
     d3.json("sfpd_districts.geojson", function(json){
         d3.csv("population.csv", function(csv_data) {
@@ -81,7 +84,6 @@ function buildDistrictMap(json) {
 		}
             });
 
-	    // Remove the possible to select a district
 	    _this.on("click", function(district) {
 		// If the class is already selected, deselect it:
 		if (_this.classed("selected")){
@@ -136,8 +138,6 @@ function buildDistrictMap(json) {
 
     // Load and add the crime circles to the map
     d3.json("sf_crime.geojson", buildCrimes);
-
-
 }
 
 function buildCrimes(json) {
@@ -172,6 +172,7 @@ function buildCrimes(json) {
     }
 
     buildDistrictInfoBox();
+    buildDistrictHeatMap();
 }
 
 function buildCategoryMenu() {
@@ -304,4 +305,125 @@ function setInfoboxCrimeCount(count) {
 	    .text("(" + count + ")");
     }
 }
+
+
+
+/// HEAT MAP STUFF ///
+
+function buildDistrictHeatMap() {
+    // Compute the crime pr people rate:
+    ass3.policeDistricts.forEach(function(d) {
+	d.properties.crimePerPeople =
+	    d.properties.num_of_crimes / d.properties.population.Population;
+    });
+
+    console.log(ass3.policeDistricts[0].properties.crimePerPeople);
+
+    // Set up scale, for coloring the heat map:
+    var min_cpp = d3.min(ass3.policeDistricts, function(d) {
+	return d.properties.crimePerPeople;
+    });
+
+    var max_cpp = d3.max(ass3.policeDistricts, function(d) {
+	return d.properties.crimePerPeople;
+    });
+
+    var scale_length = 400;
+
+    var scale = d3.scale.linear()
+	.domain([max_cpp, 0])
+	.range([0,scale_length]).nice();
+
+    var colorScale = d3.scale.linear()
+	.domain([0,scale_length])
+	.range(['orange','white']);
+
+    var colorAxis = d3.svg.axis()
+	.scale(scale)
+	.orient("left");
+    
+    ass3.heat_width = 600;
+    ass3.heat_height = 500;
+ 
+    ass3.svg_heat = d3.select("#heatmap")
+	.append("svg")
+        .attr("width", ass3.heat_width)
+        .attr("height", ass3.heat_height);
+
+    ass3.heat_projection = d3.geo.orthographic()
+        .scale(200000).rotate( [122.43, -37.78, 0.0] )
+        .translate([ass3.heat_width / 2, ass3.heat_height / 2 ])
+        .clipAngle(90).precision(.1);
+    
+    ass3.geoPath_heat = d3.geo.path().projection(ass3.heat_projection);
+
+    var axis_group = ass3.svg_heat.append("g")
+	.attr("class", "axis")
+	.style("transform", "translate(40px,60px)");
+
+    for (var i = 0; i < scale_length; i++) {
+	axis_group.append("rect")
+	    .attr("width", 40)
+	    .attr("height", 1)
+	    .attr("y", i)
+	    .attr("x", 0)
+	    .style("fill", colorScale(i));
+    }
+
+    axis_group.call(colorAxis)
+	.style("stroke-width", 1);
+
+    d3.selectAll('.axis line, .axis path')
+	.style("stroke-width","1px");
+
+
+// Add lines around the color bar
+    // Right
+    axis_group.append("line")
+	.attr("x1", 40)
+	.attr("x2", 40)
+	.attr("y1", 0)
+	.attr("y2", scale_length)
+	.style("stroke", "black")
+	.style("stroke-width", 1);
+    // Top
+    axis_group.append("line")
+	.attr("x1", 0)
+	.attr("x2", 40)
+	.attr("y1", 0)
+	.attr("y2", 0)
+	.style("stroke", "black")
+	.style("stroke-width", 1);
+    // Bottom
+    axis_group.append("line")
+	.attr("x1", 0)
+	.attr("x2", 40)
+	.attr("y1", scale_length)
+	.attr("y2", scale_length)
+	.style("stroke", "black")
+	.style("stroke-width", 1);
+
+    
+    var groups = ass3.svg_heat
+	.append("g")
+	.attr("id", "heatmapgroup")
+	.style("transform", "translate(35px,-35px)")
+	.selectAll("path")
+        .data(ass3.policeDistricts)
+        .enter()
+	.append("g")
+//	.style("opacity", "0.7")
+	.attr("id", function(d) { return "heat_" + d.properties.district });
+    /*
+      Add the path for each district, with the data bounded to the group element
+    */
+    var paths = groups.append("path")
+        .attr("d", ass3.geoPath_heat)
+        .style("stroke", "grey")
+        .style("stroke-width", 1)
+        .style("fill", function(d) {
+	    return colorScale(scale(d.properties.crimePerPeople));
+	});
+}
+
 
