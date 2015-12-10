@@ -6,8 +6,8 @@ var ass3 = {}
 
 function init(){
 
-    ass3.width = 1200;
-    ass3.height = 880;
+    ass3.width = 1040;
+    ass3.height = 680;
 
     ass3.svg1 = d3.select("#map_1")
         .append("svg")
@@ -49,7 +49,11 @@ function buildDistrictMap(json) {
       are used to bound the district path together with all the
       crime circles in the district to gether
     */
-    var groups = ass3.svg1.selectAll("path")
+    var groups = ass3.svg1
+	.append("g")
+	.attr("id", "mapgroup")
+	.style("transform", "translate(15px,-50px)")
+	.selectAll("path")
         .data(ass3.policeDistricts)
         .enter()
 	.append("g")
@@ -172,8 +176,8 @@ function buildCrimes(json) {
 
 function buildCategoryMenu() {
     var menu_group = ass3.svg1.append("g").attr("id", "menu_group");
-    var offset_x = 50;
-    var offset_y = 300;
+    var offset_x = 10;
+    var offset_y = 220;
     menu_group.selectAll("text")
 	.data(ass3.categories)
 	.enter()
@@ -203,6 +207,7 @@ function buildCategoryMenu() {
 		d3.selectAll("." + getCircleClass(d))
 		    .attr("r", 1)
 		    .style("fill", "black");
+		setInfoboxCrimeCount(undefined);
 	    });			 
 	});
 }
@@ -212,11 +217,11 @@ function buildDistrictInfoBox() {
 	.svg1.append("g")
 	.attr("id", "infobox_group");
     var box_width = 260;
-    var box_height = 500;
+    var box_height = 120;
     var districts = ass3.policeDistricts;
 
-    var offset_y = 288;
-    var offset_x = ass3.width - box_width - 1;
+    var offset_y = 248;
+    var offset_x = ass3.width - box_width - 10;
     var boxes = infobox_group
 	.selectAll("g")
 	.data(districts)
@@ -224,6 +229,7 @@ function buildDistrictInfoBox() {
 	.append("g")
 	.classed("infobox", true)
 	.attr("id", function(d) { return d.properties.district + "_infobox" })
+	.style("opacity", "0.7")
 	.style("visibility", "hidden");
 
     boxes.append("rect")
@@ -240,7 +246,7 @@ function buildDistrictInfoBox() {
 	.attr("x", offset_x + (box_width/2))
 	.attr("y", offset_y + 36)
 	.style("text-anchor", "middle")
-	.style("font-size", 36)
+	.style("font-size", 24)
 	.text(function(d) { return d.properties.district} );
 
     // Add population information
@@ -289,8 +295,13 @@ function showInfoBox(district) {
 }
 
 function setInfoboxCrimeCount(count) {
-    d3.select("#crimecounter")
-	.style("visibility", "visible")
-	.text("(" + count + ")");
+    if (count === undefined){
+	d3.select("#crimecounter")
+	    .style("visibility", "hidden");
+    } else {
+	d3.select("#crimecounter")
+	    .style("visibility", "visible")
+	    .text("(" + count + ")");
+    }
 }
 
