@@ -24,6 +24,7 @@ function init(){
     d3.json("sfpd_districts.geojson", function(json){
         d3.csv("population.csv", function(csv_data) {
             ass3.policeDistricts = json.features;
+	    csv_data.forEach(function(d) { console.log(d.District)});
             ass3.policeDistricts.forEach(function(district){
                 pop_data = csv_data.filter(function (d) {
                     return d.District === district.properties.district;
@@ -60,6 +61,13 @@ function buildDistrictMap(json) {
                 this.parentNode.appendChild(this);
                 _this.select("path").style("stroke-width",2);
 		_this.attr("opacity", "1.0");
+
+		/*
+		  If no district is selected, update the info on mouse over!
+		 */
+		if ($(".selected").length == 0){
+		    showInfoBox(d.properties.district);
+		}
             });
             _this.on("mouseout", function() {
 
@@ -68,15 +76,24 @@ function buildDistrictMap(json) {
                     _this.select("path").style("stroke-width",0);
 		}
             });
-	    _this.on("click", function() {
 
-		// for the clicked group
-		_this
-		    .classed("selected", true)
-		    .style("opacity", "1.0")
-		    .select("path")
-		    .style("stroke-width", 3);
-		
+	    // Remove the possible to select a district
+	    _this.on("click", function(district) {
+		// If the class is already selected, deselect it:
+		if (_this.classed("selected")){
+		    _this
+			.classed("selected", false)
+			.style("opacity", "0.7")
+			.select("path")
+			.style("stroke-width", 0);
+		} else {		
+		// else select it
+		    _this
+			.classed("selected", true)
+			.style("opacity", "1.0")
+			.select("path")
+			.style("stroke-width", 3);
+		}
 		
 		// for each group expect the clicked one:
 		groups
@@ -89,7 +106,10 @@ function buildDistrictMap(json) {
 			_group
 			    .style("opacity", "0.7");
 		    })
-                    .select("path").style("stroke-width",0);
+			.select("path").style("stroke-width",0);
+
+		// Show the right infobox
+		showInfoBox(district.properties.district);
 	    });
 
         })
@@ -113,23 +133,28 @@ function buildDistrictMap(json) {
     // Load and add the crime circles to the map
     d3.json("sf_crime.geojson", buildCrimes);
 
-    buildDistrictInfoBox();
+
 }
 
 function buildCrimes(json) {
     for(var i = 0; i < ass3.policeDistricts.length; i++){
         var dist = ass3.policeDistricts[i];
         var district_name = dist.properties.district;
+
 	var filtered = json.features.filter(function(crime) {
 	    return crime.properties.PdDistrict === district_name;
 	});
+
+	dist.properties.num_of_crimes = filtered.length;
+
 	d3.select("#" + district_name)
 	    .selectAll("circle")
 	    .data(filtered)
 	    .enter()
             .append("circle")
 	    .attr("class", function(d) {
-		return getCircleClass(d.properties.Category)
+		return getCircleClass(d.properties.Category) +
+		    " " + d.properties.PdDistrict + "_district";
 	    })
 	    .attr("r", 1)
 	/* Use each() instead of setting the attributes directly,
@@ -141,6 +166,8 @@ function buildCrimes(json) {
 		_this.attr("cy", coords[1]);
             })
     }
+
+    buildDistrictInfoBox();
 }
 
 function buildCategoryMenu() {
@@ -160,9 +187,16 @@ function buildCategoryMenu() {
 	    var _this = d3.select(this);
 	    _this.on("mouseover", function() {
 		_this.style("opacity", 1.0);
-		d3.selectAll("." + getCircleClass(d))
+		var circles = d3.selectAll("." + getCircleClass(d))
 		    .attr("r", 4)
 		    .style("fill", "red");
+
+		if (ass3.selectedDistrict){
+		    var crime_count = circles
+			.filter("." + ass3.selectedDistrict + "_district")
+			.size();
+		    setInfoboxCrimeCount(crime_count);
+		}
 	    });
 	    _this.on("mouseout", function(){
 		_this.style("opacity", 0.5);
@@ -188,6 +222,8 @@ function buildDistrictInfoBox() {
 	.data(districts)
 	.enter()
 	.append("g")
+	.classed("infobox", true)
+	.attr("id", function(d) { return d.properties.district + "_infobox" })
 	.style("visibility", "hidden");
 
     boxes.append("rect")
@@ -199,6 +235,7 @@ function buildDistrictInfoBox() {
 	.style("stroke-width", "1")
 	.style("fill", "white");
 
+    // Add headline
     boxes.append("text")
 	.attr("x", offset_x + (box_width/2))
 	.attr("y", offset_y + 36)
@@ -206,11 +243,54 @@ function buildDistrictInfoBox() {
 	.style("font-size", 36)
 	.text(function(d) { return d.properties.district} );
 
-    // TODO:
-    infobox_group.select("g").style("visibility", "visible");
+    // Add population information
+    boxes.append("text")
+	.attr("x", offset_x + 8)
+	.attr("y", offset_y + 72)
+	.style("font-size", 18)
+	.text(function(d) {
+	    return "Population: " + d.properties.population.Population;
+	});
+
+    boxes.append("text")
+	.attr("x", offset_x + 8)
+	.attr("y", offset_y + 92)
+	.style("font-size", 18)
+	.text(function(d) {
+	    var res = "Number of crimes: "
+	    if (d.properties.num_of_crimes !== undefined){
+		return res + d.properties.num_of_crimes;
+	    } else {
+		return res + "N/A";
+	    }
+	});
+
+    infobox_group.append("text")
+	.attr("x", offset_x + 210)
+	.attr("y", offset_y + 92)
+	.attr("id", "crimecounter")
+	.text("(12)")
+	.style("font-size", 18)
+	.style("fill", "red")
+	.style("visibility", "hidden");
 }
 
 function getCircleClass(cat) {
     // slash cannot be used in d3 selectors, so we replace them in class name
     return cat.replace("/","_").replace(" ","") + "_circle";
 }
+
+function showInfoBox(district) {
+    ass3.selectedDistrict = district;
+    d3.selectAll(".infobox")
+	.style("visibility", "hidden");
+    d3.select("#" + district + "_infobox")
+	.style("visibility", "visible");
+}
+
+function setInfoboxCrimeCount(count) {
+    d3.select("#crimecounter")
+	.style("visibility", "visible")
+	.text("(" + count + ")");
+}
+
