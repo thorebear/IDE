@@ -44,8 +44,71 @@ function init(){
 	ass3.categories = json;
 	buildCategoryMenu();
 	setUpHeatMapCategorySelector();
+  setUpLinks();
     });
 }
+
+
+
+function setUpLinks(){
+
+  highlightProstitution( d3.select("#features").select(".prostitution") );
+  highlightSouthern( d3.select("#features").select(".southern"));
+  highlightDrugs( d3.select("#features").select(".drugs"));
+
+  highlightProstitution( d3.select("#prostitution") );
+  highlightSouthern( d3.select("#southern"));
+  highlightDrugs( d3.select("#drugs"));
+
+  function highlightProstitution(selection){
+    selection.on("mouseover", function(){
+      ass3.svg1.selectAll("." + getCircleClass("PROSTITUTION"))
+        .attr("r", 4)
+        .style("opacity", 1.0)
+        .style("fill", "red");
+    })
+    selection.on("mouseout", function(){
+      ass3.svg1.selectAll("." + getCircleClass("PROSTITUTION"))
+        .attr("r", 1)
+        .style("opacity", 0.5)
+        .style("fill", "black");
+    }); 
+  }
+
+  function highlightSouthern(selection){
+    selection.on("mouseover", function(){
+      ass3.selectedDistrict = "SOUTHERN";
+      showInfoBox(ass3.selectedDistrict);
+      ass3.svg1.select("#SOUTHERN")
+        .selectAll("path")
+        .style("stroke-width", 3);
+    })
+    selection.on("mouseout", function(){
+      ass3.selectedDistrict = undefined;
+      showInfoBox(ass3.selectedDistrict);
+      ass3.svg1.select("#SOUTHERN")
+        .selectAll("path")
+        .style("stroke-width", 0);
+    }); 
+  }  
+
+  function highlightDrugs(selection) {
+    selection.on("mouseover", function(){
+      ass3.svg1.selectAll("." + getCircleClass("DRUG/NARCOTIC"))
+        .attr("r", 4)
+        .style("opacity", 1.0)
+        .style("fill", "red");
+    })
+    selection.on("mouseout", function(){
+      ass3.svg1.selectAll("." + getCircleClass("DRUG/NARCOTIC"))
+        .attr("r", 1)
+        .style("opacity", 0.5)
+        .style("fill", "black");
+    });     
+  }
+
+}
+
 
 function buildDistrictMap(json) {
     var colors = colorbrewer.Set3[ass3.policeDistricts.length];    
@@ -63,6 +126,7 @@ function buildDistrictMap(json) {
         .data(ass3.policeDistricts)
         .enter()
 	.append("g")
+  .classed("path_"+function(d){return d},true) /* <--  */
 	.style("opacity", "0.7")
 	.each(function(d, group_index){
             var _this = d3.select(this);
@@ -201,6 +265,7 @@ function buildCategoryMenu() {
 	.style("font-size","11px")
 	.attr("x", offset_x )
 	.attr("y", function(d, i) { return i*12+offset_y})
+  .classed("cat_"+function(d){return d},true) /* <-- */
 	.each(function(d) {
 	    var _this = d3.select(this);
 	    _this.on("mouseover", function() {
