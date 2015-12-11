@@ -1,5 +1,5 @@
 $(document).ready(function() {
-   init();
+    init();
 });
 
 var ass3 = {}
@@ -74,7 +74,7 @@ function buildDistrictMap(json) {
 
 		/*
 		  If no district is selected, update the info on mouse over!
-		 */
+		*/
 		if ($(".selected").length == 0){
 		    showInfoBox(d.properties.district);
 		}
@@ -96,7 +96,7 @@ function buildDistrictMap(json) {
 			.select("path")
 			.style("stroke-width", 0);
 		} else {		
-		// else select it
+		    // else select it
 		    _this
 			.classed("selected", true)
 			.style("opacity", "1.0")
@@ -126,7 +126,7 @@ function buildDistrictMap(json) {
 	      Gives the group element ID=<Police district name>,
 	      which we can use to add crime cicles to the correct districts. 
 	    */
-	.attr("id", function(d) { return d.properties.district })
+	    .attr("id", function(d) { return d.properties.district })
 
     /*
       Add the path for each district, with the data bounded to the group element
@@ -181,7 +181,7 @@ function buildCrimes(json) {
 		_this.attr("cx", coords[0]);
 		_this.attr("cy", coords[1]);
             })
-    }
+                }
 
     buildDistrictInfoBox();
 
@@ -364,7 +364,7 @@ function buildDistrictHeatMap(category) {
     
     ass3.heat_width = 600;
     ass3.heat_height = 500;
- 
+    
     ass3.svg_heat = d3.select("#heatmap")
 	.append("svg")
         .attr("width", ass3.heat_width)
@@ -397,7 +397,7 @@ function buildDistrictHeatMap(category) {
 	.style("stroke-width","1px");
 
 
-// Add lines around the color bar
+    // Add lines around the color bar
     // Right
     axis_group.append("line")
 	.attr("x1", 40)
@@ -432,7 +432,7 @@ function buildDistrictHeatMap(category) {
         .data(ass3.policeDistricts)
         .enter()
 	.append("g")
-//	.style("opacity", "0.7")
+    //	.style("opacity", "0.7")
 	.attr("id", function(d) { return "heat_" + d.properties.district });
     /*
       Add the path for each district, with the data bounded to the group element
@@ -458,7 +458,7 @@ function buildDistrictHeatMap(category) {
                 tooltip.html(
                     "District: " + d.properties.district.substring(0,1) +
                         d.properties.district.substring(1).toLowerCase() + "<br\>"
-                    + c + ": " + d.properties.crimePerPeople.toFixed(2)
+                        + c + ": " + d.properties.crimePerPeople.toFixed(2)
                 )
             })
 	        .on("mousemove", function(){
@@ -471,21 +471,21 @@ function buildDistrictHeatMap(category) {
                 });
         });
 
-   var tooltip = d3.select("body")
-       .append("div")
-       .style("position", "absolute")
-       .style("z-index", "10")
-       .style("visibility", "hidden")
-       .classed("tooltip_box", true)
-       .html("<b>a</b> simple tooltip");
+    var tooltip = d3.select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style("visibility", "hidden")
+        .classed("tooltip_box", true);
+
 }
 
 function setUpHeatMapCategorySelector(){
     _selector = $("#category_selector");
     ass3.categories.forEach(function(cat){
 	_selector.append($("<option></option>")
-         .attr("value",cat)
-         .text(cat.substring(0,1) + cat.substring(1).toLowerCase()));
+                         .attr("value",cat)
+                         .text(cat.substring(0,1) + cat.substring(1).toLowerCase()));
     });
 
     _selector.change(function(){
