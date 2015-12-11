@@ -18,7 +18,6 @@ function init(){
         .scale(300000).rotate( [122.43, -37.78, 0.0] )
         .translate([ass3.width / 2, ass3.height / 2 ])
         .clipAngle(90).precision(.1);
-
     
     ass3.geoPath = d3.geo.path().projection(ass3.projection);
 
@@ -33,13 +32,17 @@ function init(){
                 district.properties.population = pop_data;
             });
             buildDistrictMap();
+
+	    d3.json("crime_in_districts.json", function(json){
+		ass3.heatmapdata = json;
+		buildDistrictHeatMap();
+	    });
         });
     });
 
     d3.json("categories.json", function(json){
 	ass3.categories = json;
 	buildCategoryMenu();
-
 	setUpHeatMapCategorySelector();
     });
 }
@@ -181,7 +184,7 @@ function buildCrimes(json) {
     }
 
     buildDistrictInfoBox();
-    buildDistrictHeatMap();
+
 }
 
 function buildCategoryMenu() {
@@ -193,6 +196,7 @@ function buildCategoryMenu() {
 	.enter()
 	.append("text")
 	.text(function(cat) { return cat })
+	.style("cursor", "default")
 	.style("opacity", 0.5)
 	.style("font-size","11px")
 	.attr("x", offset_x )
@@ -322,13 +326,16 @@ function setInfoboxCrimeCount(count) {
 function buildDistrictHeatMap(category) {
     d3.select("#heatmap").selectAll("*").remove();
     
+    var data = ass3.heatmapdata;
+
     // Compute the crime pr people rate:
     ass3.policeDistricts.forEach(function(d) {
+
+	var district_name = d.properties.district;
 	if (category){
-	d.properties.crimePerPeople =
-		1000 * d.properties.num_crime_per_category[category] / d.properties.population.Population;
+	    d.properties.crimePerPeople = 1000 * data[district_name][category] / d.properties.population.Population;
 	} else {
-	    d.properties.crimePerPeople = 1000 * d.properties.num_of_crimes / d.properties.population.Population;
+	    d.properties.crimePerPeople = 1000 * data[district_name]["total"] / d.properties.population.Population;
 	}
     });
 
