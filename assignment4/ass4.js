@@ -339,8 +339,6 @@ function buildDistrictHeatMap(category) {
 	}
     });
 
-    console.log(ass3.policeDistricts[0].properties.crimePerPeople);
-
     // Set up scale, for coloring the heat map:
     var min_cpp = d3.min(ass3.policeDistricts, function(d) {
 	return d.properties.crimePerPeople;
@@ -445,7 +443,41 @@ function buildDistrictHeatMap(category) {
         .style("stroke-width", 1)
         .style("fill", function(d) {
 	    return colorScale(scale(d.properties.crimePerPeople));
-	});
+	})
+        .each(function(d,i) {
+            _this = d3.select(this);
+	    _this.on("mouseover", function(){
+                tooltip.style("visibility", "visible");
+                var c = ""
+                if (category) {
+                    c = category.substring(0,1) +
+                        category.substring(1).toLowerCase();
+                } else {
+                    c = "All crimes"
+                }
+                tooltip.html(
+                    "District: " + d.properties.district.substring(0,1) +
+                        d.properties.district.substring(1).toLowerCase() + "<br\>"
+                    + c + ": " + d.properties.crimePerPeople.toFixed(2)
+                )
+            })
+	        .on("mousemove", function(){
+                    tooltip
+                        .style("top", (d3.event.pageY-10)+"px")
+                        .style("left",(d3.event.pageX+10)+"px");
+                })
+	        .on("mouseout", function(){
+                    tooltip.style("visibility", "hidden");
+                });
+        });
+
+   var tooltip = d3.select("body")
+       .append("div")
+       .style("position", "absolute")
+       .style("z-index", "10")
+       .style("visibility", "hidden")
+       .classed("tooltip_box", true)
+       .html("<b>a</b> simple tooltip");
 }
 
 function setUpHeatMapCategorySelector(){
