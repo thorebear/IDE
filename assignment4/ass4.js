@@ -77,14 +77,15 @@ function setUpLinks(){
 
   function highlightSouthern(selection){
     selection.on("mouseover", function(){
-      ass3.selectedDistrict = "SOUTHERN";
-      showInfoBox(ass3.selectedDistrict);
+      var saved = ass3.selectedDistrict
+      showInfoBox("SOUTHERN");
+      ass3.selectedDistrict = saved;
       ass3.svg1.select("#SOUTHERN")
         .selectAll("path")
-        .style("stroke-width", 3);
+        .style("stroke-width", 4)
+        .style("stroke", "red");
     })
     selection.on("mouseout", function(){
-      ass3.selectedDistrict = undefined;
       showInfoBox(ass3.selectedDistrict);
       ass3.svg1.select("#SOUTHERN")
         .selectAll("path")
