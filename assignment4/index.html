@@ -57,6 +57,14 @@
          font-size: 11px;
       }
 
+      .conclusions {
+         font-size: 18px;
+      }
+      .
+      /*.path {
+         stroke-width: 0px;
+      }*/
+
       </style>
 
 
@@ -67,24 +75,64 @@
    <body>
      <div class="container">
        <div class="col-sm-12">
-	 <h1>Welcome to San Francisco</h1>
-	 <p>
-	   Introduktion goes here....
-	 </p>
-	 <div id="map_1" class="graph">
-	 </div>
 
-	 <h2>Crime headline TODO</h2>
-	 <p>Heat map crimes per 1.000 citizen for
-	   <select id="category_selector">
-	     <option value="">All crimes</option>
-	   </select>:
-	 </p>
-	 <div id="heatmap" class="graph">
-	 </div>
-	 <p>More text / conclusions </p>
+       <h1>Mapping Crime: Welcome to San Francisco</h1>
+       <h2>Background, Data and Reservations</h2>
+   	 <p> We observe a set of data considering 10000 incidents in the San Francisco area on a time line starting in January 2003, ending in May 2015. The data is picked at random from a much larger dataset presented <a href="https://data.sfgov.org/Public-Safety/SFPD-Incidents-from-1-January-2003/tmnf-yvry">here</a>. 
+       To get scales right from the start, the last 12 months, 151000+ incidents were registered by San Francisco Police Department, since 2003, 1.845 Million incidents are registered, thus the sample provides enough incidents for roughly 3 ½ weeks in San Francisco. So if any relative scales are used, for instance in the heat map, where the crime numbers are relative to the number of residents, the numbers on the scale still represent should be multiplied by approximately 15 to accommodate <em> crimes per resident per year </em>.
+
+       In 10000 data points some major trends must be caught, but in the way we have chosen to present the data here, no considerations are done regarding time lines. Therefore on top of our conclusions, one must realize that the incidents could further be grouped into <em>when's</em>.
+   	 </p>
+
+       <h2>Specially selected features:</h2>
+       <ul class="conclusions"> 
+       <li id="southern"> Over-representation in the 'Southern' Police District </li>
+       <li id="prostitution"> Prostitution is overrepresented in 2 limited areas in the city </li>
+       <li id="drugs"> Drug related crime incidents were focused in Tenderloin PD </li>
+       </ul>
+
+
+   	 <div id="map_1" class="graph"></div>
+
+
+       <h2> Elaborating on the conclusions</h2>
+
+       <h3> Crime Central - 'Southern' Police District</h3>
+       <p> From the data, 1.819 of 10.000 incidents, or 2/11, are reported at the 'Southern' district. <br/>
+       This is so even though the number of residents in this district is mere 25.000 out of a total of 750.000+, this is 2/60. <br/>
+       - again 2/60 residents, 2/11 criminal incidents... The heat map (or Choropleth) below clearly visualizes this.
+       On the bright side, the rent is probably cheaper here, it really should be!
+       </p>
+
+       <h3> Where can I find a prostitute? </h3>
+       <p> The data implies that for anyone to find a prostitute, one should go to the center of the 'Mission' district or to the corner of 'Northern', 'Central', and 'Tenderloin' districts, ill call it 'hook-up-alley'.
+
+       As we are currently not looking into the timings of the incidents, here is two of numerous possible scenarios, on how to find a prostitute... 
+       <ol> 
+         <li> Go to prison. The prostitutes are off the streets now, all were arrested in the given areas </li>
+         <li> Some years ago one should go to the 'hook-up-alley', now all the prostitutes are at 'Mission' district </li>
+       </ol>
+       </p>
+
+       <h3> I would like a bag of Pharmaceuticals...  </h3>
+       <p> If you want to know where to find it, you should propably to where people are getting arrested for possessing it: Tenderloin district is the place.
+
+       Select 'Drug/narcotic' in the choropleth below or in the main map, should be convincing enough...
+       </p>
+
+   	 <h3>Heat map of Crimes per 1.000 citizen for
+
+   	   <select id="category_selector">
+   	     <option value="">All crimes</option>
+   	   </select>:
+   	 </h3>
+       <div id="heatmap" class="graph">
+   	 </div>
+
+
        </div>
      </div>
+
    </body>
 
 </html>
