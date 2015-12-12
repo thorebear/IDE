@@ -87,7 +87,7 @@
      <div class="container">
        <div class="col-sm-12">
 	 <div id="data_warning" class="alert alert-warning">
-	   Stil loading data...
+	   Still loading data...
 	 </div>
        <h1>Mapping Crime: Welcome to San Francisco</h1>
        <h2>Background, Data and Reservations</h2>
@@ -98,29 +98,29 @@
    	 </p>
 
       <div class="alert alert-info" role="alert">
-         <p><b>Instructions:</b> The colored areas are the 10 police districts in the city. Hover the mouse over a police district to show an information box about the district. If you click on a district, the info-box won't change until you click on the same district again or another district. Each crime in market with a black circle - to highlight crimes of a specific category, hover the mouse over the category to the left.</p></div>
+         <p><b>Instructions:</b> The colored areas are the 10 police districts in the city. Hover the mouse over a police district to show an information box about the district. If you click on a district, the info-box won't change until you click on the same district again or another district. Each crime is market with a black circle - to highlight crimes of a specific category, hover the mouse over the category to the left.</p></div>
        
    	 <div id="map_1" class="graph"></div>
-         <p> From the visualization above we can see trends in varies crimes activities. In general we see that the number of incidents are  <span class="hoverover" id="southern">over-representation in the 'Southern' Police District </span> with 1819 of 10000 incidents being in the area. By investigating the incidents by category we can see that <span class="hoverover" id="prostitution">prostitution is overrepresented in 2 areas in the city</span> and to find a prostitute one should go to the center of the 'Mission' district or to the corner of 'Northern', 'Central', and 'Tenderloin' districts. If you want to know where to find drugs in the city, you should probably look toward where people are getting <span class="hoverover" id="drugs">arrested for possessing it</span>: The Tenderloin district seems to be the place for you. 
+         <p> From the visualization above we can see trends in varies crimes activities. In general we see that the number of incidents are  <span class="hoverover" id="southern">over-representation in the 'Southern' Police District </span> with 1819 of 10000 incidents being in this area. By investigating the incidents by category we can see that <span class="hoverover" id="prostitution">prostitution is overrepresented in 2 areas in the city</span> and to find a prostitute one should go to the center of the 'Mission' district or to the corner of 'Northern', 'Central', and 'Tenderloin' districts. If you want to know where to find drugs in the city, you should probably look toward where people are getting <span class="hoverover" id="drugs">arrested for possessing it</span>: The Tenderloin district seems to be the place for you. 
          </p>
 
-         <p>It is difficualt to compare the number of incidents in the varies district only by investigate the map above, since the districts varies in size and population. One way to compare the district with each other could be (number of incidents) / (square kilomter), to get how many incidents happens relative to the size of the district, but it seems naturally that there should be more incidents where more people lives, so instead we compare the districts by (number of incidents) / (population). The following map shows how the number of incidents relative to the population in a given police district. 
+         <p>It is difficualt to compare the number of incidents in the varies district only by investigating the map above, since the districts varies in size and population. One way to compare the district with each other could be to get how many incidents happens relative to the size of the district, but it seems more naturally that there should be more incidents where more people lives, so instead we compare the districts by number of incidents relative to the size of the population in a given district.
             <h3>Heat map of incidents</h3>
             Since we doesn't need to show every single incident in the map, we can visualize a most larger data set than the sample of 10000 used above, so the following heat map instead uses an sample of size > 800000 (train.csv from <a href="https://www.kaggle.com/c/sf-crime/data">here</a>). 
    	 <p>The map shows how many incidents in the category 
    	   <select id="category_selector">
    	     <option value="">All categoies</option>
-   	   </select> that was filed per 1000 citizen in each district, out of the sample of size 800000. Please note that this is only a sample of the total number of incidents, so the results in the districts showing below, should only be used to compared the districts to each other, and not to conclude anything another the actual number of incidents in San Francisco.   
+   	   </select> that was filed per 1000 citizen in each district, out of the sample of size 800000. Please note that this is only a sample of the total number of incidents, so the results in the districts showing below, should only be used to compared the districts to each other, and not to conclude anything about the actual number of incidents in San Francisco.   
    	 </p>
 
       <div class="alert alert-info" role="alert">
-        <p><b>Instructions:</b> Select a category of crimes above to update the heatmap regarding only this type of crimes. Hover a district, to show the exact number and the name of the district.</p>
+        <p><b>Instructions:</b> Select a category of crimes above to update the heatmap regarding only this type of incidents. Hover a district, to show the exact number and the name of the district.</p>
         </div>
-       <div id="heatmap" class="graph">
-   	 </div>
+      <div id="heatmap" class="graph">
+       </div>
 By looking as this map we see that Southern did not only have the highest number of incident <span class="hoverover" id="all_categories">(All categories)</span>, it also has the highest number of incident per citizen. The number of incident per citizen in Southern is almost double of Tenderloin, which has the second highest rate of incident per citizen, and in the districts Richmond and Taraval the number is less than 1/13 of Southern.
          <br/>
-         <span id="sel_prostitution" class="hoverover">By only looking at the prositution</span> incidents we see that, when taking the number of incident relative to number of citizens, that Tenderloin and Mission has almost the same number of incidents, where the numbers are much lower in Northern and Central, and prositution seems almost non-exising in the other 6 districts.  
+         <span id="sel_prostitution" class="hoverover">By only looking at the prositution</span> incidents we see, when taking the number of incident relative to number of citizens, that Tenderloin and Mission has almost the same number of incidents, where the numbers are much lower in Northern and Central, and prositution (at least known to the police) seems almost non-exising in the other 6 districts.  
          <br />
          Also when taking into account <span id="sel_drugs" class="hoverover">how much narcotic there is available for each citizen</span> Tenderloin seems to the place to get drugs, assuming that the number of filed drugs incidents are linear depended of the amount of drugs actually available in the area.   
        </div>

@@ -272,7 +272,7 @@ function buildCrimes(json) {
 
     buildDistrictInfoBox();
 
-    // Remove loading data warming
+    // Remove loading data warning
     $("#data_warning").remove();
 }
 
