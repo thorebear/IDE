@@ -81,28 +81,28 @@
    <body>
      <div class="container">
        <div class="col-sm-12">
-
+	 <div id="data_warning" class="alert alert-warning">
+	   Stil loading data...
+	 </div>
        <h1>Mapping Crime: Welcome to San Francisco</h1>
        <h2>Background, Data and Reservations</h2>
-   	 <p> We observe a set of data considering 10000 incidents in the San Francisco area on a time line starting in January 2003, ending in May 2015. The data is picked at random from a much larger dataset presented <a href="https://data.sfgov.org/Public-Safety/SFPD-Incidents-from-1-January-2003/tmnf-yvry">here</a>. 
-       To get scales right from the start, the last 12 months, 151000+ incidents were registered by San Francisco Police Department, since 2003, 1.845 Million incidents are registered, thus the sample provides enough incidents for roughly 3 ½ weeks in San Francisco. So if any relative scales are used, for instance in the heat map, where the crime numbers are relative to the number of residents, the numbers on the scale still represent should be multiplied by approximately 15 to accommodate <em> crimes per resident per year </em>.
-
+   	 <p> The map below shows San Francisco, where each of the colored polygons represent a police district in the city. We observe, by black dots, a data set with 10000 incidents in the San Francisco area on a time line starting in January 2003, ending in May 2015. The data is picked at random from a much larger dataset presented <a href="https://data.sfgov.org/Public-Safety/SFPD-Incidents-from-1-January-2003/tmnf-yvry">here</a>. 
+       To get scales right from the start, the last 12 months, 151000+ incidents were registered by San Francisco Police Department, since 2003, 1.845 Million incidents are registered, thus the sample provides incidents corresponding to roughly 3 ½ weeks of average criminal activity in San Francisco. 
        In 10000 data points some major trends must be caught, but in the way we have chosen to present the data here, no considerations are done regarding time lines. Therefore on top of our conclusions, one must realize that the incidents could further be grouped into <em>when's</em>.
    	 </p>
 
-       <h2>Specially selected features:</h2>
-       <ul class="conclusions"> 
-       <li id="southern"> Over-representation in the 'Southern' Police District </li>
-       <li id="prostitution"> Prostitution is overrepresented in 2 limited areas in the city </li>
-       <li id="drugs"> Drug related crime incidents were focused in Tenderloin PD </li>
-       </ul>
 
 
       <div class="alert alert-info" role="alert">
          <p><b>Instructions:</b> The colored areas are the 10 police districts in the city. Hover the mouse over a police district to show an information box about the district. If you click on a district, the info-box won't change until you click on the same district again or another district. Each crime in market with a black circle - to highlight crimes of a specific category, hover the mouse over the category to the left.</p></div>
        
    	 <div id="map_1" class="graph"></div>
-
+       <p id="southern"> Over-representation in the 'Southern' Police District </p>
+       <h2>Specially selected features:</h2>
+       <ul class="conclusions"> 
+       <li id="prostitution"> Prostitution is overrepresented in 2 limited areas in the city </li>
+       <li id="drugs"> Drug related crime incidents were focused in Tenderloin PD </li>
+       </ul>
 
        <h2> Elaborating on the conclusions</h2>
 
@@ -130,7 +130,7 @@
        </p>
 
        <h3>Heat map of crimes</h3>
-   	 <p>Heat map of Crimes per 1.000 citizen for
+   	 <p>Heat map of Crimes per 1000 citizen for
 
    	   <select id="category_selector">
    	     <option value="">All crimes</option>

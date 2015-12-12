@@ -37,6 +37,9 @@ function init(){
 		ass3.heatmapdata = json;
 		buildDistrictHeatMap();
 	    });
+
+	    // Remove loading data warming
+	    $("#data_warning").remove();
         });
     });
 
