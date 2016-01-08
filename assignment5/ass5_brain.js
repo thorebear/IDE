@@ -31,7 +31,7 @@ function init(){
 	    while(valString.length < 3){
 		valString = "0" + valString;
 	    }
-	    texloader.load('/coronal_stack/slice_' + valString + '.png', function(texture){
+	    texloader.load('coronal_stack/slice_' + valString + '.png', function(texture){
 		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 		var material = new THREE.MeshBasicMaterial( { map: texture, side: THREE.DoubleSide } );
 		coronalPlane.material = material;
@@ -46,7 +46,7 @@ function init(){
 	    while(valString.length < 3){
 		valString = "0" + valString;
 	    }
-	    texloader.load('/sagittal_stack/slice_' + valString + '.png', function(texture){
+	    texloader.load('sagittal_stack/slice_' + valString + '.png', function(texture){
 		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 		var material = new THREE.MeshBasicMaterial( { map: texture, side: THREE.DoubleSide } );
 		sagittalPlane.material = material;
@@ -61,7 +61,7 @@ function init(){
 	    while(valString.length < 3){
 		valString = "0" + valString;
 	    }
-	    texloader.load('/axial_stack/slice_' + valString + '.png', function(texture){
+	    texloader.load('axial_stack/slice_' + valString + '.png', function(texture){
 		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 		var material = new THREE.MeshBasicMaterial( { map: texture, side: THREE.DoubleSide } );
 		axialPlane.material = material;
@@ -70,7 +70,7 @@ function init(){
 	    });
 	});
 
-    texloader.load('/coronal_stack/slice_128.png', function(texture){
+    texloader.load('coronal_stack/slice_128.png', function(texture){
 	var geometry = new THREE.PlaneGeometry( 256, 256, 256, 256);    
 	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 	var material = new THREE.MeshBasicMaterial( { map: texture, side: THREE.DoubleSide } );
@@ -81,7 +81,7 @@ function init(){
 	coronalPlane.position.y = 128;
     });
     
-    texloader.load('/sagittal_stack/slice_128.png', function(texture){
+    texloader.load('sagittal_stack/slice_128.png', function(texture){
 	var geometry = new THREE.PlaneGeometry( 256, 256, 256, 256);    
 	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 	var material = new THREE.MeshBasicMaterial( { map: texture, side: THREE.DoubleSide } );
@@ -93,7 +93,7 @@ function init(){
 	sagittalPlane.position.y = 128;
     });
 
-    texloader.load('/axial_stack/slice_128.png', function(texture){
+    texloader.load('axial_stack/slice_128.png', function(texture){
 	var geometry = new THREE.PlaneGeometry( 256, 256, 256, 256);    
 	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 	var material = new THREE.MeshBasicMaterial( { map: texture, side: THREE.DoubleSide } );
