@@ -18,16 +18,16 @@ function init(){
     renderer = new THREE.WebGLRenderer({alpha:true});
     renderer.setClearColor( 0xffffff, 0);
     renderer.setSize( 800, 800 );
-    document.body.appendChild( renderer.domElement );
-
+    document.getElementsByClassName('threed')[0].appendChild( renderer.domElement );
 
     gui = new DAT.GUI({
-	height : 5 * 32 - 1
+	height : 3 * 26 - 2
     });
 
     gui.add({ coronal: 128 }, 'coronal').min(1).max(256).step(1)
 	.onChange(function(val) {
-	    var valString = "" + val;
+	    var a = 256 - val;
+	    var valString = "" + a;
 	    while(valString.length < 3){
 		valString = "0" + valString;
 	    }
@@ -70,9 +70,6 @@ function init(){
 	    });
 	});
 
-
-    var control = new THREE.OrbitControls(camera, renderer.domElement);
-
     texloader.load('/coronal_stack/slice_128.png', function(texture){
 	var geometry = new THREE.PlaneGeometry( 256, 256, 256, 256);    
 	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -108,11 +105,13 @@ function init(){
 	axialPlane.position.y = 128;
     });
 
-    camera.position.z = 450;
-    camera.position.x = 128;
-    camera.position.y = 128;
-
+    camera.position.z = 650;
+    camera.position.x = 192;
+    camera.position.y = 192;
+    camera.lookAt(new THREE.Vector3(128,128,128));
     render();
+
+    var control = new THREE.OrbitControls(camera, renderer.domElement);
 }
 
 function render() {
