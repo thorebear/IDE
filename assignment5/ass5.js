@@ -13,7 +13,7 @@ var ass5 = {}
 
 function init(){
     ass5.scene = new THREE.Scene();
-    ass5.camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 20 );
+    ass5.camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 40 );
 
     ass5.renderer = new THREE.WebGLRenderer({alpha:true});
     ass5.renderer.setClearColor( 0xffffff, 0);
