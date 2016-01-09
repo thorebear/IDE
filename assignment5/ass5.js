@@ -18,7 +18,7 @@ function init(){
     ass5.renderer = new THREE.WebGLRenderer({alpha:true});
     ass5.renderer.setClearColor( 0xffffff, 0);
     ass5.renderer.setSize( 800, 800 );
-    document.body.appendChild( ass5.renderer.domElement );
+    document.getElementsByClassName('container')[0].appendChild( ass5.renderer.domElement );
 
     var maxZ = d3.max(ass5.atoms, function(d) { return d.z });
     var minZ = d3.min(ass5.atoms, function(d) { return d.z });

@@ -10,7 +10,7 @@ function init(){
     texloader = new THREE.TextureLoader();
 
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 100000 );
+    camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 10000 );
 
     group = new THREE.Group();
     scene.add( group );
