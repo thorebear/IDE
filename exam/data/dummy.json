@@ -1,0 +1,28 @@
+[
+    {"from":"1998-06-21T18:00:00.511Z",
+     "to":"1998-06-21T19:00:00.511Z",
+     "trafic": 100,
+     "uniqueUsers": 200,
+     "pageviews(html)": 13000,
+     "totalRequests": 30000,
+     "viewsPerPage" : [
+	 { 
+	     "page" : "teambio317\.html",
+	     "views" : 132
+	 },
+	 {
+	     "page" : "tickets.html",
+	     "views" : 232
+	 }
+     ]
+    },
+     {"from":"1998-06-21T19:00:00.511Z",
+      "to":"1998-06-21T20:00:00.511Z",
+      "trafic": 1099,
+      "uniqueUsers": 200,
+      "pageviews(html)": 13000,
+      "totalRequests": 30000,
+      "viewsPerPage" : []
+     }
+]
+ 
