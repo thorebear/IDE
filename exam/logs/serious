@@ -1,0 +1,9 @@
+#!/bin/bash
+for FNAME in data/*.gz;
+do 
+	FILE=${FNAME%.*}
+	echo $FILE
+	gzip -dc $FILE.gz | bin/recreate state/object_mappings.sort > $FILE.log;
+	./data.py $FILE.log $FILE.json;
+	rm $FILE.log
+done;

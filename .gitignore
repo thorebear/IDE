@@ -1,4 +1,4 @@
 /**/*.pdf
 /**/*~
 /d3/**/*
-
+/exam/logs/data/*.gz
