@@ -9,7 +9,6 @@ Created on Wed Jan 13 12:58:51 2016
 from copy import deepcopy
 import json
 import os
-import sys
 from data import LogKeys as lk
 import numpy as np
 
@@ -121,12 +120,11 @@ def reducelogs(logs, factor):
         for i in range(factor-1):
             entry = mergelogs(entry, logs[i_start+i+1])
         newlog.append(entry)
-    print "logs reduced by factor {}".format(factor)
     return newlog
 
 
 if __name__ == '__main__':
-    logdir = sys.argv[1]
+    logdir = 'output'
     outdir = 'final/'
     outname = 'wc98_log_'
     ext = 'hour.json'
@@ -135,12 +133,11 @@ if __name__ == '__main__':
     Logs = createloglist(logdir)
     logs = gatherlogs(Logs)
 
-    path = outdir + outname + str(interval) + ext
-    exportlog(logs, path)
-
     rlog = logs
-#    for factor in [4, 8, 24, 48, 96]:
-    for rfact, factor in [(4, 4), (2, 8), (3, 24), (2, 48), (2, 96)]:
+    for rfact, factor in [(1, 1), (4, 4), (2, 8), (3, 24), (2, 48), (2, 96)]:
         path = outdir + outname + str(int(interval*factor)) + ext
         rlog = reducelogs(rlog, rfact)
+        print "logs reduced by factor {}".format(factor)
+        print "interval is now " + str(int(interval * factor)) + " hours"
+        print "Testing all entries have timestamp, ", checklog(rlog)
         exportlog(rlog, path)
