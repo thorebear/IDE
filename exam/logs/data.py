@@ -22,7 +22,7 @@ class LogKeys:
     HTTPVERSION = 'httpversion'
     VIEWSPERPAGE = 'views_per_page'
 
-lk = LogKeys
+LK = LogKeys
 
 
 def parsetimeinterval(tstr, timeleap, timefmt):
@@ -82,15 +82,15 @@ def logreduce(workfile, timeleap=900):
                 # store aggregated values in single log entry
                 time_val = strftime(jsontimefmt, gmtime(currenttimegroup))
                 logentry = {}
-                logentry[lk.FROM] = time_val
-                logentry[lk.UUSERS] = len(uniqueusers)
-                logentry[lk.TOTHITS] = tothits
-                logentry[lk.TRANSFERBYTES] = agg_transfer
-                logentry[lk.HTMLHITS] = htmlhits
-                logentry[lk.HTTPMETHOD] = httpmethod
-                logentry[lk.HTTPSTATUS] = httpstatus
-                logentry[lk.HTTPVERSION] = httpversion
-                logentry[lk.VIEWSPERPAGE] = viewsperpage
+                logentry[LK.FROM] = time_val
+                logentry[LK.UUSERS] = len(uniqueusers)
+                logentry[LK.TOTHITS] = tothits
+                logentry[LK.TRANSFERBYTES] = agg_transfer
+                logentry[LK.HTMLHITS] = htmlhits
+                logentry[LK.HTTPMETHOD] = httpmethod
+                logentry[LK.HTTPSTATUS] = httpstatus
+                logentry[LK.HTTPVERSION] = httpversion
+                logentry[LK.VIEWSPERPAGE] = viewsperpage
 
                 # store aggregated entry in bigger log associated with time
                 log.append(logentry)
@@ -157,15 +157,15 @@ def logreduce(workfile, timeleap=900):
         time_val = strftime(jsontimefmt, gmtime(currenttimegroup))
 #        print time_val
         logentry = {}
-        logentry[lk.FROM] = time_val
-        logentry[lk.UUSERS] = len(uniqueusers)
-        logentry[lk.TOTHITS] = tothits
-        logentry[lk.TRANSFERBYTES] = agg_transfer
-        logentry[lk.HTMLHITS] = htmlhits
-        logentry[lk.HTTPMETHOD] = httpmethod
-        logentry[lk.HTTPSTATUS] = httpstatus
-        logentry[lk.HTTPVERSION] = httpversion
-        logentry[lk.VIEWSPERPAGE] = viewsperpage
+        logentry[LK.FROM] = time_val
+        logentry[LK.UUSERS] = len(uniqueusers)
+        logentry[LK.TOTHITS] = tothits
+        logentry[LK.TRANSFERBYTES] = agg_transfer
+        logentry[LK.HTMLHITS] = htmlhits
+        logentry[LK.HTTPMETHOD] = httpmethod
+        logentry[LK.HTTPSTATUS] = httpstatus
+        logentry[LK.HTTPVERSION] = httpversion
+        logentry[LK.VIEWSPERPAGE] = viewsperpage
         log.append(logentry)
 
     return log
