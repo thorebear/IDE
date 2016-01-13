@@ -1,0 +1,16 @@
+#!/bin/bash
+
+logtojson () {
+	for FPATH in $1/$2;
+	do 
+		FILE=${FPATH#*/};
+		FNAME=${FILE%.*};
+		mkdir -p tmp;
+		mkdir -p $3;
+		gzip -dc $1/$FNAME.gz | bin/recreate state/object_mappings.sort > tmp/$FNAME.log;
+		./data.py tmp/$FNAME.log $3/$FNAME.json;
+		rm tmp/$FNAME.log;
+	done;
+}
+
+logtojson $1 $2 $3
