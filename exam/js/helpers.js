@@ -27,3 +27,18 @@ function getFriendlyName(parameter) {
 	return 'Pageviews';
     }
 }
+
+function getUnit(parameter) {
+    if (parameter === 'transferred_bytes'){
+	return 'GB';
+    }
+    if (parameter === 'uusers') {
+	return 'users';
+    }
+    if (parameter === 'tothits') {
+	return 'requests';
+    }
+    if (parameter === 'htmlhits') {
+	return 'page views';
+    }
+}

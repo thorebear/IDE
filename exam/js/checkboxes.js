@@ -28,4 +28,5 @@ function getActiveParameters() {
 	    activeParameters.push(parameter);
 	}
     });
+    return activeParameters;
 }
