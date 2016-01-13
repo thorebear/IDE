@@ -2,4 +2,7 @@
 /**/*~
 /d3/**/*
 /exam/logs/data/*.gz
-/exam/logs/data/*.log
+/exam/logs/data/*
+/exam/logs/output/*
+/exam/logs/first\ run/*
+

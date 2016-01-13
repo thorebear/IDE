@@ -6,18 +6,32 @@ Created on Tue Jan 12 16:16:35 2016
 @author: koeus
 """
 import sys
-import time
-import copy
+from time import gmtime, strftime, strptime, mktime
+from copy import deepcopy
 import json
 
 
+class LogKeys:
+    FROM = 'from'
+    UUSERS = 'unique_users'
+    TOTHITS = 'total_hits'
+    TRANSFERBYTES = 'transferred_bytes'
+    HTMLHITS = 'htmlhits'
+    HTTPMETHOD = 'httpmethod'
+    HTTPSTATUS = 'httpstatus'
+    HTTPVERSION = 'httpversion'
+    VIEWSPERPAGE = 'views_per_page'
+
+lk = LogKeys
+
+
 def parsetimeinterval(tstr, timeleap, timefmt):
-    time_struct = time.strptime(tstr, timefmt)
-    time_secs = time.mktime(time_struct)
+    time_struct = strptime(tstr, timefmt)
+    time_secs = mktime(time_struct)
     return time_secs - time_secs % timeleap
 
 
-def logreduce(workfile, timeleap=3600):
+def logreduce(workfile, timeleap=900):
     uuserid = 0
 #    username1 = 1      # unused - always '-'
 #    username2 = 2      # unused - always '-'
@@ -41,9 +55,9 @@ def logreduce(workfile, timeleap=3600):
     log = []
     uniqueusers = set()
     tothits, htmlhits, agg_transfer = 0, 0, 0
-    httpstatus = copy.deepcopy(httpstatuscodes)
-    httpversion = copy.deepcopy(httpversioncodes)
-    httpmethod = copy.deepcopy(httpmethods)
+    httpstatus = deepcopy(httpstatuscodes)
+    httpversion = deepcopy(httpversioncodes)
+    httpmethod = deepcopy(httpmethods)
     viewsperpage = {}
     linenumber = 0
 
@@ -66,34 +80,35 @@ def logreduce(workfile, timeleap=3600):
 
             if timegroup != currenttimegroup:
                 # store aggregated values in single log entry
+                time_val = strftime(jsontimefmt, gmtime(currenttimegroup))
                 logentry = {}
-                logentry['uusers'] = len(uniqueusers)
-#                print len(uniqueusers)
-                logentry['tothits'] = tothits
-#                print tothits
-                logentry['transferred_bytes'] = agg_transfer
-#                print agg_transfer
-                logentry['htmlhits'] = htmlhits
-#                print htmlhits
-                logentry['httpmethod'] = httpmethod
-#                print httpmethod
-                logentry['httpstatus'] = httpstatus
-#                print httpstatus
-                logentry['httpversion'] = httpversion
-#                print httpversion
-                # store aggregated entry in bigger log associated with time
-                time_val = time.strftime(jsontimefmt, time.gmtime(currenttimegroup))
+                logentry[lk.FROM] = time_val
+                logentry[lk.UUSERS] = len(uniqueusers)
+                logentry[lk.TOTHITS] = tothits
+                logentry[lk.TRANSFERBYTES] = agg_transfer
+                logentry[lk.HTMLHITS] = htmlhits
+                logentry[lk.HTTPMETHOD] = httpmethod
+                logentry[lk.HTTPSTATUS] = httpstatus
+                logentry[lk.HTTPVERSION] = httpversion
+                logentry[lk.VIEWSPERPAGE] = viewsperpage
 
-                logentry['from'] = time_val
+                # store aggregated entry in bigger log associated with time
                 log.append(logentry)
+#                print len(uniqueusers)
+#                print tothits
+#                print agg_transfer
+#                print htmlhits
+#                print httpmethod
+#                print httpstatus
+#                print httpversion
 
                 # reset counters, etc.
                 currenttimegroup = timegroup
                 uniqueusers = set()
                 tothits, htmlhits, agg_transfer = 0, 0, 0
-                httpstatus = copy.deepcopy(httpstatuscodes)
-                httpversion = copy.deepcopy(httpversioncodes)
-                httpmethod = copy.deepcopy(httpmethods)
+                httpstatus = deepcopy(httpstatuscodes)
+                httpversion = deepcopy(httpversioncodes)
+                httpmethod = deepcopy(httpmethods)
                 viewsperpage = {}
 
             try:  # update all aggregators
@@ -104,13 +119,17 @@ def logreduce(workfile, timeleap=3600):
                 except ValueError as e:
                     pass
 
-                url = item[http_url]
-                if '.html' in url:
-                    if url not in viewsperpage:
-                        viewsperpage[url] = 1
-                    else:
-                        viewsperpage[url] += 1
-                    htmlhits += 1
+                try:
+                    url = item[http_url]
+                    if '.html' in url:
+                        url_utf8 = unicode(url, 'utf-8')
+                        if url not in viewsperpage:
+                            viewsperpage[url_utf8] = 1
+                        else:
+                            viewsperpage[url_utf8] += 1
+                        htmlhits += 1
+                except UnicodeDecodeError as e:
+                    print e
 
                 httpstatcode = item[http_status][0]+'xx'
                 httpstatus[httpstatcode] += 1
@@ -127,7 +146,7 @@ def logreduce(workfile, timeleap=3600):
             except IndexError as e:
                 print e
 
-            if linenumber % 100000 == 0:
+            if linenumber % 1000000 == 0:
                 print progress.format(workfile, linenumber)
 
             # read next line and do while check
@@ -135,22 +154,18 @@ def logreduce(workfile, timeleap=3600):
             line = f.readline()
 
         # add last entry
-        logentry = {}
-        logentry['uniq_users'] = len(uniqueusers)
-        logentry['total_hits'] = tothits
-        logentry['bytes_transferred'] = agg_transfer
-        logentry['html_hits'] = htmlhits
-        logentry['http_method'] = httpmethod
-        logentry['http_status'] = httpstatus
-        logentry['http_version'] = httpversion
-        logentry['views_per_page'] = viewsperpage
-
-        time_val = time.strftime(jsontimefmt, time.gmtime(currenttimegroup))
-
-        logentry['from'] = time_val
-
-
+        time_val = strftime(jsontimefmt, gmtime(currenttimegroup))
 #        print time_val
+        logentry = {}
+        logentry[lk.FROM] = time_val
+        logentry[lk.UUSERS] = len(uniqueusers)
+        logentry[lk.TOTHITS] = tothits
+        logentry[lk.TRANSFERBYTES] = agg_transfer
+        logentry[lk.HTMLHITS] = htmlhits
+        logentry[lk.HTTPMETHOD] = httpmethod
+        logentry[lk.HTTPSTATUS] = httpstatus
+        logentry[lk.HTTPVERSION] = httpversion
+        logentry[lk.VIEWSPERPAGE] = viewsperpage
         log.append(logentry)
 
     return log
@@ -159,13 +174,8 @@ def logreduce(workfile, timeleap=3600):
 if __name__ == '__main__':
     clf_log = sys.argv[1]
     json_log = sys.argv[2]
-#    print "args: {}, {}\n".format(clf_log, json_log)
 
     log = logreduce(clf_log)
-
-#    print json_log
-#    print len(log)
-#    print log
 
     with open(json_log, 'w') as f:
         json.dump(log, f, sort_keys=True)

@@ -1,4 +1,8 @@
 #!/bin/bash
-gzip -dc input/test_log.gz | bin/recreate state/object_mappings.sort > output/test_log.tmp
-./data.py output/test_log.tmp output/test_log.json
-rm output/test_log.tmp
+for FNAME in input/*.gz 
+do
+	FILE=${FNAME%.*}
+	echo $FILE
+	gzip -dc $FILE.gz | bin/recreate state/object_mappings.sort > $FILE.log
+	./data.py output/$FILE.tmp output/$FILE.json
+rm output/$FILE.tmp
