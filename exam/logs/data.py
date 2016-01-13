@@ -38,7 +38,7 @@ def logreduce(workfile, timeleap=3600):
     jsontimefmt = "%Y-%m-%dT%H:%M:%S.000Z"
     progress = "{:<20}: lines processed: {:>20}"
 
-    log = {}
+    log = []
     uniqueusers = set()
     tothits, htmlhits, agg_transfer = 0, 0, 0
     httpstatus = copy.deepcopy(httpstatuscodes)
@@ -83,8 +83,10 @@ def logreduce(workfile, timeleap=3600):
 #                print httpversion
                 # store aggregated entry in bigger log associated with time
                 time_val = time.strftime(jsontimefmt, time.gmtime(currenttimegroup))
-#                print time_val
-                log[time_val] = logentry
+
+                logentry['from'] = time_val
+                log.append(logentry)
+
                 # reset counters, etc.
                 currenttimegroup = timegroup
                 uniqueusers = set()
@@ -144,8 +146,12 @@ def logreduce(workfile, timeleap=3600):
         logentry['views_per_page'] = viewsperpage
 
         time_val = time.strftime(jsontimefmt, time.gmtime(currenttimegroup))
+
+        logentry['from'] = time_val
+
+
 #        print time_val
-        log[time_val] = logentry
+        log.append(logentry)
 
     return log
 
