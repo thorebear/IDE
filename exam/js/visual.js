@@ -45,7 +45,7 @@ function create_line_chart(){
 
 function addLine(parameter){
     // too much of a hack? There must exists a cleaner solution using d3
-    if (svg.select("#htmlhits" + "_group")[0][0] !== null){
+    if (svg.select("#" + parameter + "_group")[0][0] !== null){
 	console.warn("Cannot add the line, the line for " + parameter + " already exists");
 	return;
     }
