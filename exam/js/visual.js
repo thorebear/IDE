@@ -1,7 +1,9 @@
 function init() {
     console.log("Initializing the visualisations");
 
-    create_line_chart();
+    create_line_chart('hourData',
+		      new Date("Thu Apr 30 1998 21:30:00 GMT+0200 (CEST)"),
+		      new Date("Sun Jul 01 1998 21:15:00 GMT+0200 (CEST)"));
 }
 
 var margin_left = 20;
@@ -10,11 +12,15 @@ var margin_top = 20;
 var margin_bottom = 30;
 var svg_width, svg_height, svg;
 var xScale;
+var data;
 
-function create_line_chart(){
-    var data = wc.hourData;
-   
+function create_line_chart(dataSet, startTime, endTime){
+    data = wc[dataSet];
+
     svg = d3.select("#line_chart");
+
+    svg.html("");
+
     svg_width = parseInt(svg.style("width"));
     svg_height = parseInt(svg.style("height"));
 
@@ -27,20 +33,23 @@ function create_line_chart(){
 	
     xScale = d3.time
      	.scale()
-     	.domain([minTime, maxTime])
+     	.domain([startTime, endTime])
 	.range([margin_left, svg_width - margin_right]);
+
 
     var xAxis = d3.svg.axis()
 	.scale(xScale)
 	.orient('bottom')
-	.ticks(d3.time.hour, 1);
+	.ticks(10);
 
     svg.append('g')
 	.attr('class', 'x axis')
 	.attr('transform', 'translate(0, ' + (svg_height - margin_bottom) + ')')
 	.call(xAxis);
 
-    addLine('transferred_bytes');
+    getActiveParameters().forEach(function(parameter) {
+	addLine(parameter);
+    });
 }
 
 function addLine(parameter){
@@ -49,21 +58,20 @@ function addLine(parameter){
 	console.warn("Cannot add the line, the line for " + parameter + " already exists");
 	return;
     }
-
-    
-    var data = wc.hourData;
     
     var color = getColor(parameter);
     var accessor = function(d) {
 	return d[parameter];
     };
-    var values = data.map(accessor).map(parseInt);
+    var values = data.map(accessor);
     var minY = d3.min(values);
     var maxY = d3.max(values);
+    console.log("Min value for " + parameter + ": " + minY);
+    console.log("Max value for " + parameter + ": " + maxY);
 
     var yScale = d3.scale.linear()
 	.domain([minY, maxY])
-	.range([margin_top, svg_height - margin_bottom]);
+	.range([svg_height - margin_bottom, margin_top]);
 
     var lineGen = d3.svg.line()
 	.x(function(d) {
@@ -93,7 +101,7 @@ function addLine(parameter){
     group.append("svg:path")
 	.attr("d", lineGen(data))
 	.attr("stroke", color)
-	.attr("stroke-width", 3)
+	.attr("stroke-width", 1)
 	.attr("fill", "none");
 
     group.selectAll("circle")
@@ -106,7 +114,7 @@ function addLine(parameter){
 	.attr('cx', function(d) {
 	    return xScale(getTime(d));
 	})
-	.attr('r', 5)
+	.attr('r', 3)
 	.attr('fill', color)
 	.each(function(d, i){
 	    var _this = d3.select(this);

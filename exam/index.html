@@ -11,6 +11,8 @@
 	    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
       <link rel="stylesheet"
 	    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/css/bootstrap-select.min.css">
+      <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
       <!-- Our CSS -->
       <link rel="stylesheet" href="style.css" type="text/css" />
@@ -22,12 +24,20 @@
 
       <script type="text/javascript"
 	      src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+      <!-- Include Date Range Picker -->
+      <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+      <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+
+
+
       <!-- BOOSTRAP JS -->
       <!-- Latest compiled and minified JavaScript -->
       <script type="text/javascript"
 	      src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
       <script type="text/javascript"
 	      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/js/bootstrap-select.min.js"></script>
+
       <!-- color brewer  -->
       <script src="js/colorbrewer.js"></script>
       <!-- D3 -->
@@ -38,18 +48,32 @@
       <script src="js/visual.js"></script>
       <script src="js/checkboxes.js"></script>
       <script src="js/helpers.js"></script>
+      <script src="js/selector.js"></script>
 
       <title>Interactive Data Exploration - Final project</title>
    </head>
 
    <body>
      <div class="container">
+       <div class="col-sm-12">
+ 	 <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 260px">
+	   <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+	   <span></span> <b class="caret"></b>
+	 </div>
+       </div>
        <div class="col-sm-2">
 	 <div class="checkbox-wrapper">
 	   <input type="checkbox" name="transferred_bytes_checkbox" checked>
-	   <input type="checkbox" name="uusers_checkbox">
-	   <input type="checkbox" name="tothits_checkbox">
+	   <input type="checkbox" name="unique_users_checkbox">
+	   <input type="checkbox" name="total_hits_checkbox">
 	   <input type="checkbox" name="htmlhits_checkbox">
+	 </div>
+
+	 <div class="selector-wrapper">
+	   <select class="selectpicker" id="timeIntervalSelector" data-width="178px">
+	     <option value="hourData">Hourly</option>
+	     <option value="dayData">Daily</option>
+	   </select>
 	 </div>
        </div>
        <div class="col-sm-10">	 
