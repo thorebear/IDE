@@ -2,10 +2,10 @@ function getColor(parameter) {
     if (parameter === 'transferred_bytes'){
 	return 'orange';
     }
-    if (parameter === 'uusers') {
+    if (parameter === 'unique_users') {
 	return 'blue';
     }
-    if (parameter === 'tothits') {
+    if (parameter === 'total_hits') {
 	return 'green';
     }
     if (parameter === 'htmlhits') {
@@ -17,10 +17,10 @@ function getFriendlyName(parameter) {
     if (parameter === 'transferred_bytes'){
 	return 'Traffic';
     }
-    if (parameter === 'uusers') {
+    if (parameter === 'unique_users') {
 	return 'Unique users';
     }
-    if (parameter === 'tothits') {
+    if (parameter === 'total_hits') {
 	return 'Requests';
     }
     if (parameter === 'htmlhits') {
@@ -32,10 +32,10 @@ function getUnit(parameter) {
     if (parameter === 'transferred_bytes'){
 	return 'GB';
     }
-    if (parameter === 'uusers') {
+    if (parameter === 'unique_users') {
 	return 'users';
     }
-    if (parameter === 'tothits') {
+    if (parameter === 'total_hits') {
 	return 'requests';
     }
     if (parameter === 'htmlhits') {

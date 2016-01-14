@@ -1,4 +1,4 @@
-var parameters = ['transferred_bytes', 'uusers', 'tothits', 'htmlhits' ];
+var parameters = ['transferred_bytes', 'unique_users', 'total_hits', 'htmlhits' ];
 
 $(document).ready(function() {
     parameters.forEach(function(parameter) {
