@@ -16,14 +16,11 @@ $(document).ready(function() {
 	    locale: {
 		format: 'DD-MM-YYYY'
 	    },
-            // ranges: {
-            //    'Today': [moment(), moment()],
-            //    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            //    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            //    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            //    'This Month': [moment().startOf('month'), moment().endOf('month')],
-            //    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            // },
+            ranges:{
+		'World Cup' : [new Date("Jun 10 1998"), new Date("Jul 12 1998")],
+		'Group stage' : [new Date("Jun 10 1998"), new Date("Jun 26 1998")], 
+		'Playoffs': [new Date("Jun 26 1998"), new Date("Jul 12 1998")]
+            },
 	    "startDate": fromDateSelected,
 	    "endDate": toDateSelected,
 	    "minDate": fromDateSelected,
