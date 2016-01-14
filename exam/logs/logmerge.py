@@ -26,9 +26,9 @@ def importlog(fname):
     return log
 
 
-def printlog(log):
+def printlog(log, skipkeys=False):
     """ Pretty print a log """
-    print json.dumps(log, sort_keys=True, indent=2, separators=(',', ': '))
+    print json.dumps(log, skipkeys=skipkeys, sort_keys=True, indent=2, separators=(',', ': '))
 
 
 def checklog(log):
@@ -93,6 +93,8 @@ def mergelogs(log1, log2):
     for key in log2[LK.HTTPVERSION]:
         log_out[LK.HTTPVERSION][key] += log2[LK.HTTPVERSION][key]
 
+#    # remove views when finding errors
+#    return log_out
     log_out[LK.VIEWSPERPAGE] = deepcopy(log1[LK.VIEWSPERPAGE])
     for key in log2[LK.VIEWSPERPAGE]:
         if key in log1[LK.VIEWSPERPAGE]:
@@ -122,7 +124,8 @@ def gatherlogs(Loglist):
 
 
 def reducelogs(logs, factor):
-    """ Compress a single logfile with a factor on time-resolution"""
+    """ Compress a single logfile with a factor on time-resolution,
+        by merging 'factor' entries into new entries"""
     if factor == 1:
         return logs
     steps, rest = divmod(len(logs), factor)
@@ -134,6 +137,7 @@ def reducelogs(logs, factor):
         for i in range(factor-1):
             entry = mergelogs(entry, logs[i_start+i+1])
         newlog.append(entry)
+#        print entry[LK.FROM]
     return newlog
 
 
@@ -149,9 +153,35 @@ def cleanpageviews(log, hrsperentry=1):
         else:
             entry[LK.VIEWSPERPAGE]['other'] += value
 
+
+def log2lists(logs):
+    a, b, c, d, e, f, g, h, i = [], [], [], [], [], [], [], [], []
+    for log in logs:
+        a.append([v for k, v in log.iteritems() if k == LK.FROM])
+        b.append([v for k, v in log.iteritems() if k == LK.UUSERS])
+        c.append([v for k, v in log.iteritems() if k == LK.TOTHITS])
+        d.append([v for k, v in log.iteritems() if k == LK.TRANSFERBYTES])
+        e.append([v for k, v in log.iteritems() if k == LK.HTMLHITS])
+        f.append([v for k, v in log.iteritems() if k == LK.HTTPMETHOD])
+        g.append([v for k, v in log.iteritems() if k == LK.HTTPSTATUS])
+        h.append([v for k, v in log.iteritems() if k == LK.HTTPVERSION])
+        i.append([v for k, v in log.iteritems() if k == LK.VIEWSPERPAGE])
+    lists = {LK.FROM: a,
+             LK.UUSERS: b,
+             LK.TOTHITS: c,
+             LK.TRANSFERBYTES: d,
+             LK.HTMLHITS: e,
+             LK.HTTPMETHOD: f,
+             LK.HTTPSTATUS: g,
+             LK.HTTPVERSION: h,
+             LK.VIEWSPERPAGE: i}
+    return lists
+
+
 if __name__ == '__main__':
     logdir = 'output'
-    outdir = 'final/'
+    routdir = 'final/'
+    coutdir = 'clean/'
     outname = 'wc98_log_'
     ext = 'hour.json'
     interval = 0.25
@@ -159,16 +189,25 @@ if __name__ == '__main__':
     Logs = createloglist(logdir)
     logs = gatherlogs(Logs)
 
-    rlog = logs
+    rlog = deepcopy(logs)
+    clog = deepcopy(logs)
+
     for rfact, factor in [(1, 1), (4, 4), (2, 8), (3, 24), (2, 48), (2, 96)]:
-        path = outdir + outname + str(int(interval*factor)) + ext
+        rpath = routdir + outname + str(int(interval*factor)) + ext
+        cpath = coutdir + outname + str(int(interval*factor)) + ext
         rlog = reducelogs(rlog, rfact)
+        clog = reducelogs(clog, rfact)
         print "logs reduced by factor {}".format(factor)
         print "interval is now " + str(int(interval * factor)) + " hours"
         print "Testing all entries have timestamp, ", checklog(rlog)
-#        cleanpageviews(rlog, hrsperentry=factor*interval)
-        exportlog(rlog, path)
+        cleanpageviews(clog, hrsperentry=factor*interval)
+        exportlog(rlog, rpath)
+        exportlog(clog, cpath)
 
-    path = outdir + 'wc98_aggr.json'
-    aggregated = reduce(mergelogs, rlog)
-    exportlog(aggregated, path)
+    rpath = routdir + 'wc98_aggr.json'
+    raggregated = reduce(mergelogs, rlog)
+    exportlog(raggregated, rpath)
+
+    cpath = coutdir + 'wc98_aggr.json'
+    caggregated = reduce(mergelogs, clog)
+    exportlog(caggregated, cpath)
