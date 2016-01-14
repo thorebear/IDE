@@ -19,7 +19,7 @@ $(document).ready(function() {
             ranges:{
 		'World Cup' : [new Date("Jun 10 1998"), new Date("Jul 12 1998")],
 		'Group stage' : [new Date("Jun 10 1998"), new Date("Jun 26 1998")], 
-		'Playoffs': [new Date("Jun 26 1998"), new Date("Jul 12 1998")]
+		'Playoffs': [new Date("Jun 27 1998"), new Date("Jul 12 1998")]
             },
 	    "startDate": fromDateSelected,
 	    "endDate": toDateSelected,

@@ -42,3 +42,12 @@ function getUnit(parameter) {
 	return 'page views';
     }
 }
+
+function getFormat(dataset) {
+    if (dataset === 'hourData') {
+	return "dddd d/M/yyyy - HH:mm";
+    }
+    if (dataset === 'dayData') {
+	return "dddd d/M/yyyy";
+    }
+}

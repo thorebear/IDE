@@ -8,7 +8,7 @@ function init() {
 
 var margin_left = 20;
 var margin_right = 20;
-var margin_top = 20;
+var margin_top = 60;
 var margin_bottom = 30;
 var svg_width, svg_height, svg;
 var xScale;
@@ -47,9 +47,13 @@ function create_line_chart(dataSet, startTime, endTime){
 	.attr('transform', 'translate(0, ' + (svg_height - margin_bottom) + ')')
 	.call(xAxis);
 
+    addMatches();
+
     getActiveParameters().forEach(function(parameter) {
 	addLine(parameter);
     });
+
+
 }
 
 function addLine(parameter){
@@ -133,10 +137,10 @@ var tooltip_offset_y = 10;
 function showTooltip(index, x, y) {
     var tooltip = d3.select("#tooltip");
 
-    var entry = wc.hourData[index];
+    var entry = wc[dataSetSelected][index];
     
     tooltip.html("" + 
-		 "<b>" + entry.from.toString("dddd M/d/yyyy - HH:mm") + "</b>" +
+		 "<b>" + entry.from.toString(getFormat(dataSetSelected)) + "</b>" +
 		 "");
 
     getActiveParameters().forEach(function(parameter) {
@@ -168,6 +172,30 @@ function removeLine(parameter) {
 
 function getTime(entry){
     return entry.from;
+}
+
+function addMatches() {
+    var matches = wc.worldcup;
+
+    matches = matches.filter(function(match) {
+	return match.date >= fromDateSelected && match.date <= toDateSelected;
+    });
+
+    svg.selectAll("rect")
+	.data(matches)
+	.enter()
+	.append("rect")
+	.attr("x", function(d) {
+	    return xScale(d.date);
+	})
+	.attr("y", margin_top )
+	.attr("width", function(d) {
+	    // for now we assume that a match is two hours, matches with 'rematch' took ofc longer.
+	    return xScale(d.date.clone().add(2).hours()) - xScale(d.date);
+	})
+	.attr("height", svg_height - margin_top - margin_bottom)
+	.style("opacity", 0.3)
+	.attr("fill", "grey");    
 }
 
 

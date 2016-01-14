@@ -1,10 +1,20 @@
 wc = {}
 
 $(document).ready(function() {
-    loadWCData("data/wc98_log_1hour.json", "hourData", function() {
-	loadWCData("data/wc98_log_24hour.json", "dayData", function() {
-	    // load more data...
-	    init();
+    d3.json("data/worldcup.json", function(error, json) {
+	if (error) return console.warn(error);
+
+	wc.worldcup = json;
+
+	wc.worldcup.forEach(function(entry) {
+	    entry.date = new Date(entry.date);
+	});
+
+	loadWCData("data/wc98_log_1hour.json", "hourData", function() {
+	    loadWCData("data/wc98_log_24hour.json", "dayData", function() {
+		// load more data...
+		init();
+	    });
 	});
     });
 });
