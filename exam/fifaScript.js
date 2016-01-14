@@ -5,7 +5,7 @@ list = list.splice(1,list.length-2);
 
 list.forEach(function(a) {
     var child = $(a).children().children();
-    var date = child.children(".mu-i-date").text();
+    var date = child.children(".mu-i-datetime").text().split(" Local time")[0].split(" - ").join(" ");
     var group = child.children(".mu-i-group").text();
     var stadium = child.children(".mu-i-location").children(".mu-i-stadium").text();
     var hometeam = child.children(".home").children().children(".t-nText").text()
