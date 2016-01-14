@@ -151,7 +151,7 @@ def cleanpageviews(log, hrsperentry=1):
 
 if __name__ == '__main__':
     logdir = 'output'
-    outdir = 'clean/'
+    outdir = 'final/'
     outname = 'wc98_log_'
     ext = 'hour.json'
     interval = 0.25
@@ -166,7 +166,7 @@ if __name__ == '__main__':
         print "logs reduced by factor {}".format(factor)
         print "interval is now " + str(int(interval * factor)) + " hours"
         print "Testing all entries have timestamp, ", checklog(rlog)
-        cleanpageviews(rlog, hrsperentry=factor*interval)
+#        cleanpageviews(rlog, hrsperentry=factor*interval)
         exportlog(rlog, path)
 
     path = outdir + 'wc98_aggr.json'
