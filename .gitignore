@@ -1,8 +1,11 @@
 /**/*.pdf
 /**/*~
+/**/*.pyc
+
 /d3/**/*
 /exam/logs/data/*.gz
 /exam/logs/data/*
 /exam/logs/output/*
 /exam/logs/first\ run/*
+/exam/logs/nohup.out
 
