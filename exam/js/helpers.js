@@ -54,3 +54,9 @@ function getFormat(dataset) {
 	return "dddd d/M/yyyy - HH:mm";
     }
 }
+
+function datefilter(dataset, minDate, maxDate){
+    return dataset.filter( function(entry) {
+        return getTime(entry) >= minDate && getTime(from) <= maxDate;
+    });
+}
