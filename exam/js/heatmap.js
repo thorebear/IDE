@@ -9,17 +9,15 @@ function init() {
 
 
 function create_heat_map(dataSet, parameter, startTime, endTime){
-    var margin_left = 40;
+    var margin_left = 100;
     var margin_right = 40;
     var margin_top = 60;
     var margin_bottom = 60;
     var xScale, yScale, colorScale;
-    var data;
     
-    data = wc[dataSet];
+    var wcdata = wc[dataSet];
 
     hm_svg = d3.select("#heatmap");
-
     hm_svg.html("");
 
     var svg_width = parseInt(hm_svg.style("width"));
@@ -27,7 +25,7 @@ function create_heat_map(dataSet, parameter, startTime, endTime){
     var boxwidth = (svg_width - margin_right) / 24;
     var boxheight = (svg_height - margin_bottom) / 7;
 
-    var times = data.map(getTime);
+    var times = wcdata.map(getTime);
     var weekdays = times.map( function(d) {return d.getDay()} );
     var hours = times.map( function(d) {return d.getHours()} );
 
@@ -36,7 +34,7 @@ function create_heat_map(dataSet, parameter, startTime, endTime){
     var minHour = d3.min(hours);
     var maxHour = d3.max(hours);
 
-    var mydata = extractHeatmapData(data, parameter);
+    var mydata = extractHeatmapData(wcdata, parameter);
     var minPar = 9999999999;
     var maxPar = -1;
     for (var i = minDay; i <= maxDay; i++) {
@@ -57,22 +55,22 @@ function create_heat_map(dataSet, parameter, startTime, endTime){
     console.log("Min "+parameter+": " + minPar);
     console.log("Max "+parameter+": " + maxPar);
 
-    colorScale = d3.time.scale()
+    var colorScale = d3.time.scale()
       .domain([0, maxPar])
       .range(['white', 'red']);
 
-    xScale = d3.time.scale()
+    var xScale = d3.time.scale()
       .domain([minHour, maxHour])
       .range([margin_left, svg_width - margin_right - boxwidth]);
 
-    yScale = d3.time.scale()
+    var yScale = d3.time.scale()
       .domain([minDay, maxDay])
       .range([margin_top, svg_height - margin_bottom - boxheight]);
 
     var xAxis = d3.svg.axis()
       .scale(xScale)
       .orient('bottom')
-      .ticks(3);
+      .ticks(12);
 
     var yAxis = d3.svg.axis()
       .scale(yScale)
@@ -84,7 +82,8 @@ function create_heat_map(dataSet, parameter, startTime, endTime){
       .data(mydata)
       .enter()
       .append('g')
-      .each(function(d,day) {
+      .attr('class', 'boxrow')
+      .each(function(d, day) {
         var _this = d3.select(this)
         _this.selectAll('rect')
         .data(d)
@@ -98,26 +97,28 @@ function create_heat_map(dataSet, parameter, startTime, endTime){
         .attr('height', boxheight)
         .attr('fill', function(val) {
           return colorScale(val);
-/*
-        .each(function(d, i){
+        })
+        .each( function(value, hour){
           var _this = d3.select(this);
           _this.on("mousemove", function() {
-            showTooltipHeatMap(i, d3.event.pageX, d3.event.pageY);
+            showTooltipHeatMap(value, hour, d3.event.pageX, d3.event.pageY);
           });
           _this.on("mouseout", function() {
             hideTooltipHeatMap();
           });
-*/
         });
       });
-
-
-/*  
+    
     hm_svg.append('g')
       .attr('class', 'y axis')
-      .attr('transform', 'translate(0, 0)')
+      .attr('transform', 'translate('+margin_left+', '+boxheight*0.5+')')
       .call(yAxis);
-*/
+
+    hm_svg.append('g')
+      .attr('class', 'x axis')
+      .attr('transform', 'translate('+boxwidth*0.5+', '+(svg_height-margin_bottom)+')')
+      .call(xAxis);
+
 }
 
 function extractHeatmapData(data, parameter){
@@ -138,33 +139,24 @@ function extractHeatmapData(data, parameter){
 }
 
 
-function showTooltipHeatMap(day, hour, x, y) {
+function hour2ms(ms) {
+  return ms * 1000 * 3600
+}
+
+function day2ms(ms) {
+  return ms * 1000 * 3600 * 24
+}
+
+
+function showTooltipHeatMap(value, hour, x, y) {
     var tooltip_offset_x = 10;
     var tooltip_offset_y = 10;
     var tooltip = d3.select("#tooltip");
 
-    /*
-    var entry = wc[dataSetSelected][index];
     tooltip.html("" + 
-     "<b>" + entry.from.toString(getFormat(dataSetSelected)) + "</b>" +
+     "<b> value: " + value.toString() + ", hour: " + hour.toString() + "</b>" +
      "");
-    */
-    tooltip.html("" + 
-     "<b> day: " + day.toString() + ", hour: " + hour.toString() + "</b>" +
-     "");
-    /*
-    getActiveParameters().forEach(function(parameter) {
-  tooltip.html(tooltip.html()
-         + "<br/>"
-         + "<svg width='10' height='10'>"
-         + "<rect width='10' height='10' style='fill:"
-         + getColor(parameter)
-         + ";stroke:black;stroke-width:1'/></svg>"
-         + "\t"
-         + entry[parameter] + " " + getUnit(parameter)
-        );
-    });
- */   
+
     tooltip.style("visibility", "visible")
       .style("top", y + tooltip_offset_y + "px")
       .style("left", x + tooltip_offset_x +  "px");
