@@ -7,132 +7,103 @@ function init() {
           new Date("Sun Jul 12 1998 21:15:00 GMT+0200 (CEST)"));
 }
 
-var margin_left = 20;
-var margin_right = 20;
-var margin_top = 60;
-var margin_bottom = 30;
-var svg_width, svg_height, svg;
-var xScale;
-var data;
 
 function create_heat_map(dataSet, parameter, startTime, endTime){
+    var margin_left = 40;
+    var margin_right = 40;
+    var margin_top = 60;
+    var margin_bottom = 60;
+    var xScale, yScale, colorScale;
+    var data;
+    
     data = wc[dataSet];
 
-    svg = d3.select("#heatmap");
+    hm_svg = d3.select("#heatmap");
 
-    svg.html("");
+    hm_svg.html("");
 
-    svg_width = parseInt(svg.style("width"));
-    svg_height = parseInt(svg.style("height"));
+    var svg_width = parseInt(hm_svg.style("width"));
+    var svg_height = parseInt(hm_svg.style("height"));
+    var boxwidth = (svg_width - margin_right) / 24;
+    var boxheight = (svg_height - margin_bottom) / 7;
 
     var times = data.map(getTime);
-
-    var weekdays = times.map(getDay);
-    var hours = times.map(getHour);
+    var weekdays = times.map( function(d) {return d.getDay()} );
+    var hours = times.map( function(d) {return d.getHours()} );
+    var mydata = extractHeatmapData(data, parameter);
 
     var minDay = d3.min(weekdays);
     var maxDay = d3.max(weekdays);
-
     var minHour = d3.min(hours);
     var maxHour = d3.max(hours);
+
+    var minPar = 9999999999;
+    var maxPar = -1;
+    for (var i = 0; i < 7; i++) {
+      for (var j = 0; j< 24; j++) {
+        if (mydata[i][j] < minPar) {
+          minPar = mydata[i][j]
+        }
+        if (mydata[i][j] > maxPar) {
+          maxPar = mydata[i][j]
+        }
+      }
+    }
 
     console.log("Min day: " + minDay);
     console.log("Max day: " + maxDay);
     console.log("Min hour: " + minHour);
     console.log("Max hour: " + maxHour);
+    console.log("Min "+parameter+": " + minPar);
+    console.log("Max "+parameter+": " + maxPar);
+
+
+    colorScale = d3.time.scale()
+      .domain([0, maxPar])
+      .range(['white', 'red']);
+
+    xScale = d3.time.scale()
+      .domain([minHour, maxHour])
+      .range([margin_left, svg_width - margin_right - boxwidth]);
+
+    var xAxis = d3.svg.axis()
+      .scale(xScale)
+      .orient('bottom')
+      .ticks(3);
 
     yScale = d3.time.scale()
-      .domain([startDay, endDay])
-      .range([margin_bottom, svg_height - margin_top]);
+      .domain([minDay, maxDay])
+      .range([margin_top, svg_height - margin_bottom - boxheight]);
 
     var yAxis = d3.svg.axis()
-      .scale(xScale)
+      .scale(yScale)
       .orient('left')
       .ticks(1);
 
-    svg.append('g')
-      .attr('class', 'y axis')
-      .attr('transform', 'translate(0, 0)')
-      .call(yAxis);
 
-    var hits = data.map(function(entry) { 
-      return [entry[parameter],entry[parameter]] 
-    }
+    hm_svg.selectAll('g')
+      .data(mydata)
+      .enter()
+      .append('g')
+      .each(function(d,day) {
+        var _this = d3.select(this)
+        _this.selectAll('rect')
+        .data(d)
+        .enter()
+        .append('rect')
+        .attr('x', function(_val,hr) {
+          return xScale(hr);
+        })
+        .attr('y', yScale(day))
+        .attr('width', boxwidth)
+        .attr('height', boxheight)
+        .attr('fill', function(val) {
+          return colorScale(val);
+        });
+      });
 
-    hits.forEach(function(parameter) {
-      addBox(parameter);
-    });
-
-}
-
-function addBox(parameter){
-    // too much of a hack? There must exists a cleaner solution using d3
-    if (svg.select("#" + parameter + "_group")[0][0] !== null){
-  console.warn("Cannot add the line, the line for " + parameter + " already exists");
-  return;
-    }
-
-}
-
-/*    
-    var color = getColor(parameter);
-    var accessor = function(d) {
-  return d[parameter];
-    };
-    var values = data.map(accessor);
-    var minY = d3.min(values);
-    var maxY = d3.max(values);
-    console.log("Min value for " + parameter + ": " + minY);
-    console.log("Max value for " + parameter + ": " + maxY);
-
-    var yScale = d3.scale.linear()
-  .domain([minY, maxY])
-  .range([svg_height - margin_bottom, margin_top]);
-
-    var lineGen = d3.svg.line()
-  .x(function(d) {
-      return xScale(getTime(d));
-  })
-  .y(function(d) {
-      return yScale(accessor(d));
-  });
-
-    var areaGen = d3.svg.area()
-  .x(function(d) { return xScale(getTime(d)); })
-  .y0(svg_height-margin_bottom)
-  .y1(function(d) { return yScale(accessor(d)); });
-
-
-    var group = svg.append("g")
-  .attr("id", parameter + "_group");
-
-    group.append("path")
-        .datum(data)
-        .attr("class", "area")
-        .attr("d", areaGen)
-  .style("fill", color)
-  .style("opacity", "0.2")
-  .style("pointer-events", "none");
-    
-    group.append("svg:path")
-  .attr("d", lineGen(data))
-  .attr("stroke", color)
-  .attr("stroke-width", 1)
-  .attr("fill", "none");
-
-    group.selectAll("circle")
-  .data(data)
-  .enter()
-  .append("circle")
-  .attr('cy', function(d) {
-      return yScale(accessor(d));
-  })
-  .attr('cx', function(d) {
-      return xScale(getTime(d));
-  })
-  .attr('r', 3)
-  .attr('fill', color)
-  .each(function(d, i){
+/*
+      .each(function(d, i){
       var _this = d3.select(this);
       _this.on("mousemove", function() {
     showTooltip(i, d3.event.pageX, d3.event.pageY);
@@ -140,15 +111,39 @@ function addBox(parameter){
       _this.on("mouseout", function() {
     hideTooltip();
       });
-  });
-}
 */
+
+/*  
+
+    hm_svg.append('g')
+      .attr('class', 'y axis')
+      .attr('transform', 'translate(0, 0)')
+      .call(yAxis);
+*/
+}
+
+function extractHeatmapData(data, parameter){
+  var out = []
+  data.forEach(function(d) {
+    var day = d.from.getDay();
+    var hr = d.from.getHours();
+    var hits = d[parameter];
+    if ( out[day] === undefined) {
+      out[day] = [];
+    }
+    if (out[day][hr] === undefined) {
+      out[day][hr] = 0;
+    }
+    out[day][hr] += hits;
+  });
+  return out;
+}
 
 
 var tooltip_offset_x = 10;
 var tooltip_offset_y = 10;
 
-function showTooltip(index, x, y) {
+function showTooltipHeatMap(index, x, y) {
     var tooltip = d3.select("#tooltip");
 
     var entry = wc[dataSetSelected][index];
@@ -174,7 +169,7 @@ function showTooltip(index, x, y) {
   .style("left", x + tooltip_offset_x +  "px");
 }
 
-function hideTooltip() {
+function hideTooltipHeatMap() {
     var tooltip = d3.select("#tooltip");
     tooltip.style("visibility", "hidden");
 }
