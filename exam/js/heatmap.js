@@ -30,17 +30,17 @@ function create_heat_map(dataSet, parameter, startTime, endTime){
     var times = data.map(getTime);
     var weekdays = times.map( function(d) {return d.getDay()} );
     var hours = times.map( function(d) {return d.getHours()} );
-    var mydata = extractHeatmapData(data, parameter);
 
     var minDay = d3.min(weekdays);
     var maxDay = d3.max(weekdays);
     var minHour = d3.min(hours);
     var maxHour = d3.max(hours);
 
+    var mydata = extractHeatmapData(data, parameter);
     var minPar = 9999999999;
     var maxPar = -1;
-    for (var i = 0; i < 7; i++) {
-      for (var j = 0; j< 24; j++) {
+    for (var i = minDay; i <= maxDay; i++) {
+      for (var j = minHour; j <= maxHour; j++) {
         if (mydata[i][j] < minPar) {
           minPar = mydata[i][j]
         }
@@ -57,7 +57,6 @@ function create_heat_map(dataSet, parameter, startTime, endTime){
     console.log("Min "+parameter+": " + minPar);
     console.log("Max "+parameter+": " + maxPar);
 
-
     colorScale = d3.time.scale()
       .domain([0, maxPar])
       .range(['white', 'red']);
@@ -66,14 +65,14 @@ function create_heat_map(dataSet, parameter, startTime, endTime){
       .domain([minHour, maxHour])
       .range([margin_left, svg_width - margin_right - boxwidth]);
 
+    yScale = d3.time.scale()
+      .domain([minDay, maxDay])
+      .range([margin_top, svg_height - margin_bottom - boxheight]);
+
     var xAxis = d3.svg.axis()
       .scale(xScale)
       .orient('bottom')
       .ticks(3);
-
-    yScale = d3.time.scale()
-      .domain([minDay, maxDay])
-      .range([margin_top, svg_height - margin_bottom - boxheight]);
 
     var yAxis = d3.svg.axis()
       .scale(yScale)
@@ -99,22 +98,21 @@ function create_heat_map(dataSet, parameter, startTime, endTime){
         .attr('height', boxheight)
         .attr('fill', function(val) {
           return colorScale(val);
+/*
+        .each(function(d, i){
+          var _this = d3.select(this);
+          _this.on("mousemove", function() {
+            showTooltipHeatMap(i, d3.event.pageX, d3.event.pageY);
+          });
+          _this.on("mouseout", function() {
+            hideTooltipHeatMap();
+          });
+*/
         });
       });
 
-/*
-      .each(function(d, i){
-      var _this = d3.select(this);
-      _this.on("mousemove", function() {
-    showTooltip(i, d3.event.pageX, d3.event.pageY);
-      });
-      _this.on("mouseout", function() {
-    hideTooltip();
-      });
-*/
 
 /*  
-
     hm_svg.append('g')
       .attr('class', 'y axis')
       .attr('transform', 'translate(0, 0)')
@@ -140,18 +138,21 @@ function extractHeatmapData(data, parameter){
 }
 
 
-var tooltip_offset_x = 10;
-var tooltip_offset_y = 10;
-
-function showTooltipHeatMap(index, x, y) {
+function showTooltipHeatMap(day, hour, x, y) {
+    var tooltip_offset_x = 10;
+    var tooltip_offset_y = 10;
     var tooltip = d3.select("#tooltip");
 
+    /*
     var entry = wc[dataSetSelected][index];
-    
     tooltip.html("" + 
      "<b>" + entry.from.toString(getFormat(dataSetSelected)) + "</b>" +
      "");
-
+    */
+    tooltip.html("" + 
+     "<b> day: " + day.toString() + ", hour: " + hour.toString() + "</b>" +
+     "");
+    /*
     getActiveParameters().forEach(function(parameter) {
   tooltip.html(tooltip.html()
          + "<br/>"
@@ -163,10 +164,10 @@ function showTooltipHeatMap(index, x, y) {
          + entry[parameter] + " " + getUnit(parameter)
         );
     });
-    
+ */   
     tooltip.style("visibility", "visible")
-  .style("top", y + tooltip_offset_y + "px")
-  .style("left", x + tooltip_offset_x +  "px");
+      .style("top", y + tooltip_offset_y + "px")
+      .style("left", x + tooltip_offset_x +  "px");
 }
 
 function hideTooltipHeatMap() {
