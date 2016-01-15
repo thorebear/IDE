@@ -119,7 +119,7 @@ function addLine(parameter){
 	.each(function(d, i){
 	    var _this = d3.select(this);
 	    _this.on("mousemove", function() {
-		showTooltip(i, d3.event.pageX, d3.event.pageY);
+		showTooltip(d, d3.event.pageX, d3.event.pageY);
 	    });
 	    _this.on("mouseout", function() {
 		hideTooltip();
@@ -175,13 +175,65 @@ function getYAxisOrientation(parameter) {
 }
 
 
+function showMatchInfo(match, x) {
+    var info = d3.select("#match_info");
+    info.select("#home_team").attr("class","flag-icon flag-icon-"
+				   + fifaShortToFlagShort(match.homeShort));
+    info.select("#away_team").attr("class","flag-icon flag-icon-"
+				   + fifaShortToFlagShort(match.awayShort));
+    info.select("#match_group").text(match.group);
+    info.select("#match_time").text(match.date.toString("dd/MM HH:mm"));
 
+    d3.select("#match_box").style("visibility", "visible")
+	.style("top", 90 + "px")
+	.style("left", (x - 35) + "px");
+}
 
-function showTooltip(index, x, y) {
+function hideMatchInfo() {
+    d3.select("#match_box").style("visibility", "hidden");
+}
+
+function fifaShortToFlagShort(fifa) {
+    return {
+	"BRA" : "br",
+	"DEN" : "dk",
+	"USA" : "us",
+	"MEX" : "mx",
+	"JAM" : "jm",
+	"COL" : "co",
+	"PAR" : "py",
+	"CHI" : "cl",
+	"ARG" : "ar",
+	"SCO" : "gb-sct",
+	"ENG" : "gb-eng",
+	"NED" : "nl",
+	"BEL" : "be",
+	"FRA" : "fr",
+	"ESP" : "es",
+	"GER" : "de",
+	"AUT" : "at",
+	"CRO" : "hr",
+	"ITA" : "it",
+	"YUG" : "zz",
+	"ROU" : "ro",
+	"BUL" : "bg",
+	"NOR" : "no",
+	"TUN" : "tn",
+	"MAR" : "ma",
+	"NGA" : "ng",
+	"CMR" : "cm",
+	"RSA" : "za",
+	"KSA" : "sa",
+	"IRN" : "ir",
+	"KOR" : "kr",
+	"JPN" : "jp"
+    }[fifa];
+    
+}
+
+function showTooltip(entry, x, y) {
     var tooltip = d3.select("#tooltip");
 
-    var entry = wc[dataSetSelected][index];
-    
     tooltip.html("" + 
 		 "<b>" + entry.from.toString(getFormat(dataSetSelected)) + "</b>" +
 		 "");
@@ -240,7 +292,19 @@ function addMatches() {
 	.style("opacity", 0.2)
 	.attr("fill", function(d) {
 	    return getColorFromMatchType(d);
-	});    
+	})
+	.each(function(match) {
+	    var _this = d3.select(this);
+	    _this.on("mousemove", function() {
+		showMatchInfo(match, d3.event.pageX);
+		_this.style("opacity",1);
+	    });
+
+	    _this.on("mouseout", function() {
+		_this.style("opacity", 0.2);
+		hideMatchInfo();
+	    });
+	});
 }
 
 function getColorFromMatchType(match) {
@@ -256,7 +320,7 @@ function getColorFromMatchType(match) {
     if (match.group === "Semi-finals") {
 	return "black";
     }
-    if (match.group === "Match for third place" || match.group === "Final") {
+    if (match.group === "Bronze match" || match.group === "Final") {
 	return "red";
     }
 }

@@ -50,7 +50,7 @@ function getFormat(dataset) {
     if (dataset === 'dayData') {
 	return "dddd d/M/yyyy";
     }
-    if (dataset === 'hourData') {
+    if (dataset === 'quaterData') {
 	return "dddd d/M/yyyy - HH:mm";
     }
 }
