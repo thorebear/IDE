@@ -1,13 +1,9 @@
 function init() {
-    console.log("Initializing the visualisations");
-
-    create_line_chart('hourData',
-		      new Date("Thu Apr 30 1998 21:30:00 GMT+0200 (CEST)"),
-		      new Date("Sun Jul 01 1998 21:15:00 GMT+0200 (CEST)"));
+    create_line_chart(dataSetSelected, fromDateSelected, toDateSelected);
 }
 
-var margin_left = 20;
-var margin_right = 20;
+var margin_left = 120;
+var margin_right = 120;
 var margin_top = 60;
 var margin_bottom = 30;
 var svg_width, svg_height, svg;
@@ -15,7 +11,7 @@ var xScale;
 var data;
 
 function create_line_chart(dataSet, startTime, endTime){
-    data = wc[dataSet];
+    data = datefilter(wc[dataSet], startTime, endTime);
 
     svg = d3.select("#line_chart");
 
@@ -129,10 +125,57 @@ function addLine(parameter){
 		hideTooltip();
 	    });
 	});
+
+    //Define Y axis
+    var yAxis = d3.svg.axis()
+        .scale(yScale)
+        .orient(getYAxisOrientation(parameter))
+        .ticks(3);
+
+    //Create Y axis
+    group.append("g")
+	.style("stroke", color)
+	.attr("class", "yaxis")
+	.attr("transform", "translate(" + getYAxisPosition(parameter) + ",0)")
+	.call(yAxis);
+
 }
 
 var tooltip_offset_x = 10;
 var tooltip_offset_y = 10;
+
+function getYAxisPosition(parameter) {
+    if (parameter === 'transferred_bytes'){
+	return svg_width-margin_right + 10;
+    }
+    if (parameter === 'unique_users') {
+	return svg_width-margin_right+70;
+    }
+    if (parameter === 'total_hits') {
+	return margin_left -10 ;
+    }
+    if (parameter === 'htmlhits') {
+	return margin_left - 70;
+    }
+}
+
+function getYAxisOrientation(parameter) {
+    if (parameter === 'transferred_bytes'){
+	return "right";
+    }
+    if (parameter === 'unique_users') {
+	return "right";
+    }
+    if (parameter === 'total_hits') {
+	return "left";
+    }
+    if (parameter === 'htmlhits') {
+	return "left";
+    }
+}
+
+
+
 
 function showTooltip(index, x, y) {
     var tooltip = d3.select("#tooltip");

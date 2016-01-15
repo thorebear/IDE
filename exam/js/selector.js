@@ -1,4 +1,4 @@
-var dataSetSelected = 'N/A';
+var dataSetSelected = 'dayData';
 var fromDateSelected = new Date("Thu Apr 30 1998 00:00:00 GMT+0200 (CEST)");
 var toDateSelected = new Date("Sun Jul 26 1998 00:00:00 GMT+0200 (CEST)");
 

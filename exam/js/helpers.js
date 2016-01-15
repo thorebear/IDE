@@ -57,6 +57,6 @@ function getFormat(dataset) {
 
 function datefilter(dataset, minDate, maxDate){
     return dataset.filter( function(entry) {
-        return getTime(entry) >= minDate && getTime(from) <= maxDate;
+        return getTime(entry) >= minDate && getTime(entry) <= maxDate;
     });
 }
