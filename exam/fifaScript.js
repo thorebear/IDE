@@ -13,7 +13,6 @@ list.forEach(function(a) {
     var awayteam = child.children(".away").children().children(".t-nText").text()
     var awayShort = child.children(".away").children().children(".t-nTri").text()
     var score = child.children(".s").children().children(".s-score").children().text()
-    console.log(homeShort + awayShort + " " + score);
 
     var a = {
 	"date" : date,
@@ -29,4 +28,4 @@ list.forEach(function(a) {
     data.push(a);
 });
 
-console.log(data);
+

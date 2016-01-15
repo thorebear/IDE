@@ -16,6 +16,7 @@
 
       <!-- Our CSS -->
       <link rel="stylesheet" href="style.css" type="text/css" />
+      <link rel="stylesheet" href="css/flag-icon.min.css" type="text/css" />
 
       <!-- JQUERY -->
       <script type="text/javascript" 
@@ -49,6 +50,7 @@
       <script src="js/checkboxes.js"></script>
       <script src="js/helpers.js"></script>
       <script src="js/selector.js"></script>
+      <script src="js/heatmap.js"></script>
 
       <title>Interactive Data Exploration - Final project</title>
    </head>
@@ -74,6 +76,7 @@
 
 	 <div class="selector-wrapper">
 	   <select class="selectpicker" id="timeIntervalSelector" data-width="178px">
+	     <option value="quaterData">Pr. 15 minutes</option>
 	     <option value="hourData">Hourly</option>
 	     <option value="dayData">Daily</option>
 	   </select>
@@ -82,7 +85,18 @@
        <div class="col-sm-10">	 
 	 <svg id="line_chart" width="1000" height="500"></svg>
 	 </div>
+     </div>
+     <div class="col-sm-12">
+       <div class="tooltip_box" style="text-align:center;width:70px;" >
+	 <div class="flag-icon flag-icon-gr"></div> -
+	 <div class="flag-icon flag-icon-br"></div> <br />
+	 <span style="font-size:xx-small;line-height:0.8">Group B</span>
+	 <span style="font-size:xx-small;"><i>7/7/98 - 18:00<i/></span>
        </div>
+     </div>
+     <div class="col-sm-12">
+       <svg id="heatmap" width="1000" height="500"></svg>
+     </div>
 </div>
 <div id="tooltip" style="position: absolute; visibility: hidden;">
 </body>

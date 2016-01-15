@@ -12,12 +12,14 @@ $(document).ready(function() {
 
 	loadWCData("data/wc98_log_1hour.json", "hourData", function() {
 	    loadWCData("data/wc98_log_24hour.json", "dayData", function() {
-		// load more data...
-		init();
+		loadWCData("data/wc98_log_0.25hour.json", "quaterData", function() {
+		    init();
+		});
 	    });
 	});
     });
 });
+
 
 
 function loadWCData(fileName, dataName, callback) {
