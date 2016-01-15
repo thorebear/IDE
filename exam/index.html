@@ -87,18 +87,21 @@
 	 </div>
      </div>
      <div class="col-sm-12">
-       <div class="tooltip_box" style="text-align:center;width:70px;" >
-	 <div class="flag-icon flag-icon-gr"></div> -
-	 <div class="flag-icon flag-icon-br"></div> <br />
-	 <span style="font-size:xx-small;line-height:0.8">Group B</span>
-	 <span style="font-size:xx-small;"><i>7/7/98 - 18:00<i/></span>
-       </div>
      </div>
      <div class="col-sm-12">
        <svg id="heatmap" width="1000" height="500"></svg>
      </div>
 </div>
-<div id="tooltip" style="position: absolute; visibility: hidden;">
+<div id="tooltip" style="position: absolute; visibility: hidden;"></div>
+<div id="match_box" class="tooltip_box" style="text-align:center;width:70px;position: absolute; visibility: hidden;" >
+  <div id="match_info">
+    <div id="home_team" class="flag-icon flag-icon-gr"></div> -
+    <div id="away_team" class="flag-icon flag-icon-br"></div> <br />
+    <span id="match_group" style="font-size:xx-small;line-height:0.8">Group B</span>
+    <span id="match_time" style="font-size:xx-small;"><i>7/7/98 - 18:00<i/></span>
+  </div>
+</div>
+
 </body>
 
 </html>
