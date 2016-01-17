@@ -44,6 +44,8 @@ div.container {
 .axis text {
     font-family: sans-serif;
     font-size: 11px;
+   -webkit-text-stroke-width: 1px;
+   -webkit-text-stroke-color: black;
 }
 
 .yaxis path,

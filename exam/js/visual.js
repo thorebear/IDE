@@ -114,7 +114,7 @@ function addLine(parameter){
 	.attr('cx', function(d) {
 	    return xScale(getTime(d));
 	})
-	.attr('r', 3)
+	.attr('r', d3.min([5, d3.max([1.5, 300 / data.length])]))
 	.attr('fill', color)
 	.each(function(d, i){
 	    var _this = d3.select(this);
@@ -133,12 +133,13 @@ function addLine(parameter){
         .ticks(3);
 
     //Create Y axis
-    group.append("g")
+    var yAxisGroup = group.append("g")
 	.style("stroke", color)
 	.attr("class", "yaxis")
 	.attr("transform", "translate(" + getYAxisPosition(parameter) + ",0)")
 	.call(yAxis);
 
+    yAxisGroup.selectAll(".tick").select("text").style("stroke","none").style("fill", color);
 }
 
 var tooltip_offset_x = 10;
