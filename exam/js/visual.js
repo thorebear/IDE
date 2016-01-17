@@ -4,7 +4,7 @@ function init() {
 
 var margin_left = 120;
 var margin_right = 120;
-var margin_top = 60;
+var margin_top = 100;
 var margin_bottom = 30;
 var svg_width, svg_height, svg;
 var xScale;
@@ -175,22 +175,30 @@ function getYAxisOrientation(parameter) {
 }
 
 
-function showMatchInfo(match, x) {
-    var info = d3.select("#match_info");
-    info.select("#home_team").attr("class","flag-icon flag-icon-"
-				   + fifaShortToFlagShort(match.homeShort));
-    info.select("#away_team").attr("class","flag-icon flag-icon-"
-				   + fifaShortToFlagShort(match.awayShort));
-    info.select("#match_group").text(match.group);
-    info.select("#match_time").text(match.date.toString("dd/MM HH:mm"));
+function showMatchInfo(match, x, y, number) {
+    
+    showBox(x, y, number);
+    
+    function showBox(x, y, number) {
+	var info = d3.select("#match_info" + number);
+	info.select(".home_team").attr("class","home_team flag-icon flag-icon-"
+				       + fifaShortToFlagShort(match.homeShort));
+	info.select(".away_team").attr("class","away_team flag-icon flag-icon-"
+				       + fifaShortToFlagShort(match.awayShort));
+	info.select(".match_group").text(match.group);
+	info.select(".match_time").text(match.date.toString("dd/MM HH:mm"));
 
-    d3.select("#match_box").style("visibility", "visible")
-	.style("top", 90 + "px")
-	.style("left", (x - 35) + "px");
+	info.attr("data-identifier", getMatchIdentifier(match));
+	
+	d3.select("#match_box" + number).style("visibility", "visible")
+	    .style("top", y + "px")
+	    .style("left", (x - 35) + "px");
+    }
 }
 
 function hideMatchInfo() {
-    d3.select("#match_box").style("visibility", "hidden");
+    d3.select("#match_box1").style("visibility", "hidden");
+    d3.select("#match_box2").style("visibility", "hidden");
 }
 
 function fifaShortToFlagShort(fifa) {
@@ -280,6 +288,9 @@ function addMatches() {
 	.data(matches)
 	.enter()
 	.append("rect")
+	.attr("id", function(d) {
+	    return getMatchIdentifier(d);
+	})
 	.attr("x", function(d) {
 	    return xScale(d.date);
 	})
@@ -296,7 +307,12 @@ function addMatches() {
 	.each(function(match) {
 	    var _this = d3.select(this);
 	    _this.on("mousemove", function() {
-		showMatchInfo(match, d3.event.pageX);
+		getMatchesOnSameTime(match).forEach(function(x) {
+		    showMatchInfo(x, d3.event.pageX, 55, 2);
+		})
+
+		showMatchInfo(match, d3.event.pageX, 130, 1);
+
 		_this.style("opacity",1);
 	    });
 

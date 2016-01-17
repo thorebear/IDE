@@ -1,5 +1,5 @@
 // TODO
-function init() {
+function heatmap_init() {
     console.log("Initializing the heatmap");
 
     create_heat_map('hourData', 'htmlhits',

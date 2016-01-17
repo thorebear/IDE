@@ -60,3 +60,21 @@ function datefilter(dataset, minDate, maxDate){
         return getTime(entry) >= minDate && getTime(entry) <= maxDate;
     });
 }
+
+function getMatchIdentifier(match){
+    return (match.stadium + match.homeShort + match.awayShort).split(" ").join("").split(",").join("");
+}
+
+function getMatchesOnSameTime(match) {
+    var result = wc.worldcup.filter(function(match_x) {
+	return match_x.date.toString() === match.date.toString() &&
+	    getMatchIdentifier(match) !== getMatchIdentifier(match_x);
+    });
+    return result;
+}
+
+function getMatchesWithTeam(country) {
+    return wc.worldcup.filter(function(match) {
+	return match.hometeam === country || match.awayteam === country;
+    });
+}

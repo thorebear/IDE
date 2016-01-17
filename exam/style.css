@@ -19,6 +19,22 @@ div.container {
     border-radius: 5px;
     padding: 5px;
 }
+
+.group {
+    background-color: white;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 5px;
+    cursor:pointer;
+}
+
+.group_name {
+    font-style: oblique;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: small;
+}
+
 .axis path,
 .axis line {
     fill: none;
