@@ -94,15 +94,15 @@ function addLine(parameter){
         .datum(data)
         .attr("class", "area")
         .attr("d", areaGen)
-	.style("fill", color)
-	.style("opacity", "0.2")
-	.style("pointer-events", "none");
+    	.style("fill", color)
+    	.style("opacity", "0.1")
+    	.style("pointer-events", "none");
     
     group.append("svg:path")
-	.attr("d", lineGen(data))
-	.attr("stroke", color)
-	.attr("stroke-width", 1)
-	.attr("fill", "none");
+    	.attr("d", lineGen(data))
+    	.attr("stroke", color)
+    	.attr("stroke-width", 1)
+    	.attr("fill", "none");
 
     group.selectAll("circle")
 	.data(data)
@@ -116,13 +116,24 @@ function addLine(parameter){
 	})
 	.attr('r', d3.min([5, d3.max([1.5, 300 / data.length])]))
 	.attr('fill', color)
+	.attr('class', function(d, i) {
+	    return "circle-for-index-" + i;
+	})
 	.each(function(d, i){
 	    var _this = d3.select(this);
 	    _this.on("mousemove", function() {
 		showTooltip(d, d3.event.pageX, d3.event.pageY);
 	    });
+	    _this.on("mouseover", function() {
+		svg.selectAll(".circle-for-index-" + i)
+		    .style("stroke-width", 1)
+		    .style("stroke", "black");
+	    });
 	    _this.on("mouseout", function() {
 		hideTooltip();
+		svg.selectAll(".circle-for-index-" + i)
+		    .style("stroke-width", 0)
+		    .style("stroke", "black");
 	    });
 	});
 
