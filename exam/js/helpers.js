@@ -98,3 +98,40 @@ function getMatchesWithTeam(country) {
 	return match.hometeam === country || match.awayteam === country;
     });
 }
+
+function fifaShortToFlagShort(fifa) {
+    return {
+	"BRA" : "br",
+	"DEN" : "dk",
+	"USA" : "us",
+	"MEX" : "mx",
+	"JAM" : "jm",
+	"COL" : "co",
+	"PAR" : "py",
+	"CHI" : "cl",
+	"ARG" : "ar",
+	"SCO" : "gb-sct",
+	"ENG" : "gb-eng",
+	"NED" : "nl",
+	"BEL" : "be",
+	"FRA" : "fr",
+	"ESP" : "es",
+	"GER" : "de",
+	"AUT" : "at",
+	"CRO" : "hr",
+	"ITA" : "it",
+	"YUG" : "zz",
+	"ROU" : "ro",
+	"BUL" : "bg",
+	"NOR" : "no",
+	"TUN" : "tn",
+	"MAR" : "ma",
+	"NGA" : "ng",
+	"CMR" : "cm",
+	"RSA" : "za",
+	"KSA" : "sa",
+	"IRN" : "ir",
+	"KOR" : "kr",
+	"JPN" : "jp"
+    }[fifa];    
+}

@@ -16,6 +16,7 @@ $(document).ready(function() {
 		    init();
 		    heatmap_init();
 		    selector_init();
+		    bar_chart_init();
 		});
 	    });
 	});
