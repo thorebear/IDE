@@ -14,9 +14,10 @@ $(document).ready(function() {
 	    loadWCData("data/wc98_log_24hour.json", "dayData", function() {
 		loadWCData("data/wc98_log_0.25hour.json", "quaterData", function() {
 		    init();
-		    heatmap_init();
 		    selector_init();
 		    bar_chart_init();
+		    heatmap_init();
+//		    activity_comparison_init();
 		});
 	    });
 	});

@@ -3,9 +3,6 @@ function heatmap_init() {
     create_heat_map('htmlhits');
 }
 
-
-
-
 function create_heat_map(parameter){
     var margin_left = 100,
         margin_right = 40,
@@ -30,6 +27,9 @@ function create_heat_map(parameter){
     var maxPar  = Math.max(...values),
         minPar  = Math.min(...values);
 
+    // 'start' the bar-chart with initial-valus
+    create_activity_comparison(hmData[130], parameter);
+
     hm_svg = d3.select("#heatmap");
     hm_svg.html("");
 
@@ -51,9 +51,6 @@ function create_heat_map(parameter){
       .domain([minDay, maxDay])
       .range([margin_top, (nDays/(nDays+1)) *(margin_top + hm_height )]);
 
-    dayScale = d3.scale.ordinal()
-      .domain([1,2,3,4,5,6,0])
-      .range(['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']);
 
     var xAxis = d3.svg.axis()
       .scale(xScale)
@@ -64,7 +61,7 @@ function create_heat_map(parameter){
       .scale(yScale)
       .orient('left')
       .ticks(nDays)
-      .tickFormat(function(d){return dayScale(d)});
+      .tickFormat(function(d){return wc.dayScale(d)});
 
     hm_svg.selectAll('rect')
       .data(hmData)
@@ -163,36 +160,13 @@ function getSum(arr){
     return out;
 }
 
-
-function getWeek( d ) { 
-  // https://gist.github.com/dblock/1081513
-  // Create a copy of this date object  
-  var target  = new Date(d.valueOf());  
-  // ISO week date weeks start on monday  
-  // so correct the day number  
-  var dayNr   = (d.getDay() + 6) % 7;  
-  // Set the target to the thursday of this week so the  
-  // target date is in the right year  
-  target.setDate(target.getDate() - dayNr + 3);  
-  // ISO 8601 states that week 1 is the week  
-  // with january 4th in it  
-  var jan4    = new Date(target.getFullYear(), 0, 4);  
-  // Number of days between target date and january 4th  
-  var dayDiff = (target - jan4) / 86400000;    
-  // Calculate week number: Week 1 (january 4th) plus the    
-  // number of weeks between target date and january 4th    
-  var weekNr = 1 + Math.ceil(dayDiff / 7);    
-  return weekNr;    
-}
-
-
 function showTooltipHeatMap(day, hour, parameter, value, x, y) {
     var tooltip_offset_x = 10;
     var tooltip_offset_y = 10;
     var tooltip = d3.select("#tooltip");
 
     tooltip.html("" + 
-     "<b> " + dayScale(day) + ", " + hour.toString() + " - "+ (hour+1).toString() + "</b><br/>" +
+     "<b> " + wc.dayScale(day) + ", " + hour.toString() + " - "+ (hour+1).toString() + "</b><br/>" +
      "Average "+getFriendlyName(parameter)+": "+Math.round(value).toString() +" per Hour" );
 
     tooltip.style("visibility", "visible")
