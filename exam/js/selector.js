@@ -53,7 +53,12 @@ $(document).ready(function() {
 	    var value = $(".range-slider").val().split(',');
 	    barFrom = parseFloat(value[0]);
 	    barTo = parseFloat(value[1]);
-
+	    recreate_bar_chart();
+	},
+	onbarclicked: function() {
+	    var value = $(".range-slider").val().split(',');
+	    barFrom = parseFloat(value[0]);
+	    barTo = parseFloat(value[1]);
 	    recreate_bar_chart();
 	}
     });
