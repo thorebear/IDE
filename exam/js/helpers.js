@@ -14,21 +14,21 @@ function getColor(parameter) {
     }
 }
 
-function getColorFromMatchType(match) {
+function getColorFromMatchType(type) {
     var colorSet = colorbrewer.Set2[5];
-    if (match.group.startsWith("Group")) {
+    if (type.startsWith("Group")) {
 	return colorSet[0];
     }
-    if (match.group === "Round of 16") {
+    if (type === "Round of 16") {
 	return colorSet[1];
     }
-    if (match.group === "Quarter-finals") {
+    if (type === "Quarter-finals") {
 	return colorSet[2];
     }
-    if (match.group === "Semi-finals") {
+    if (type === "Semi-finals") {
 	return colorSet[3];
     }
-    if (match.group === "Bronze match" || match.group === "Final") {
+    if (type === "Bronze match" || type === "Final") {
 	return colorSet[4];
     }
 }

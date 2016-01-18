@@ -314,7 +314,7 @@ function addMatches() {
 	.attr("height", svg_height - margin_top - margin_bottom)
 	.style("opacity", 0.3)
 	.attr("fill", function(d) {
-	    return getColorFromMatchType(d);
+	    return getColorFromMatchType(d.group);
 	})
 	.each(function(match) {
 	    var _this = d3.select(this);
