@@ -39,6 +39,30 @@ $(document).ready(function() {
 
     $('#reportrange span').html(moment(fromDateSelected).format('MMMM D, YYYY') + ' - ' + moment(toDateSelected).format('MMMM D, YYYY'));
 
+    $('.range-slider').jRange({
+	from: -4,
+	to: 6,
+	showScale: false,
+	theme: "theme-blue",
+	step: 0.25,
+	format: '%s H',
+	width: 185,
+	showLabels: true,
+	isRange : true,
+	ondragend: function() {
+	    var value = $(".range-slider").val().split(',');
+	    barFrom = parseFloat(value[0]);
+	    barTo = parseFloat(value[1]);
+
+	    recreate_bar_chart();
+	}
+    });
+
+    $("#barChartParameterSelector").on("change", function() {
+	barParameter = $(this).val();
+	recreate_bar_chart();
+    });
+
 });
 
 // All selector code that needs data to be loaded!
@@ -62,8 +86,15 @@ function selector_init() {
     });
 }
 
+var barFrom = -2;
+var barTo = 4;
+var barParameter = "unique_users";
+
 
 function recreate_line_chart() {
     create_line_chart(dataSetSelected, fromDateSelected, toDateSelected);
 }
 
+function recreate_bar_chart() {
+    create_bar_chart(-barFrom, barTo, barParameter);
+}

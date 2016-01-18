@@ -2,7 +2,7 @@ var barchart_data;
 
 function bar_chart_init() {
     barchart_data = wc.hourData;
-    create_bar_chart(2,2, 'transferred_bytes');
+    create_bar_chart(2,4, 'unique_users');
 }
 
 function create_bar_chart(hoursBeforeMatch, hoursAfterMatch, parameter) {
@@ -10,8 +10,8 @@ function create_bar_chart(hoursBeforeMatch, hoursAfterMatch, parameter) {
     var team_data = {};
 
     wc.worldcup.forEach(function(match) {
-	var fromTime = match.date.clone().add(hoursBeforeMatch).hours();
-	var toTime = match.date.clone().add(2 + hoursAfterMatch).hours();
+	var fromTime = match.date.clone().add(- hoursBeforeMatch).hours();
+	var toTime = match.date.clone().add(hoursAfterMatch).hours();
 	var data = datefilter(barchart_data, fromTime, toTime);
 	match[parameter] = d3.sum(data, function(x) { return x[parameter] });
 	if (team_data[match.hometeam] === undefined) {
@@ -77,8 +77,8 @@ function create_bar_chart(hoursBeforeMatch, hoursAfterMatch, parameter) {
     bar_svg_width = parseInt(bar_svg.style("width"));
     bar_svg_height = parseInt(bar_svg.style("height"));
     bar_margin_bottom = 10;
-    bar_margin_right = 10;
-    bar_margin_left = 300;
+    bar_margin_right = 20;
+    bar_margin_left = 100;
     bar_margin_top = 10;
 
     var max_value = d3.max(countries, function(country) {
@@ -93,7 +93,7 @@ function create_bar_chart(hoursBeforeMatch, hoursAfterMatch, parameter) {
 	.rangeRoundBands([bar_margin_top, bar_svg_height - bar_margin_bottom - bar_margin_top], .1);
 
     var xScale = d3.scale.linear()
-	.range([bar_margin_left, bar_svg_width - bar_margin_right]);
+	.range([bar_margin_left, bar_svg_width - bar_margin_right]).nice();
 
     var yAxis = d3.svg.axis()
 	.scale(yScale)
@@ -101,9 +101,11 @@ function create_bar_chart(hoursBeforeMatch, hoursAfterMatch, parameter) {
 
     var xAxis = d3.svg.axis()
 	.scale(xScale)
+	.ticks(3)
+	.tickFormat(function(d) { return d + " " + getUnit(parameter); })
 	.orient("bottom");
 
-    var colorScale = d3.scale.category10();
+    var colorScale = d3.scale.ordinal().domain([0,4]).range(colorbrewer.Set2[5]);
 
     var layers = d3.layout.stack()(["group_result", "roundOf16_result",
 		       "quarterFinals_result",

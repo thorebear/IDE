@@ -16,12 +16,14 @@
 
       <!-- Our CSS -->
       <link rel="stylesheet" href="style.css" type="text/css" />
+
+
       <link rel="stylesheet" href="css/flag-icon.min.css" type="text/css" />
+      <link rel="stylesheet" href="css/jquery.range.css" type="text/css" />
 
       <!-- JQUERY -->
       <script type="text/javascript" 
 	      src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
 
       <script type="text/javascript"
 	      src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
@@ -53,6 +55,7 @@
       <script src="js/heatmap.js"></script>
       <script src="js/infohelper.js"></script>
       <script src="js/barchart.js"></script>
+      <script src="js/jquery.range-min.js"></script>
 
       <title>Interactive Data Exploration - Final project</title>
    </head>
@@ -83,98 +86,125 @@
 	     <option selected="selected" value="dayData">Daily</option>
 	   </select>
 	 </div>
-
+	 
 	 <div class="info_box" id="matches_type_info_box">
 	 </div>
        </div>
        <div class="col-sm-10">	 
 	 <svg id="line_chart" width="1100" height="500"></svg>
+       </div>
+       
+       <div class="col-sm-12 group-coloumn">
+	 <div class="col-sm-1 group col-md-offset-2">
+	   <span class="group_name">Group A:</span><br/>
+	   <div class="group_team"><div class="flag-icon flag-icon-br"></div> Brazil<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-no"></div> Norway<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-ma"></div> Morocco<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-gb-sct"></div> Scotland</div>
 	 </div>
+	 <div class="col-sm-1 group">
+	   <span class="group_name">Group B:</span><br/>
+	   <div class="group_team"><div class="flag-icon flag-icon-it"></div> Italy<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-cl"></div> Chile<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-at"></div> Austria<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-cm"></div> Cameroon</div>
+	 </div>
+	 <div class="col-sm-1 group">
+	   <span class="group_name">Group C:</span><br/>
+	   <div class="group_team"><div class="flag-icon flag-icon-fr"></div> France<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-dk"></div> Denmark<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-za"></div> South Africa<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-sa"></div> Saudi Arabia</div>
+	 </div>
+	 <div class="col-sm-1 group">
+	   <span class="group_name">Group D:</span><br/>
+	   <div class="group_team"><div class="flag-icon flag-icon-ng"></div> Nigeria<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-py"></div> Paraguay<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-es"></div> Spain<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-bg"></div> Bulgaria</div>
+	 </div>
+	 <div class="col-sm-1 group">
+	   <span class="group_name">Group E:</span><br/>
+	   <div class="group_team"><div class="flag-icon flag-icon-nl"></div> Netherlands<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-mx"></div> Mexico<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-be"></div> Belgium<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-kr"></div> Korea Republic</div>
+	 </div>
+	 <div class="col-sm-1 group">
+	   <span class="group_name">Group F:</span><br/>
+	   <div class="group_team"><div class="flag-icon flag-icon-de"></div> Germany<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-zz"></div> Yugoslavia<br/></div>
+	   <div class="group_team"><div class="group_team flag-icon flag-icon-ir"></div> Iran<br/></div>
+	   <div class="group_team"><div class="group_team flag-icon flag-icon-us"></div> USA</div>
+	 </div>
+	 <div class="col-sm-1 group">
+	   <span class="group_name">Group G:</span><br/>
+	   <div class="group_team"><div class="flag-icon flag-icon-ro"></div> Romania<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-gb-eng"></div> England<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-co"></div> Colombia<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-tn"></div> Tunisia</div>
+	 </div>
+	 <div class="col-sm-1 group">
+	   <span class="group_name">Group H:</span><br/>
+	   <div class="group_team"><div class="flag-icon flag-icon-ar"></div> Argentina<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-hr"></div> Croatia<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-jm"></div> Jamaica<br/></div>
+	   <div class="group_team"><div class="flag-icon flag-icon-jp"></div> Japan</div>
+	 </div>
+	 <div class="col-sm-1"></div>
+	 <div class="col-sm-1"></div>
+       </div>
+       <div class="col-sm-12">
+	 Tekst here
+       </div>
+
+       <div class="col-sm-2">
+	 <div class="range">
+	   Select parameter:
+	   <div class="selector-wrapper">
+	     <select class="selectpicker" id="barChartParameterSelector" data-width="178px">
+	       <option value="transferred_bytes">Traffic</option>
+	       <option selected="selected" value="unique_users">Unique users</option>
+	       <option value="total_hits">Requests</option>
+	       <option value="htmlhits">Pageviews</option>
+	     </select>
+	   </div>
+
+	   <br/>
+	   Select interval: <br/>
+	   <div style="padding-top:16px;">
+	     <input class="range-slider" type="hidden" value="-2,4" style="display: none;">
+	   </div>
+	 </div>
+	 <br />
+
+       </div>
+       <div class="col-sm-10">
+	 <svg id="barchart" width="1000" height="500"></svg>
+       </div>
+
+       
+       <div class="col-sm-12">
+	 <svg id="heatmap" width="1000" height="500"></svg>
+       </div>
      </div>
-     <div class="col-sm-12 group-coloumn">
-       <div class="col-sm-1 group col-md-offset-2">
-	 <span class="group_name">Group A:</span><br/>
-	 <div class="group_team"><div class="flag-icon flag-icon-br"></div> Brazil<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-no"></div> Norway<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-ma"></div> Morocco<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-gb-sct"></div> Scotland</div>
+     <div id="tooltip" style="position: absolute; visibility: hidden;"></div>
+     <div id="match_box1" class="tooltip_box" style="text-align:center;width:70px;position: absolute; visibility: hidden;" >
+       <div id="match_info1">
+	 <div class="home_team flag-icon flag-icon-gr"></div> -
+	 <div class="away_team flag-icon flag-icon-br"></div> <br />
+	 <span class="match_group" style="font-size:xx-small;line-height:0.8">Group B</span>
+	 <span class="match_time" style="font-size:xx-small;"><i>7/7/98 - 18:00<i/></span>
        </div>
-       <div class="col-sm-1 group">
-	 <span class="group_name">Group B:</span><br/>
-	 <div class="group_team"><div class="flag-icon flag-icon-it"></div> Italy<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-cl"></div> Chile<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-at"></div> Austria<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-cm"></div> Cameroon</div>
+     </div> 
+     <div id="match_box2" class="tooltip_box" style="text-align:center;width:70px;position: absolute; visibility: hidden;" >
+       <div id="match_info2">
+	 <div class="home_team flag-icon flag-icon-gr"></div> -
+	 <div class="away_team flag-icon flag-icon-br"></div> <br />
+	 <span class="match_group" style="font-size:xx-small;line-height:0.8">Group B</span>
+	 <span class="match_time" style="font-size:xx-small;"><i>7/7/98 - 18:00<i/></span>
        </div>
-       <div class="col-sm-1 group">
-	 <span class="group_name">Group C:</span><br/>
-	 <div class="group_team"><div class="flag-icon flag-icon-fr"></div> France<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-dk"></div> Denmark<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-za"></div> South Africa<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-sa"></div> Saudi Arabia</div>
-       </div>
-       <div class="col-sm-1 group">
-	 <span class="group_name">Group D:</span><br/>
-	 <div class="group_team"><div class="flag-icon flag-icon-ng"></div> Nigeria<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-py"></div> Paraguay<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-es"></div> Spain<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-bg"></div> Bulgaria</div>
-       </div>
-       <div class="col-sm-1 group">
-	 <span class="group_name">Group E:</span><br/>
-	 <div class="group_team"><div class="flag-icon flag-icon-nl"></div> Netherlands<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-mx"></div> Mexico<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-be"></div> Belgium<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-kr"></div> Korea Republic</div>
-       </div>
-       <div class="col-sm-1 group">
-	 <span class="group_name">Group F:</span><br/>
-	 <div class="group_team"><div class="flag-icon flag-icon-de"></div> Germany<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-zz"></div> Yugoslavia<br/></div>
-	 <div class="group_team"><div class="group_team flag-icon flag-icon-ir"></div> Iran<br/></div>
-	 <div class="group_team"><div class="group_team flag-icon flag-icon-us"></div> USA</div>
-       </div>
-       <div class="col-sm-1 group">
-	 <span class="group_name">Group G:</span><br/>
-	 <div class="group_team"><div class="flag-icon flag-icon-ro"></div> Romania<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-gb-eng"></div> England<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-co"></div> Colombia<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-tn"></div> Tunisia</div>
-       </div>
-       <div class="col-sm-1 group">
-	 <span class="group_name">Group H:</span><br/>
-	 <div class="group_team"><div class="flag-icon flag-icon-ar"></div> Argentina<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-hr"></div> Croatia<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-jm"></div> Jamaica<br/></div>
-	 <div class="group_team"><div class="flag-icon flag-icon-jp"></div> Japan</div>
-       </div>
-       <div class="col-sm-1"></div>
-       <div class="col-sm-1"></div>
      </div>
-     <div class="col-sm-12">
-       <svg id="barchart" width="1000" height="500"></svg>
-     </div>
-     <div class="col-sm-12">
-       <svg id="heatmap" width="1000" height="500"></svg>
-     </div>
-</div>
-<div id="tooltip" style="position: absolute; visibility: hidden;"></div>
-<div id="match_box1" class="tooltip_box" style="text-align:center;width:70px;position: absolute; visibility: hidden;" >
-  <div id="match_info1">
-    <div class="home_team flag-icon flag-icon-gr"></div> -
-    <div class="away_team flag-icon flag-icon-br"></div> <br />
-    <span class="match_group" style="font-size:xx-small;line-height:0.8">Group B</span>
-    <span class="match_time" style="font-size:xx-small;"><i>7/7/98 - 18:00<i/></span>
-  </div>
-</div> 
-<div id="match_box2" class="tooltip_box" style="text-align:center;width:70px;position: absolute; visibility: hidden;" >
-  <div id="match_info2">
-    <div class="home_team flag-icon flag-icon-gr"></div> -
-    <div class="away_team flag-icon flag-icon-br"></div> <br />
-    <span class="match_group" style="font-size:xx-small;line-height:0.8">Group B</span>
-    <span class="match_time" style="font-size:xx-small;"><i>7/7/98 - 18:00<i/></span>
-  </div>
-</div>
 </div>
 
 </body>
