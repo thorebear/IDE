@@ -105,7 +105,10 @@ function create_bar_chart(hoursBeforeMatch, hoursAfterMatch, parameter) {
 	.tickFormat(function(d) { return d3.format("s")(d) + " " + getUnit(parameter); })
 	.orient("bottom");
 
-    var colorScale = d3.scale.ordinal().domain([0,4]).range(colorbrewer.Set2[5]);
+    var colorScale = d3.scale.ordinal()
+	.domain(["group_result", "roundOf16_result",
+		 "quarterFinals_result","semifinals_result", "finals_result"])
+	.range(colorbrewer.Set2[5]);
 
     var layers = d3.layout.stack()(["group_result", "roundOf16_result",
 		       "quarterFinals_result",
