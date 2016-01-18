@@ -160,34 +160,43 @@
        Tekst here
      </div>
 
-       <div class="col-sm-2">
-	 <div class="range">
-	   <div class="selector-wrapper">
-	     <select class="selectpicker" id="barChartParameterSelector" data-width="178px">
-	       <option value="transferred_bytes">Traffic</option>
-	       <option selected="selected" value="unique_users">Unique users</option>
-	       <option value="total_hits">Requests</option>
-	       <option value="htmlhits">Pageviews</option>
-	     </select>
-	   </div>
-
-	   <br/>
-	   Select interval: <br/>
-	   <div style="padding-top:16px;">
-	     <input class="range-slider" type="hidden" value="-2,4" style="display: none;">
-	   </div>
+     <div class="col-sm-2">
+       <div class="range">
+	 <div class="selector-wrapper">
+	   <select class="selectpicker" id="barChartParameterSelector" data-width="178px">
+	     <option value="transferred_bytes">Traffic</option>
+	     <option selected="selected" value="unique_users">Unique users</option>
+	     <option value="total_hits">Requests</option>
+	     <option value="htmlhits">Pageviews</option>
+	   </select>
 	 </div>
-	 <div class="range matches_type_info_box">
+
+	 <br/>
+	 Select interval: <br/>
+	 <div style="padding-top:16px;">
+	   <input class="range-slider" type="hidden" value="-2,4" style="display: none;">
 	 </div>
        </div>
-       <div class="col-sm-10">
-	 <svg id="barchart" width="1000" height="500"></svg>
+       <div class="range matches_type_info_box">
        </div>
+     </div>
+     <div class="col-sm-10">
+       <svg id="barchart" width="1000" height="500"></svg>
+     </div>
 
-       
-       <div class="col-sm-12">
-	 <svg id="heatmap" width="1000" height="500"></svg>
+     <div class="col-sm-2">
+       <div class="selector-wrapper" style="padding-top:50px">
+	 <select class="selectpicker" id="heatmapParameterSelector" data-width="178px">
+	   <option value="transferred_bytes">Traffic</option>
+	   <option selected="selected" value="unique_users">Unique users</option>
+	   <option value="total_hits">Requests</option>
+	   <option value="htmlhits">Pageviews</option>
+	 </select>
        </div>
+     </div>
+     <div class="col-sm-10">
+       <svg id="heatmap" width="1000" height="500"></svg>
+     </div>
      </div>
      <div id="tooltip" style="position: absolute; visibility: hidden;"></div>
      <div id="match_box1" class="tooltip_box" style="text-align:center;width:70px;position: absolute; visibility: hidden;" >

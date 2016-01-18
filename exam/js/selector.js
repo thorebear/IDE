@@ -68,6 +68,9 @@ $(document).ready(function() {
 	recreate_bar_chart();
     });
 
+    $("#heatmapParameterSelector").on("change", function() {
+	create_heat_map($(this).val());
+    });
 });
 
 // All selector code that needs data to be loaded!
