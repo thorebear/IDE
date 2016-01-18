@@ -3,7 +3,7 @@ body {
 }
 
 div.container {
-    width: 1600px;
+    width: 1300px;
 }
 .graph {
     text-align: center;
@@ -41,6 +41,10 @@ div.container {
     cursor:pointer;
 }
 
+.group-coloumn {
+    margin-left: 50px;
+}
+
 .range {
     border: 1px solid;
     border-radius: 5px;
@@ -50,6 +54,8 @@ div.container {
     padding: 5px;
     width: 200px;
     cursor:pointer;
+    margin-top: 10px;
+    padding-bottom: 10px;
 }
 
 .group_name {

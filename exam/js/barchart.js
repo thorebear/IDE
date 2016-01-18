@@ -102,7 +102,7 @@ function create_bar_chart(hoursBeforeMatch, hoursAfterMatch, parameter) {
     var xAxis = d3.svg.axis()
 	.scale(xScale)
 	.ticks(3)
-	.tickFormat(function(d) { return d + " " + getUnit(parameter); })
+	.tickFormat(function(d) { return d3.format("s")(d) + " " + getUnit(parameter); })
 	.orient("bottom");
 
     var colorScale = d3.scale.ordinal().domain([0,4]).range(colorbrewer.Set2[5]);

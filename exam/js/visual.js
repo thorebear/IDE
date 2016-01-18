@@ -2,8 +2,8 @@ function init() {
     create_line_chart(dataSetSelected, fromDateSelected, toDateSelected);
 }
 
-var margin_left = 120;
-var margin_right = 120;
+var margin_left = 90;
+var margin_right = 90;
 var margin_top = 100;
 var margin_bottom = 30;
 var svg_width, svg_height, svg;
@@ -141,6 +141,7 @@ function addLine(parameter){
     var yAxis = d3.svg.axis()
         .scale(yScale)
         .orient(getYAxisOrientation(parameter))
+	.tickFormat(function(d) { return d3.format("s")(d) })
         .ticks(3);
 
     //Create Y axis
@@ -161,13 +162,13 @@ function getYAxisPosition(parameter) {
 	return svg_width-margin_right + 10;
     }
     if (parameter === 'unique_users') {
-	return svg_width-margin_right+70;
+	return svg_width-margin_right + 50;
     }
     if (parameter === 'total_hits') {
 	return margin_left -10 ;
     }
     if (parameter === 'htmlhits') {
-	return margin_left - 70;
+	return margin_left - 50;
     }
 }
 

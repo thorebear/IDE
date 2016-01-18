@@ -1,6 +1,5 @@
 $(document).ready(function() {
-
-    d3.select("#matches_type_info_box")
+    d3.selectAll(".matches_type_info_box")
 	.html(`
 	      <svg width="4" height="14">
 	      <rect width="4" height="14" y="6" style="fill:` + 
