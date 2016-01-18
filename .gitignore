@@ -5,7 +5,9 @@
 /d3/**/*
 /exam/logs/**/*.gz
 /exam/logs/data/*
+/exam/logs/data
 /exam/logs/output/*
 /exam/logs/output.old/*
 /exam/logs/nohup.out
+*.old.tar.gz
 

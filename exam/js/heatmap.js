@@ -11,12 +11,16 @@ function create_heat_map(parameter){
         margin_right = 40,
         margin_top = 60,
         margin_bottom = 60,
-        xScale, yScale, colorScale;
+        boxPadding = 4;
     
     var minDay = 0,
         maxDay = 6,
+        nDays  = 7,
         minHour = 0,
-        maxHour = 23;
+        maxHour = 23
+        nHours  = 24;
+
+    var xScale, yScale, colorScale;
 
     var wcData  = wc['hourData'];
     var tmpData = extract_heatmap_data(wcData, parameter);
@@ -31,8 +35,9 @@ function create_heat_map(parameter){
 
     var svg_width = parseInt(hm_svg.style("width"));
     var svg_height = parseInt(hm_svg.style("height"));
-    var boxwidth = (svg_width - margin_right ) / 24;
-    var boxheight = (svg_height - margin_bottom ) / 7;
+
+    var hm_width = svg_width - margin_left - margin_right,
+        hm_height = svg_height - margin_top - margin_bottom;
 
     var colorScale = d3.scale.linear()
       .domain([0, maxPar])
@@ -40,11 +45,11 @@ function create_heat_map(parameter){
 
     var xScale = d3.scale.linear()
       .domain([minHour, maxHour+1])
-      .range([margin_left, svg_width - margin_right - boxwidth]);
+      .range([margin_left, margin_left + hm_width]);
 
     var yScale = d3.scale.linear()
       .domain([minDay, maxDay])
-      .range([margin_top, svg_height - margin_bottom - boxheight]);
+      .range([margin_top, (nDays/(nDays+1)) *(margin_top + hm_height )]);
 
     dayScale = d3.scale.ordinal()
       .domain([1,2,3,4,5,6,0])
@@ -53,12 +58,12 @@ function create_heat_map(parameter){
     var xAxis = d3.svg.axis()
       .scale(xScale)
       .orient('bottom')
-      .ticks(12+1);
+      .ticks(nHours+1);
 
     var yAxis = d3.svg.axis()
       .scale(yScale)
       .orient('left')
-      .ticks(7)
+      .ticks(nDays)
       .tickFormat(function(d){return dayScale(d)});
 
     hm_svg.selectAll('rect')
@@ -72,8 +77,8 @@ function create_heat_map(parameter){
       .attr('y', function(d){
         return yScale(d.day);
       })
-      .attr('width', boxwidth)
-      .attr('height', boxheight)
+      .attr('width', hm_width/nHours-boxPadding)
+      .attr('height', hm_height/nDays-boxPadding)
       .attr('fill', function(d) {
         return colorScale(d.average);
       })
@@ -89,12 +94,12 @@ function create_heat_map(parameter){
 
     hm_svg.append('g')
       .attr('class', 'y axis')
-      .attr('transform', 'translate('+margin_left+', '+boxheight*0.5+')')
+      .attr('transform', 'translate('+margin_left+', '+hm_height*0.5/nDays+')')
       .call(yAxis);
 
     hm_svg.append('g')
       .attr('class', 'x axis')
-      .attr('transform', 'translate( 0, '+(svg_height-margin_bottom)+')')
+      .attr('transform', 'translate( '+(-boxPadding/2)+', '+(svg_height-margin_bottom)+')')
       .call(xAxis);
 
 }
@@ -187,8 +192,8 @@ function showTooltipHeatMap(day, hour, parameter, value, x, y) {
     var tooltip = d3.select("#tooltip");
 
     tooltip.html("" + 
-     "<b> " + dayScale(day) + ": " + hour.toString() + "-"+ (hour+1).toString() + "</b><br/>" +
-     "Average "+parameter+": "+Math.round(value).toString() );
+     "<b> " + dayScale(day) + ", " + hour.toString() + " - "+ (hour+1).toString() + "</b><br/>" +
+     "Average "+getFriendlyName(parameter)+": "+Math.round(value).toString() +" per Hour" );
 
     tooltip.style("visibility", "visible")
       .style("top", y + tooltip_offset_y + "px")
