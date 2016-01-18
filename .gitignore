@@ -3,9 +3,9 @@
 /**/*.pyc
 
 /d3/**/*
-/exam/logs/data/*.gz
+/exam/logs/**/*.gz
 /exam/logs/data/*
 /exam/logs/output/*
-/exam/logs/first\ run/*
+/exam/logs/output.old/*
 /exam/logs/nohup.out
 

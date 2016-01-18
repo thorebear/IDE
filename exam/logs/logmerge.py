@@ -11,24 +11,47 @@ import json
 import os
 from data import LogKeys as LK
 import numpy as np
+from pprint import pprint
 
-MIN_VIEWS_PER_HOUR = 20
 
-
-def exportlog(log, fname):
+def exportlog(log, fname, reduceuu=True):
+    outlog = deepcopy(log)
+    for entry in outlog:
+        if reduceuu:
+            entry[LK.UUSERS] = len(entry[LK.UUSERS])
+        else:
+            entry[LK.UUSERS] = list(entry[LK.UUSERS])
+    s = "count of unique users" if reduceuu else "unique users as list"
+    print "exporting log to {} with".format(fname, s)
     with open(fname, 'w') as f:
-        json.dump(log, f)
+        json.dump(outlog, f)
 
 
 def importlog(fname):
     with open(fname) as f:
         log = json.load(f)
+    try:
+        for entry in log:
+            entry[LK.UUSERS] = set(entry[LK.UUSERS])
+    except TypeError as e:
+        print e
     return log
 
 
-def printlog(log, skipkeys=False):
+def printlog(log):
     """ Pretty print a log """
-    print json.dumps(log, skipkeys=skipkeys, sort_keys=True, indent=2, separators=(',', ': '))
+    print json.dumps(log, sort_keys=True, indent=2, separators=(',', ': '))
+
+
+def ep(entry):
+    print "{}".format(entry[LK.FROM])
+    print "  HTMLHITS: {:>10}".format(entry[LK.HTMLHITS])
+    print "  UUSERS  : {:>10}".format(len(entry[LK.UUSERS]))
+
+
+def lp(log):
+    for entry in log:
+        ep(entry)
 
 
 def checklog(log):
@@ -68,11 +91,9 @@ def mergelogs(log1, log2):
         return log2
     log_out[LK.TOTHITS] = log1[LK.TOTHITS] + log2[LK.TOTHITS]
 
-    # ALERT! KNOWLEDGE LOST! INTERPOLATING VIA RATIOS
-    hits_per_uuser_ratio1 = 1.0 * log1[LK.TOTHITS] / log1[LK.UUSERS]
-    hits_per_uuser_ratio2 = 1.0 * log2[LK.TOTHITS] / log2[LK.UUSERS]
-    avg_ratio = (hits_per_uuser_ratio1 + hits_per_uuser_ratio2) / 2.0
-    log_out[LK.UUSERS] = int(log_out[LK.TOTHITS] / avg_ratio)
+    uusers1 = set(log1[LK.UUSERS])
+    uusers2 = set(log2[LK.UUSERS])
+    log_out[LK.UUSERS] = uusers1.union(uusers2)
 
     transfer = log1[LK.TRANSFERBYTES] + log2[LK.TRANSFERBYTES]
     log_out[LK.TRANSFERBYTES] = transfer
@@ -81,27 +102,28 @@ def mergelogs(log1, log2):
 
     log_out[LK.HTMLHITS] = log1[LK.HTMLHITS] + log2[LK.HTMLHITS]
 
-    log_out[LK.HTTPMETHOD] = deepcopy(log1[LK.HTTPMETHOD])
-    for key in log2[LK.HTTPMETHOD]:
-        log_out[LK.HTTPMETHOD][key] += log2[LK.HTTPMETHOD][key]
-
-    log_out[LK.HTTPSTATUS] = deepcopy(log1[LK.HTTPSTATUS])
-    for key in log2[LK.HTTPSTATUS]:
-        log_out[LK.HTTPSTATUS][key] += log2[LK.HTTPSTATUS][key]
-
-    log_out[LK.HTTPVERSION] = deepcopy(log1[LK.HTTPVERSION])
-    for key in log2[LK.HTTPVERSION]:
-        log_out[LK.HTTPVERSION][key] += log2[LK.HTTPVERSION][key]
-
-#    # remove views when finding errors
-#    return log_out
-    log_out[LK.VIEWSPERPAGE] = deepcopy(log1[LK.VIEWSPERPAGE])
-    for key in log2[LK.VIEWSPERPAGE]:
-        if key in log1[LK.VIEWSPERPAGE]:
-            log_out[LK.VIEWSPERPAGE][key] += log2[LK.VIEWSPERPAGE][key]
-        else:
-            log_out[LK.VIEWSPERPAGE][key] = log2[LK.VIEWSPERPAGE][key]
     return log_out
+
+
+def importlogs(logfilelist):
+    nestedlogs = []
+    for fname in logfilelist:
+        log = importlog(fname)
+        nestedlogs.append(log)
+    return nestedlogs
+
+
+def flattenlogs(nestedlogs):
+    entries = []
+    for log in nestedlogs:
+        entries.extend(log)
+    return entries
+
+
+def gluesimultaneous(log):
+    for i, entry in enumerate(log[:-1]):
+        if entry[LK.FROM] == log[i+1][LK.FROM]:
+            print i, i+1, entry[LK.FROM]
 
 
 def gatherlogs(Loglist):
@@ -123,6 +145,32 @@ def gatherlogs(Loglist):
     return totlog
 
 
+#def gatherlogs(Loglist):
+#    """ glue a list of logs together, merging the entries at the ends """
+#    totlog = []
+#    for logfile in Loglist:
+#        log = importlog(logfile)
+#        try:
+#            print len(log)
+#            if totlog[-1][LK.FROM] == log[0][LK.FROM]:
+#                print "Same time: ", totlog[-1][LK.FROM]
+#                lastentry = totlog.pop()
+#                nextentry = log[0]
+#                mergedentry = mergelogs(lastentry, nextentry)
+#                if not mergedentry:
+#                    raise ValueError("Merged log invalid")
+#                totlog.append(mergedentry)
+#                totlog.extend(log[1:])
+#            else:
+#                totlog.extend(log)
+#        except IndexError as e:
+#            if totlog == [] or log == []:
+#                pass
+#            else:
+#                raise e
+#    return totlog
+
+
 def reducelogs(logs, factor):
     """ Compress a single logfile with a factor on time-resolution,
         by merging 'factor' entries into new entries"""
@@ -137,77 +185,61 @@ def reducelogs(logs, factor):
         for i in range(factor-1):
             entry = mergelogs(entry, logs[i_start+i+1])
         newlog.append(entry)
-#        print entry[LK.FROM]
     return newlog
 
 
-def cleanpageviews(log, hrsperentry=1):
-    x = MIN_VIEWS_PER_HOUR * hrsperentry  # views per hour?
-    for entry in log:
-        vpp = {k: v for k, v in entry[LK.VIEWSPERPAGE].iteritems() if v >= x}
-        other = [v for k, v in entry[LK.VIEWSPERPAGE].iteritems() if v < x]
-        value = reduce(lambda a, b: a+b, other, 0)
-        entry[LK.VIEWSPERPAGE] = vpp
-        if 'other' not in entry[LK.VIEWSPERPAGE]:
-            entry[LK.VIEWSPERPAGE]['other'] = value
-        else:
-            entry[LK.VIEWSPERPAGE]['other'] += value
+def alignlog(log, utc_hour='22'):
+        for i, entry in enumerate(log):
+            hour, minute = entry[LK.FROM][11:13], entry[LK.FROM][14:16]
+            if hour == utc_hour and minute == '00':
+                break
+        return log[i:]
 
 
 def log2lists(logs):
-    a, b, c, d, e, f, g, h, i = [], [], [], [], [], [], [], [], []
+    a, b, c, d, e, f = [], [], [], [], [], []
     for log in logs:
         a.append([v for k, v in log.iteritems() if k == LK.FROM])
         b.append([v for k, v in log.iteritems() if k == LK.UUSERS])
         c.append([v for k, v in log.iteritems() if k == LK.TOTHITS])
         d.append([v for k, v in log.iteritems() if k == LK.TRANSFERBYTES])
         e.append([v for k, v in log.iteritems() if k == LK.HTMLHITS])
-        f.append([v for k, v in log.iteritems() if k == LK.HTTPMETHOD])
-        g.append([v for k, v in log.iteritems() if k == LK.HTTPSTATUS])
-        h.append([v for k, v in log.iteritems() if k == LK.HTTPVERSION])
-        i.append([v for k, v in log.iteritems() if k == LK.VIEWSPERPAGE])
+        f.append([v for k, v in log.iteritems() if k == LK.HTTPSTATUS])
     lists = {LK.FROM: a,
              LK.UUSERS: b,
              LK.TOTHITS: c,
              LK.TRANSFERBYTES: d,
              LK.HTMLHITS: e,
-             LK.HTTPMETHOD: f,
-             LK.HTTPSTATUS: g,
-             LK.HTTPVERSION: h,
-             LK.VIEWSPERPAGE: i}
+             LK.HTTPSTATUS: f}
     return lists
 
 
 if __name__ == '__main__':
     logdir = 'output'
-    routdir = 'final/'
-    coutdir = 'clean/'
+    routdir = 'test/'
     outname = 'wc98_log_'
     ext = 'hour.json'
     interval = 0.25
 
     Logs = createloglist(logdir)
-    logs = gatherlogs(Logs)
+    log = gatherlogs(Logs)
+    log = alignlog(log)
 
-    rlog = deepcopy(logs)
-    clog = deepcopy(logs)
+    path = logdir + '/' + outname + 'gathered.json'
+    exportlog(log, path, reduceuu=False)
+
+    rlog = deepcopy(log)
 
     for rfact, factor in [(1, 1), (4, 4), (2, 8), (3, 24), (2, 48), (2, 96)]:
-        rpath = routdir + outname + str(int(interval*factor)) + ext
-        cpath = coutdir + outname + str(int(interval*factor)) + ext
+        hrs = int(interval*factor)
+        hrs = '0.25' if not hrs else str(hrs)
+        rpath = routdir + outname + hrs + ext
         rlog = reducelogs(rlog, rfact)
-        clog = reducelogs(clog, rfact)
         print "logs reduced by factor {}".format(factor)
-        print "interval is now " + str(int(interval * factor)) + " hours"
+        print "interval is now " + hrs + " hours"
         print "Testing all entries have timestamp, ", checklog(rlog)
-        cleanpageviews(clog, hrsperentry=factor*interval)
         exportlog(rlog, rpath)
-        exportlog(clog, cpath)
 
     rpath = routdir + 'wc98_aggr.json'
     raggregated = reduce(mergelogs, rlog)
-    exportlog(raggregated, rpath)
-
-    cpath = coutdir + 'wc98_aggr.json'
-    caggregated = reduce(mergelogs, clog)
-    exportlog(caggregated, cpath)
+    exportlog([raggregated], rpath)

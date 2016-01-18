@@ -1,8 +1,0 @@
-#!/bin/bash
-for FNAME in input/*.gz 
-do
-	FILE=${FNAME%.*}
-	echo $FILE
-	gzip -dc $FILE.gz | bin/recreate state/object_mappings.sort > $FILE.log
-	./data.py output/$FILE.tmp output/$FILE.json
-rm output/$FILE.tmp
