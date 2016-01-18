@@ -33,21 +33,9 @@ def parsetimeinterval(tstr, timeleap, timefmt):
 
 def logreduce(workfile, timeleap=900):
     uuserid = 0
-#    username1 = 1      # unused - always '-'
-#    username2 = 2      # unused - always '-'
     time_stamp = 3
-#    time_offset = 4    # unused - allways '+0000'
-#    http_method = 5
     http_url = 6
-#    http_version = 7   # unused
-#    http_status = 8    # unused
     transfer = 9
-#    httpmethods = {'GET': 0, 'HEAD': 0, 'POST': 0, 'PUT': 0, 'DELETE': 0,
-#                   'TRACE': 0, 'OPTIONS': 0, 'CONNECT': 0, 'OTHER': 0}
-#    httpversioncodes = {'HTTP/0.9': 0, 'HTTP/1.0': 0,
-#                        'HTTP/1.1': 0, 'HTTP/X.X': 0}
-#    httpstatuscodes = {'1xx': 0, '2xx': 0, '3xx': 0,
-#                       '4xx': 0, '5xx': 0, '-xx': 0}
     logtimefmt = "%d/%b/%Y:%H:%M:%S"
     jsontimefmt = "%Y-%m-%dT%H:%M:%S.000Z"
     progress = "{:<20}: lines processed: {:>20}"
@@ -87,14 +75,12 @@ def logreduce(workfile, timeleap=900):
                 logentry[LK.TOTHITS] = tothits
                 logentry[LK.TRANSFERBYTES] = agg_transfer
                 logentry[LK.HTMLHITS] = htmlhits
-
                 # store aggregated entry in bigger log associated with time
                 log.append(logentry)
                 # reset counters, etc.
                 currenttimegroup = timegroup
                 uniqueusers = set()
                 tothits, htmlhits, agg_transfer = 0, 0, 0
-
             # update all aggregators
             uniqueusers.add(int(item[uuserid]))
             tothits += 1
@@ -114,7 +100,6 @@ def logreduce(workfile, timeleap=900):
                 print progress.format(workfile, linenumber)
             # read next line and do while check
             line = f.readline()
-
         # add last entry
         print progress.format(workfile, linenumber)
         try:
