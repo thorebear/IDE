@@ -1,15 +1,35 @@
 function getColor(parameter) {
+    var colorSet = colorbrewer.Set1[4];
     if (parameter === 'transferred_bytes'){
-	return 'orange';
+	return colorSet[0];
     }
     if (parameter === 'unique_users') {
-	return 'blue';
+	return colorSet[1];
     }
     if (parameter === 'total_hits') {
-	return 'green';
+	return colorSet[2];
     }
     if (parameter === 'htmlhits') {
-	return 'red';
+	return colorSet[3];
+    }
+}
+
+function getColorFromMatchType(match) {
+    var colorSet = colorbrewer.Set2[5];
+    if (match.group.startsWith("Group")) {
+	return colorSet[0];
+    }
+    if (match.group === "Round of 16") {
+	return colorSet[1];
+    }
+    if (match.group === "Quarter-finals") {
+	return colorSet[2];
+    }
+    if (match.group === "Semi-finals") {
+	return colorSet[3];
+    }
+    if (match.group === "Bronze match" || match.group === "Final") {
+	return colorSet[4];
     }
 }
 
@@ -30,7 +50,7 @@ function getFriendlyName(parameter) {
 
 function getUnit(parameter) {
     if (parameter === 'transferred_bytes'){
-	return 'GB';
+	return 'MB';
     }
     if (parameter === 'unique_users') {
 	return 'users';

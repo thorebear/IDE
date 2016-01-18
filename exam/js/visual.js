@@ -312,7 +312,7 @@ function addMatches() {
 	    return xScale(d.date.clone().add(2).hours()) - xScale(d.date);
 	})
 	.attr("height", svg_height - margin_top - margin_bottom)
-	.style("opacity", 0.2)
+	.style("opacity", 0.3)
 	.attr("fill", function(d) {
 	    return getColorFromMatchType(d);
 	})
@@ -333,24 +333,6 @@ function addMatches() {
 		hideMatchInfo();
 	    });
 	});
-}
-
-function getColorFromMatchType(match) {
-    if (match.group.startsWith("Group")) {
-	return "grey";
-    }
-    if (match.group === "Round of 16") {
-	return "blue";
-    }
-    if (match.group === "Quarter-finals") {
-	return "darkblue";
-    }
-    if (match.group === "Semi-finals") {
-	return "black";
-    }
-    if (match.group === "Bronze match" || match.group === "Final") {
-	return "red";
-    }
 }
 
 

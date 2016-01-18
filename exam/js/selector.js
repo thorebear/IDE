@@ -17,9 +17,12 @@ $(document).ready(function() {
 		format: 'DD-MM-YYYY'
 	    },
             ranges:{
-		'World Cup' : [new Date("Jun 10 1998"), new Date("Jul 12 1998 Jul 23:59:59 GMT+0200 (CEST)")],
-		'Group stage' : [new Date("Jun 10 1998"), new Date("Jun 26 1998 23:59:59 GMT+0200 (CEST)")], 
-		'Playoffs': [new Date("Jun 27 1998"), new Date("Jul 12 1998 23:59:59 GMT+0200 (CEST)")]
+		'World Cup' : [new Date("Jun 10 1998"),
+			       new Date("Jul 12 1998 Jul 23:59:59 GMT+0200 (CEST)")],
+		'Group stage' : [new Date("Jun 10 1998"),
+				 new Date("Jun 26 1998 23:59:59 GMT+0200 (CEST)")], 
+		'Playoffs': [new Date("Jun 27 1998"),
+			     new Date("Jul 12 1998 23:59:59 GMT+0200 (CEST)")]
             },
 	    "startDate": fromDateSelected,
 	    "endDate": toDateSelected,
@@ -53,7 +56,7 @@ function selector_init() {
 
 	_this.on("mouseout", function() {
 	    matches.forEach(function(match, index) {
-		svg.select("#" + getMatchIdentifier(match)).transition().style("opacity", 0.2);
+		svg.select("#" + getMatchIdentifier(match)).transition().style("opacity", 0.3);
 	    });
 	});
     });
