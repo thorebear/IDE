@@ -157,6 +157,11 @@ function getWeek( d ) {
   var weekNr = 1 + Math.ceil(dayDiff / 7);    
   return weekNr;    
 }
+wc.weeks  = [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
+wc.nWeeks = wc.weeks.length;
+wc.weekScale = d3.scale.ordinal()
+  .domain(d3.range(wc.nWeeks))
+  .range(wc.weeks);
 
 wc.dayScale = d3.scale.ordinal()
       .domain([1,2,3,4,5,6,0])

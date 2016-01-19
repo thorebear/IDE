@@ -20,16 +20,21 @@ function create_heat_map(parameter){
     var xScale, yScale, colorScale;
 
     var wcData  = wc['hourData'];
-    var tmpData = extract_heatmap_data(wcData, parameter);
+    // cut the initial 3 days to start on a 'fresh' week
+    var tmpData = extract_heatmap_data(wcData.slice(72), parameter); 
     var hmData  = aggregate_heatmap_data(tmpData);
+    console.log(wcData.slice(72))
+
+    var values  = hmData.map(function(obj){ return obj.max });
+    var maxParValue = Math.max(...values);
+
+    // 'start' the bar-chart with initial-valus
+    create_activity_comparison(hmData[47], parameter, getColor(parameter), maxParValue);
 
     var values  = hmData.map(function(obj){ return obj.average });
     var maxPar  = Math.max(...values),
         minPar  = Math.min(...values);
-
-    // 'start' the bar-chart with initial-valus
-    create_activity_comparison(hmData[130], parameter);
-
+    
     hm_svg = d3.select("#heatmap");
     hm_svg.html("");
 
@@ -84,8 +89,15 @@ function create_heat_map(parameter){
         _this.on("mousemove", function() {
           showTooltipHeatMap(d.day, d.hour, parameter, d.average, d3.event.pageX, d3.event.pageY);
         });
+        _this.on("mouseover", function() {
+          update_activity_comparison(d, parameter, colorScale(d.average))
+        });
+        _this.on("click", function() {
+          create_activity_comparison(d, parameter, colorScale(d.average), maxParValue);
+        });
         _this.on("mouseout", function() {
           hideTooltipHeatMap();
+          //update_activity_comparison([] , parameter, colorScale(d.average))
         });
       });
 
@@ -125,6 +137,7 @@ function aggregate_heatmap_data(hm_data){
         par = hm_data[0]['parameter'],
         sum = 0,
         avg = 0;
+        max = 0;
     var out = [ {'day':day, 'hour':hour, 'sum':sum, 'average':avg, 'parameter':[{'week': week, parameter:par}] } ];
     for (var i = 1; i < hm_data.length; i++){
       found = 0;
@@ -145,6 +158,8 @@ function aggregate_heatmap_data(hm_data){
       }
     }
     for (var i = 0; i < out.length; i++){  
+        pars = out[i].parameter.map(function(obj){return obj.parameter});
+        out[i]['max'] = Math.max(...pars);
         sum = getSum(out[i]['parameter']);
         out[i]['sum'] = sum;
         out[i]['average'] = sum / out[i]['parameter'].length;
