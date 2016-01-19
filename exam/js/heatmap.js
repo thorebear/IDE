@@ -1,5 +1,7 @@
 function heatmap_init() {
     console.log("Initializing the heatmap");
+    hm_svg = d3.select("#heatmap");
+    hm_svg.select('.errormessage').remove();
     create_heat_map('unique_users');
 }
 
