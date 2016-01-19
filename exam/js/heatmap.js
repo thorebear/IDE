@@ -202,7 +202,7 @@ function showTooltipHeatMap(day, hour, parameter, value, x, y) {
 		 "<b> " + wc.dayScale(day) + ", " + hour.toString()
 		 + ":00" + " - "+ (hour+1).toString() + ":00" + "</b><br/>" +
 		 "Average "+getFriendlyName(parameter).toLowerCase() +
-		 ": "+ Math.round(value).toString() + " per hour" );
+		 ":<br/>"+ Math.round(value).toString() + " "+ getUnit(parameter) +" per hour" );
 
     tooltip.style("visibility", "visible")
 	.style("top", y + tooltip_offset_y + "px")
