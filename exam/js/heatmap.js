@@ -5,8 +5,8 @@ function heatmap_init() {
 
 function create_heat_map(parameter){
     var margin_left = 100,
-        margin_right = 40,
-        margin_top = 60,
+        margin_right = 20,
+        margin_top = 20,
         margin_bottom = 60,
         boxPadding = 4;
     
@@ -44,28 +44,35 @@ function create_heat_map(parameter){
         hm_height = svg_height - margin_top - margin_bottom;
 
     var colorScale = d3.scale.linear()
-      .domain([0, maxPar])
-      .range(['white', getColor(parameter) ]);
+	.domain([0, maxPar])
+	.range(['white', getColor(parameter) ]);
 
     var xScale = d3.scale.linear()
-      .domain([minHour, maxHour+1])
-      .range([margin_left, margin_left + hm_width]);
+	.domain([minHour, maxHour+1])
+	.range([margin_left, margin_left + hm_width]);
 
     var yScale = d3.scale.linear()
-      .domain([minDay, maxDay])
-      .range([margin_top, (nDays/(nDays+1)) *(margin_top + hm_height )]);
+	.domain([minDay, maxDay])
+	.range([margin_top, (nDays/(nDays+1)) *(margin_top + hm_height )]);
 
 
     var xAxis = d3.svg.axis()
-      .scale(xScale)
-      .orient('bottom')
-      .ticks(nHours+1);
+	.scale(xScale)
+	.orient('bottom')
+	.tickFormat(function(d, i) {
+	    if (i % 2 === 0) {
+		return d + ":00";
+	    } else {
+		return "";
+	    }
+	})
+	.ticks(24);
 
     var yAxis = d3.svg.axis()
-      .scale(yScale)
-      .orient('left')
-      .ticks(nDays)
-      .tickFormat(function(d){return wc.dayScale(d)});
+	.scale(yScale)
+	.orient('left')
+	.ticks(nDays)
+	.tickFormat(function(d){return wc.dayScale(d)});
 
     hm_svg.selectAll('rect')
       .data(hmData)
@@ -101,7 +108,7 @@ function create_heat_map(parameter){
       });
 
     hm_svg.append('g')
-      .attr('class', 'y axis')
+      .attr('class', 'axisheatmap')
       .attr('transform', 'translate('+margin_left+', '+hm_height*0.5/nDays+')')
       .call(yAxis);
 
@@ -180,11 +187,13 @@ function showTooltipHeatMap(day, hour, parameter, value, x, y) {
     var tooltip = d3.select("#tooltip");
 
     tooltip.html("" + 
-     "<b> " + wc.dayScale(day) + ", " + hour.toString() + " - "+ (hour+1).toString() + "</b><br/>" +
-     "Average "+getFriendlyName(parameter)+": "+Math.round(value).toString() +" per Hour" );
+		 "<b> " + wc.dayScale(day) + ", " + hour.toString()
+		 + ":00" + " - "+ (hour+1).toString() + ":00" + "</b><br/>" +
+		 "Average "+getFriendlyName(parameter).toLowerCase() +
+		 ": "+ Math.round(value).toString() + " per hour" );
 
     tooltip.style("visibility", "visible")
-      .style("top", y + tooltip_offset_y + "px")
+	.style("top", y + tooltip_offset_y + "px")
       .style("left", x + tooltip_offset_x +  "px");
 }
 

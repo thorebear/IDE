@@ -283,11 +283,12 @@ function addMatches() {
 	.each(function(match) {
 	    var _this = d3.select(this);
 	    _this.on("mousemove", function() {
+		var topOffset = $("#" + getMatchIdentifier(match)).offset().top;
 		getMatchesOnSameTime(match).forEach(function(x) {
-		    showMatchInfo(x, d3.event.pageX, 55, 2);
+		    showMatchInfo(x, d3.event.pageX, topOffset - 145, 2);
 		})
 
-		showMatchInfo(match, d3.event.pageX, 130, 1);
+		showMatchInfo(match, d3.event.pageX, topOffset - 72, 1);
 
 		_this.style("opacity",1);
 	    });

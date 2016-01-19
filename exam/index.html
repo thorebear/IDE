@@ -56,6 +56,7 @@
       <script src="js/activitycomparison.js"></script>
       <script src="js/infohelper.js"></script>
       <script src="js/barchart.js"></script>
+      <script src="js/linkcreate.js"></script>
       <script src="js/jquery.range-min.js"></script>
 
       <title>Interactive Data Exploration - Final project</title>
@@ -66,9 +67,15 @@
      <div class="container">
        <h1>Welcome to the World Cup <small>from a servers perspective</small></h1>
 
+
+       <div class="col-sm-12">
+	 <p>From 10 June to 12 July 1998 France hosted the 16th FIFA World Cup where 32 nations played a total of 64 matches to decide the new world champitions of men's football. The official webpage for the World Cup france98.com and was hosted by 33 different servers and the webpage received a total of 1.352.804.107 requests in the period from 30 April 1998 to 26 July 1998.</p>
+	 <p>The following figure shows information about the activity on the france98.com webpage, by visulising information retrived from the request log for the more than 1 billion requests. </p>
+       </div>
+
        <div class="col-sm-9">
-	 <div class="alert alert-info">
-	   <b>Instruction:</b> Select which parameters to show and the time-period for a single point to the left. Select a predefined date range to the right or choose a custom one. 
+	 <div class="alert alert-info" id="linechartlink">
+	   <b>Instruction:</b> Select which parameters* to show and the time-period for a single point to the left. Select a predefined date range to the right or choose a custom one. Hover over a point or a bar to get additional information. 
 	 </div>
        </div>
        <div class="col-sm-3">
@@ -171,10 +178,19 @@
 
 
        <div class="col-sm-12">
-	 <h2>Overskrift</h2>
-	 Tekst here #1
-       </div>
+	 <h2>Observations</h2>
+	 <p>By playing around with the visualisation about we where able to make many different observations, e.g. the traffic on the server is lower under the final than under the semi-finals and the number of unique users under the bronze match is lower than under any other playoff match. We have selected two observation that we want to explore more, by creating additional visualisations.</p>
 
+	 <h3>Activity before, under and after matches</h3>
+	 <p><a href="#linechartlink" onclick="linkcreate2()">While looking at the time-range for the dates for the first matches in every group</a> it seems clear that the activity on the server is higher just before, under and just after a match than on any other time. It also seems that the match played earliest a given day will create more traffic on the webpage, that any matches played later. The activity on the server is steadily increasing through-out the match and seems to be at a maximum just around the final whistle. The fact the webpage in general receive much less attention is ignored for now, we will talk about this in the next section. <br/>
+	   When comparing two matches which are played on the same time of the day, both on weekdays and both with same impact (e.g. both 1st play day of the group stage) there are still some huge difference in how much attention each match draw to the webpage, e.g. Croatia plays Bulgaria in the first round of Group D Friday June 12 14:30 and England plays Turkey on the first round of Group G Monday June 15 14:30, the maximum load (the quarter under the match with highest load) under the Croatia match was 4.4 GB opposite to a maximum load of 6.5 GB under the England match.<br /> This suggest that maybe some nations draw more attention to the webpage while playing than others, to investigate this more fully we have created the following bar-chart where the amount of activity on the server is showed around the time for kick-off for each of the nation's matches. 
+	 </p>
+
+
+	 <div class="alert alert-info" id="barchartlink">
+	   <b>Instructions:</b> Select which parameter* to use to the left, select the interval around kick-off to use data from (0H refers to kick-off, so the interval [-2H,4H] means to gather data from 2 hours before the kick to 4 hours after the kick-off, which is approximately 2 hours after the end of the match assuming the match does not go into overtime. <i>Note that if the interval is too wide it may overlap with other matches</i>.
+	 </div>
+       </div>
 
        <div class="col-sm-2">
 	 <div class="range">
@@ -186,8 +202,6 @@
 	       <option value="htmlhits">Pageviews</option>
 	     </select>
 	   </div>
-
-	   <br/>
 	   Select interval: <br/>
 	   <div style="padding-top:16px;">
 	     <input class="range-slider" type="hidden" value="-2,4" style="display: none;">
@@ -199,14 +213,21 @@
        <div class="col-sm-10">
 	 <svg id="barchart" width="1000" height="500"></svg>
        </div>
-
        <div class="col-sm-12">
-	 <h2>Overskrift 2</h2>
-	 Tekst here #2
+	 <p>
+	   <a href="#barchartlink" onclick="linkcreate3()">Let's take a look at the time from kick-off and two hours forward, while using unique users as parameter.</a> While looking at this chart there are a few things you need to have in mind: 1) Matches played in the weekend gets lower attention (see next section) and not every team played the same amount of matches in the week 1, 2) on the last play-day of the group stage two matches in every group was played simultaneously so this count for activity for both matches, even through most of the interest could be for only one of the matches, 3) the opposition could be the reason for the activity meaning that the amount of activity showing of on a team could be because of really attractive / less attractive oppositions. By only looking at the activity under the group stage matches, which is comparable since every team plays 3 matches in the group, we see that nations like Japan, Yugoslavia, Iran, Jamaica, Croatia and Argentina has the lowest amount of unique users on the webpage under the match while the nations like Brazil, Scotland, Norway, Italy, Chile, England and Romania has much more activity on the webpage under there matches.
+	 </p>
        </div>
 
-       <div class="col-sm-2">
-	 <div class="selector-wrapper" style="padding-top:50px">
+       <div class="col-sm-12">
+	 <h3>Activity in the weekends</h3>
+	 <p>In general the activity on the server seems much lower in the weekend on any week day. The trend is clear when <a href="#linechartlink" onclick="linkcreate1()">watching the whole world cup with daily and pageviews</a>. Even on Thursday 2 July, where there are no matches played, the webpage has more pageviews than Saturday 4 July despite that 2 quarter finals are played on this day. In general we also see that Sundays has less pageviews than Saturdays, except the last weekend of the world cup where sunday has the most views, but that comparison seems a little unfair since both the bronze match and final are played on this Sunday, in opposite to a Saturday without any matches.</p>
+	 <p> To be able to investigate the webpage activity on the different times and weekdays, we have create a heatmap that shows the amount of activity on a given time on a given weekday. The data is the visualization is <b>TODO</b>. 
+	   <div class="alert alert-info">
+	     <b>Instructions: </b> Select which parameter* to show the heatmap over in the drop-down box to the left. 
+	   </div>
+
+	 <div class="selector-wrapper">
 	   <select class="selectpicker" id="heatmapParameterSelector" data-width="178px">
 	     <option value="transferred_bytes">Traffic</option>
 	     <option selected="selected" value="unique_users">Unique users</option>
@@ -215,25 +236,73 @@
 	   </select>
 	 </div>
        </div>
-       <div class="col-sm-10">
-	 <svg id="heatmap" width="1000" height="500"></svg>
+       <div class="col-sm-12 row">
+       <div class="col-sm-7">
+	 <svg id="heatmap" width="740" height="400"></svg>
        </div>
-
-       <div class="col-sm-2">
-	 <div class="selector-wrapper" style="padding-top:50px">
+       <div class="col-sm-5">
+	 <svg id="activity_comparison" width="500" height="400"></svg>
 	 </div>
        </div>
-       <div class="col-sm-10">
-	 <svg id="activity_comparison" width="1000" height="500"></svg>
-       </div>
 
+
+       <div class="col-sm-12">
+	 <p>Regardless of which parameter that is selected, it is very clear that the activity in the weekends is much lower than on any weekday. This is despite the fact that many interesting matches was played in the weekends including two quarter finals, bronze match and the final, and we saw in the last section that days with matches draw much more attention to the webpage than days without matches. One reason that the webpage retrieve so little attention could be that the spread of the internet was not very huge in 1998, and many people was only connected to the internet in their proffesional life, which could explain the lower activity in the weekends. Another reason could be that people used the webpage to see the result after a match was finished when they where unable to watch the match in television, and the time their where unable to watch a match in television was mostly in the weekdays (some of the matches was played during work hours local time, and many of the matches was playing during work hour US time). In determining the reason for such low activity in the weekends it could be interesting to know how many users of the webpage that where from USA, but since the request log is anonymized we are not able to do this. The number of internet users in the US in 1998 was much higher than in any other country (source: <a href="http://news.bbc.co.uk/2/hi/technology/8552410.stm">BBC</a>), but the interest for football is much lower in USA than in most of the other participating nations (source: <a href="http://repucom.net/global-interest-football/">Repucom.net</a>). Our <a href="#barchartlink">bar-chart</a> suggest that the interrest from the US is average, assuming a connection between activity from a nation and activity on the webpage during matches involving that nation.</p>
+       </div>
 
 
        <div class="col-sm-12">
 	 <h2>Data sources</h2>
-	 teskt #3 here
+	 <h4>Request log</h4>
+	 <p>The request log for france98.com is obtained from:</p>
+	 <li>M. Arlitt and T. Jin, "1998 World Cup Web Site Access Logs", August 1998. Available at <a href="http://ita.ee.lbl.gov/html/contrib/WorldCup.html">http://ita.ee.lbl.gov/html/contrib/WorldCup.html</a>.</li><br/>
+	 The request log data is preproccessed using python and the resulting JSON files can be found here:
+	 <ul>
+	   <li><a href="data/wc98_log_0.25hour.json">wc98_log_0.25hour.json</a></li>
+	   <li><a href="data/wc98_log_1hour.json">wc98_log_1hour.json</a></li>
+	   <li><a href="data/wc98_log_2hour.json">wc98_log_2hour.json</a></li>
+	   <li><a href="data/wc98_log_6hour.json">wc98_log_6hour.json</a></li>
+	   <li><a href="data/wc98_log_12hour.json">wc98_log_12hour.json</a></li>
+	   <li><a href="data/wc98_log_24hour.json">wc98_log_24hour.json</a></li>
+	 </ul>
+
+	 <h4>Match data</h4>
+	 <p>Data about the matches is obtained from:
+	 <li>"FIFA official webpage", January 2016. <a href="http://www.fifa.com/worldcup/archive/france1998/matches/index.html">http://www.fifa.com/worldcup/archive/france1998/matches/index.html</a> 
+	 </li><br/>
+	The data is converted to JSON and the result can be found here: <a href="data/worldcup.json">worldcup.json</a></p>
        </div>
+
+     <div class="col-sm-12">
+       <h2>Libraries used</h2>
+       To make the visualizations and this page a number of different javascript library is used. They are listed here:
+       <ul>
+	 <li><a href="http://d3js.org/">D3</a>: Library for manipulating elements based on data.</li>
+	 <li><a href="https://jquery.com/">jQuery</a>: Library to simplify java-script code. </li>
+	 <li><a href="http://www.datejs.com/">Datejs</a>: Date library used for manipulating dates. </li>
+	 <li><a href="http://getbootstrap.com/">Bootstrap</a>: Used for layout and appearance of the page.</li>
+	 <li><a href="http://momentjs.com/">Momentjs</a>: Used for displaying and manipulating dates. 
+	 <li><a href="http://lipis.github.io/flag-icon-css/">flag-icon-css</a>: Used to display nations flag in css.</li>
+
+	 <li><a href="http://bootstrap-switch.org">Bootstrap Switch</a>: Bootstrap compatible checkboxes</li>
+	 <li><a href="https://silviomoreto.github.io/bootstrap-select/">bootstrap-select</a>: Bootstrap compatible drop-down boxes</li>
+
+	 <li><a href="http://www.daterangepicker.com/">Date Range Picker</a>: Library for choosing date ranges.
+	   <li><a href="http://nitinhayaran.github.io/jRange/demo/">jRange</a>: Creating range selectors</li>
+       </ul>
+       <h2>Notes</h2>
+       <p><small>* Notes about parameters:
+	   <ul>
+	     <li>Traffic: Total size of <em>all</em> requests in the time frame.</li>
+	     <li>Unique users: Number of different users making at least one request in the time frame.</li>
+	     <li>Requests: Total number of entries in the request log in the time frame.</li>
+	     <li>Pageviews: Number of request for a html-page in the request log in the time frame.</li>
+	     </ul>
+
+       </small></p>
      </div>
+     </div>
+</div>
 </div>
 
 

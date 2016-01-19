@@ -1,7 +1,7 @@
 // creates a barchart from the 'base' data clicked in the heatmap as a reference
 function create_activity_comparison(data, parameter, color, maxValue){
-    wc.ac_margin_left = 100;
-    wc.ac_margin_top = 60;
+    wc.ac_margin_left = 60;
+    wc.ac_margin_top = 20;
     wc.ac_margin_right = 0;
     wc.ac_margin_bottom = 60;
     
@@ -21,86 +21,84 @@ function create_activity_comparison(data, parameter, color, maxValue){
     // to calculate local variables ...
     var weeks  = weekdata.map(function(obj){return obj.week}),
         vals   = weekdata.map(function(obj){return obj.parameter}),
-        btitle = wc.dayScale(data.day) + " " + data.hour + "-"+ (data.hour+1),
-        ctitle = wc.dayScale(data.day) + " " + data.hour + "-"+ (data.hour+1);
+        btitle = wc.dayScale(data.day) + " " + data.hour + ":00" + "-"+ (data.hour+1) + ":00",
+        ctitle = wc.dayScale(data.day) + " " + data.hour + ":00" + "-"+ (data.hour+1) + ":00";
 
     // ... and to calculate stuff available in the 'wc' namespace
     wc.weekScale = d3.scale.ordinal()
-      .domain(d3.range(weekdata.length))
-      .range(weeks);
+	.domain(d3.range(weekdata.length))
+	.range(weeks);
 
     wc.ac_xScale = d3.scale.ordinal()
-      .domain(wc.weeks)
-      .rangeRoundBands([wc.ac_margin_left, wc.ac_svg_width - wc.ac_margin_right], 0.6 );
+	.domain(wc.weeks)
+	.rangeRoundBands([wc.ac_margin_left, wc.ac_svg_width - wc.ac_margin_right], 0.6 );
 
     wc.ac_yScale = d3.scale.linear()
-      .domain([0, maxValue])
-      .range([wc.ac_svg_height - wc.ac_margin_bottom, wc.ac_margin_top]);
+	.domain([0, maxValue])
+	.range([wc.ac_svg_height - wc.ac_margin_bottom, wc.ac_margin_top]).nice();
 
-    wc.ac_offset = (wc.ac_svg_width - (wc.ac_margin_right + wc.ac_margin_left))*(1-0.6)/(wc.nWeeks*2); 
+    wc.ac_offset = (wc.ac_svg_width - (wc.ac_margin_right + wc.ac_margin_left))*(1-0.58)/(wc.nWeeks*2); 
 
     // bars and their alignment
     // primary selected interval
     ac_svg.append('g').attr('class', 'base bar');
 
     ac_base = ac_svg.select('.base.bar')
-      .selectAll('rect')
-      .data(weekdata)
+	.selectAll('rect')
+	.data(weekdata)
 
     ac_base.transition()
-      .attr('y', function(d){ return  wc.ac_yScale(d.parameter)} )
-      .attr('height', function(d){ return wc.ac_yScale(0) - wc.ac_yScale(d.parameter)})
-      .attr('fill', color);
-      
+	.attr('y', function(d){ return  wc.ac_yScale(d.parameter)} )
+	.attr('height', function(d){ return wc.ac_yScale(0) - wc.ac_yScale(d.parameter)})
+	.attr('fill', color);
+    
     ac_base.enter()
-      .append('rect')
-      .attr('x', function(d){ return wc.ac_xScale(d.week) - wc.ac_offset} )
-      .attr('y', function(d){ return  wc.ac_yScale(d.parameter)} )
-      .attr('height', function(d){ return wc.ac_yScale(0) - wc.ac_yScale(d.parameter)})
-      .attr('width', wc.ac_xScale.rangeBand() )
-      .attr('stroke', 'black')
-      .attr('stroke-width', '2')
-      .attr('fill', color);
+	.append('rect')
+	.attr('x', function(d){ return wc.ac_xScale(d.week) - wc.ac_offset} )
+	.attr('y', function(d){ return  wc.ac_yScale(d.parameter)} )
+	.attr('height', function(d){ return wc.ac_yScale(0) - wc.ac_yScale(d.parameter)})
+	.attr('width', wc.ac_xScale.rangeBand() )
+	.attr('stroke', 'black')
+	.attr('fill', color);
 
     ac_base.exit()
-      .remove()
+	.remove()
 
     // secondary interval, shown on hover
     ac_svg.append('g').attr('class', 'comp bar');
 
     ac_comp = ac_svg.select('.comp.bar')
-      .selectAll('rect')
-      .data(weekdata)
+	.selectAll('rect')
+	.data(weekdata)
 
     ac_comp.transition()
-      .attr('y', function(d){ return  wc.ac_yScale(d.parameter)} )
-      .attr('height', function(d){ return wc.ac_yScale(0) - wc.ac_yScale(d.parameter)})
-      .attr('fill', color);
+	.attr('y', function(d){ return  wc.ac_yScale(d.parameter)} )
+	.attr('height', function(d){ return wc.ac_yScale(0) - wc.ac_yScale(d.parameter)})
+	.attr('fill', color);
 
     ac_comp.enter()
-      .append('rect')
-      .attr('x', function(d){ return wc.ac_xScale(d.week) + wc.ac_offset } )
-      .attr('y', function(d){ return  wc.ac_yScale(d.parameter)} )
-      .attr('width', wc.ac_xScale.rangeBand() )
-      .attr('height', function(d){ return wc.ac_yScale(0) - wc.ac_yScale(d.parameter)})
-      .attr('stroke', 'black')
-      .attr('stroke-width', '2')
-      .attr('fill', color);
+	.append('rect')
+	.attr('x', function(d){ return wc.ac_xScale(d.week) + wc.ac_offset } )
+	.attr('y', function(d){ return  wc.ac_yScale(d.parameter)} )
+	.attr('width', wc.ac_xScale.rangeBand() )
+	.attr('height', function(d){ return wc.ac_yScale(0) - wc.ac_yScale(d.parameter)})
+	.attr('stroke', 'black')
+	.attr('fill', color);
 
     ac_comp.exit()
-      .remove();
+	.remove();
     // Axes and ticks
     var xAxis = d3.svg.axis()
-      .scale(wc.ac_xScale)
-      .orient('bottom')
-      .ticks(wc.nWeeks)
-      .tickFormat(function(d,i){return wc.weekScale(i)});
+	.scale(wc.ac_xScale)
+	.orient('bottom')
+	.ticks(wc.nWeeks)
+	.tickFormat(function(d,i){return wc.weekScale(i)});
     
     var yAxis = d3.svg.axis()
-      .scale(wc.ac_yScale)
-      .orient('left')
-      .tickFormat(function(d) { return d3.format("s")(d) })
-      .ticks(nTicks);
+	.scale(wc.ac_yScale)
+	.orient('left')
+	.tickFormat(function(d) { return d3.format("s")(d) })
+	.ticks(nTicks);
 
     // redraw for every click... remove and recreate placeholders
     ac_svg.selectAll('.label').remove();
@@ -113,29 +111,29 @@ function create_activity_comparison(data, parameter, color, maxValue){
     ac_svg.append('g')
         .attr('class', 'x axis')
         .attr('transform', 'translate( 0, '+(wc.ac_svg_height-wc.ac_margin_bottom)+')')
-      .call(xAxis);
+	.call(xAxis);
 
     ac_svg.append('g')
         .attr('class', 'y axis')
-        .attr('transform', 'translate('+(wc.ac_margin_left-2)+', 0)')
-      .call(yAxis);
+        .attr('transform', 'translate('+(wc.ac_margin_left)+', 0)')
+	.call(yAxis);
 
     // titles and labels as well
     ac_svg.select('.label.base')
-      .append('text')
-      .attr('x', (wc.ac_margin_left + wc.ac_offset))
-      .attr('y', wc.ac_margin_top)
-      .attr('fill', getColor(parameter))
-      .attr('text-anchor', 'start')
-      .text( btitle);
+	.append('text')
+	.attr('x', (wc.ac_margin_left + wc.ac_offset))
+	.attr('y', wc.ac_margin_top)
+	.attr('fill', getColor(parameter))
+	.attr('text-anchor', 'start')
+	.text( btitle);
 
     ac_svg.select('.label.comp')
-      .append('text')
-      .attr('x', (wc.ac_svg_width - (wc.ac_margin_right + wc.ac_offset)) )
-      .attr('y', wc.ac_margin_top)
-      .attr('fill', getColor(parameter))
-      .attr('text-anchor', 'end')
-      .text( ctitle);
+	.append('text')
+	.attr('x', (wc.ac_svg_width - (wc.ac_margin_right + wc.ac_offset)) )
+	.attr('y', wc.ac_margin_top)
+	.attr('fill', getColor(parameter))
+	.attr('text-anchor', 'end')
+	.text( ctitle);
 
     ac_svg.append('text')
         .attr('class', 'label title')
@@ -157,20 +155,20 @@ function create_activity_comparison(data, parameter, color, maxValue){
 
     // average label
     ac_svg.select('.label.base')
-      .append('text')
-      .attr('x', (wc.ac_margin_left + wc.ac_offset) )
-      .attr('y', wc.ac_yScale(avg)-5 )
-      .attr('fill', getColor(parameter))
-      .attr('text-anchor', 'start')
-      .text('average');
+	.append('text')
+	.attr('x', (wc.ac_margin_left + wc.ac_offset) )
+	.attr('y', wc.ac_yScale(avg)-5 )
+	.attr('fill', getColor(parameter))
+	.attr('text-anchor', 'start')
+	.text('average');
 
     ac_svg.select('.label.comp')
-      .append('text')
-      .attr('x', (wc.ac_svg_width - (wc.ac_margin_right + wc.ac_offset)) )
-      .attr('y', wc.ac_yScale(avg)-5 )
-      .attr('fill', getColor(parameter))
-      .attr('text-anchor', 'end')
-      .text('average');
+	.append('text')
+	.attr('x', (wc.ac_svg_width - (wc.ac_margin_right + wc.ac_offset)) )
+	.attr('y', wc.ac_yScale(avg)-5 )
+	.attr('fill', getColor(parameter))
+	.attr('text-anchor', 'end')
+	.text('average');
 
     // average line
     ac_svg.append('line')
@@ -193,14 +191,14 @@ function create_activity_comparison(data, parameter, color, maxValue){
 }
 
 function update_activity_comparison(data, parameter, color){
-  // updates the barchart with an overlay of data hovered over in the heatmap.
+    // updates the barchart with an overlay of data hovered over in the heatmap.
     var ac_svg = d3.select("#activity_comparison");
 
     var avg      = data.average,
         sum      = data.sum,
         weekdata = data.parameter;
 
-    var ctitle   = wc.dayScale(data.day) + " " + data.hour + "-"+ (data.hour+1);
+    var ctitle   = ctitle = wc.dayScale(data.day) + " " + data.hour + ":00" + "-"+ (data.hour+1) + ":00";
 
     // secondary title is updated
     ac_svg.select('.label.comp').remove();
@@ -213,91 +211,62 @@ function update_activity_comparison(data, parameter, color){
         .attr('x2', wc.ac_svg_width - wc.ac_margin_right )
         .attr('y1', wc.ac_yScale(avg) )
         .attr('y2', wc.ac_yScale(avg) )
-        .attr('stroke', color )
-        .attr('stroke-width', '2');
+	.attr('stroke-width', 2)
+        .attr('stroke', color);
 
     ac_svg.select('.label.comp')
-      .append('text')
-      .attr('x', (wc.ac_svg_width - (wc.ac_margin_right + wc.ac_offset)) )
-      .attr('y', wc.ac_margin_top)
-      .attr('fill', getColor(parameter))
-      .attr('text-anchor', 'end')
-      .text( ctitle);
+	.append('text')
+	.attr('x', (wc.ac_svg_width - (wc.ac_margin_right + wc.ac_offset)) )
+	.attr('y', wc.ac_margin_top)
+	.attr('fill', getColor(parameter))
+	.attr('text-anchor', 'end')
+	.text( ctitle);
 
     ac_svg.select('.label.comp')
-      .append('text')
-      .attr('x', (wc.ac_svg_width - (wc.ac_margin_right + wc.ac_offset)) )
-      .attr('y', wc.ac_yScale(avg)-5 )
-      .attr('fill', getColor(parameter))
-      .attr('text-anchor', 'end')
-      .text('average');
+	.append('text')
+	.attr('x', (wc.ac_svg_width - (wc.ac_margin_right + wc.ac_offset)) )
+	.attr('y', wc.ac_yScale(avg)-5 )
+	.attr('fill', getColor(parameter))
+	.attr('text-anchor', 'end')
+	.text('average');
 
 
     // secondary bars are updated
     comp_bars = ac_svg.select('.comp.bar')
-      .selectAll('rect')
-      .data(weekdata);
+	.selectAll('rect')
+	.data(weekdata);
 
     comp_bars.transition(500)
-      .delay(500)
-      .attr('y', function(d){ return  wc.ac_yScale(d.parameter)} )
-      .attr('height', function(d){ return wc.ac_yScale(0) - wc.ac_yScale(d.parameter)})
-      .each("start", function(d){
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .attr('width', 5 )
-          .attr('x', function(d){ return wc.ac_xScale(d.week) + 1.5*wc.ac_offset} )
-          .attr('fill', 'white')
-      })
-      .each("end", function(d){
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .attr('width', wc.ac_xScale.rangeBand() )
-          .attr('x', function(d){ return wc.ac_xScale(d.week) + wc.ac_offset} )
-          .attr('fill', color)
-      });
+	.attr('y', function(d){ return  wc.ac_yScale(d.parameter)} )
+	.attr('height', function(d){ return wc.ac_yScale(0) - wc.ac_yScale(d.parameter)})
+	.each("start", function(d){
+            d3.select(this)
+		.transition()
+		.duration(200)
+		.attr('width', 5 )
+		.attr('x', function(d){ return wc.ac_xScale(d.week) + 1.5*wc.ac_offset} )
+		.attr('fill', 'white')
+	})
+	    .each("end", function(d){
+		d3.select(this)
+		    .transition()
+		    .duration(200)
+		    .attr('width', wc.ac_xScale.rangeBand() )
+		    .attr('x', function(d){ return wc.ac_xScale(d.week) + wc.ac_offset} )
+		    .attr('fill', color)
+	    });
 
     comp_bars.enter()
-      .append('rect')
-      .attr('class', 'bar')
-      .attr('x', function(d){ return wc.ac_xScale(d.week) + wc.ac_offset} )
-      .attr('y', function(d){ return  wc.ac_yScale(d.parameter)} )
-      .attr('height', function(d){ return wc.ac_yScale(0) - wc.ac_yScale(d.parameter)})
-      .attr('width', wc.ac_xScale.rangeBand() )
-      .attr('stroke', 'black')
-      .attr('stroke-width', '2')
-      .attr('fill', color);
+	.append('rect')
+	.attr('class', 'bar')
+	.attr('x', function(d){ return wc.ac_xScale(d.week) + wc.ac_offset} )
+	.attr('y', function(d){ return  wc.ac_yScale(d.parameter)} )
+	.attr('height', function(d){ return wc.ac_yScale(0) - wc.ac_yScale(d.parameter)})
+	.attr('width', wc.ac_xScale.rangeBand() )
+	.attr('stroke', 'black')
+	.attr('fill', color);
 
     comp_bars.exit()
-      .remove()
+	.remove()
 
 }
-
-/*
-        // purpose is to redraw the hand in the handsvg based on index
-        var points = handsvg.selectAll('circle')
-           .data(data[i], function(d){ return d});
-
-        // update points via a smooth transition 
-        points.transition()
-           .delay(100)
-           .duration(1000)
-           .attr('cx',function(d){return bxScale(d[0]);})
-           .attr('cy',function(d){return byScale(d[1]);})
-           .style("fill", "red");
-
-        // enter new points
-        points.enter()
-           .append('circle')
-           .attr('cy',bh/2)
-           .attr('r',circleradius)
-           .attr('opacity', '0')
-           .attr('cx',function(d){return bxScale(d[0]);})
-           .attr('cy',function(d){return byScale(d[1]);});
-
-        // remove exiting (old) points
-        points.exit()
-           .remove();
-*/

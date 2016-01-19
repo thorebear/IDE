@@ -2,6 +2,10 @@ body {
     height: 1000px;
 }
 
+.axisheatmap line, .axisheatmap path {
+    visibility: hidden;
+}
+
 div.container {
     width: 1300px;
 }
