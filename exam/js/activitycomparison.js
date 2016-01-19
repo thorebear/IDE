@@ -151,7 +151,7 @@ function create_activity_comparison(data, parameter, color, maxValue){
         .attr('fill', getColor(parameter))
         .attr('text-anchor', 'middle')
         .attr('font-size', '20')
-        .text(getFriendlyName(parameter));
+        .text( getUnit(parameter) );
 
     // average label
     ac_svg.select('.label.base')
