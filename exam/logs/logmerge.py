@@ -11,7 +11,6 @@ import json
 import os
 from data import LogKeys as LK
 import numpy as np
-from pprint import pprint
 
 
 def exportlog(log, fname, reduceuu=True):
@@ -145,32 +144,6 @@ def gatherlogs(Loglist):
     return totlog
 
 
-#def gatherlogs(Loglist):
-#    """ glue a list of logs together, merging the entries at the ends """
-#    totlog = []
-#    for logfile in Loglist:
-#        log = importlog(logfile)
-#        try:
-#            print len(log)
-#            if totlog[-1][LK.FROM] == log[0][LK.FROM]:
-#                print "Same time: ", totlog[-1][LK.FROM]
-#                lastentry = totlog.pop()
-#                nextentry = log[0]
-#                mergedentry = mergelogs(lastentry, nextentry)
-#                if not mergedentry:
-#                    raise ValueError("Merged log invalid")
-#                totlog.append(mergedentry)
-#                totlog.extend(log[1:])
-#            else:
-#                totlog.extend(log)
-#        except IndexError as e:
-#            if totlog == [] or log == []:
-#                pass
-#            else:
-#                raise e
-#    return totlog
-
-
 def reducelogs(logs, factor):
     """ Compress a single logfile with a factor on time-resolution,
         by merging 'factor' entries into new entries"""
@@ -197,20 +170,18 @@ def alignlog(log, utc_hour='22'):
 
 
 def log2lists(logs):
-    a, b, c, d, e, f = [], [], [], [], [], []
+    a, b, c, d, e = [], [], [], [], []
     for log in logs:
         a.append([v for k, v in log.iteritems() if k == LK.FROM])
         b.append([v for k, v in log.iteritems() if k == LK.UUSERS])
         c.append([v for k, v in log.iteritems() if k == LK.TOTHITS])
         d.append([v for k, v in log.iteritems() if k == LK.TRANSFERBYTES])
         e.append([v for k, v in log.iteritems() if k == LK.HTMLHITS])
-        f.append([v for k, v in log.iteritems() if k == LK.HTTPSTATUS])
     lists = {LK.FROM: a,
              LK.UUSERS: b,
              LK.TOTHITS: c,
              LK.TRANSFERBYTES: d,
-             LK.HTMLHITS: e,
-             LK.HTTPSTATUS: f}
+             LK.HTMLHITS: e}
     return lists
 
 
