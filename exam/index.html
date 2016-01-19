@@ -65,33 +65,44 @@
      <div class="container">
        <h1>Welcome to the World Cup <small>from a servers perspective</small></h1>
 
-       <div class="col-sm-12">
+       <div class="col-sm-9">
+	 <div class="alert alert-info">
+	   <b>Instruction:</b> Select which parameters to show and the time-period for a single point to the left. Select a predefined date range to the right or choose a custom one. 
+	 </div>
+       </div>
+       <div class="col-sm-3">
  	 <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 260px">
 	   <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
 	   <span></span> <b class="caret"></b>
 	 </div>
        </div>
-       <div class="col-sm-2">
-	 <div class="checkbox-wrapper">
-	   <input type="checkbox" name="transferred_bytes_checkbox" checked>
-	   <input type="checkbox" name="unique_users_checkbox">
-	   <input type="checkbox" name="total_hits_checkbox">
-	   <input type="checkbox" name="htmlhits_checkbox">
-	 </div>
+       <div class="col-sm-12">
+	 <div class="col-sm-2">
+	   <div class="checkbox-wrapper">
+	     <input type="checkbox" name="transferred_bytes_checkbox" checked>
+	     <input type="checkbox" name="unique_users_checkbox">
+	     <input type="checkbox" name="total_hits_checkbox">
+	     <input type="checkbox" name="htmlhits_checkbox">
+	   </div>
 
-	 <div class="selector-wrapper">
-	   <select class="selectpicker" id="timeIntervalSelector" data-width="178px">
-	     <option value="quaterData">Pr. 15 minutes</option>
-	     <option value="hourData">Hourly</option>
-	     <option selected="selected" value="dayData">Daily</option>
-	   </select>
+	   <div class="selector-wrapper">
+	     <select class="selectpicker" id="timeIntervalSelector" data-width="178px">
+	       <option value="quaterData">Pr. 15 minutes</option>
+	       <option value="hourData">Hourly</option>
+	       <option selected="selected" value="dayData">Daily</option>
+	     </select>
+	   </div>
+	   
+	   <div class="info_box matches_type_info_box">
+	   </div>
+
+	   <div class="alert alert-info info_alert">
+	     <b>Instruction:</b> Select which parameters to show and the time-period for e
+	   </div>
 	 </div>
-	 
-	 <div class="info_box matches_type_info_box">
+	 <div class="col-sm-10">	 
+	   <svg id="line_chart" width="1100" height="500"></svg>
 	 </div>
-       </div>
-       <div class="col-sm-10">	 
-	 <svg id="line_chart" width="1100" height="500"></svg>
        </div>
 
        <div class="group-coloumn">
@@ -156,67 +167,82 @@
 	   </div>
 	 </div>
        </div>
-     <div class="col-sm-12">
-       Tekst here
-     </div>
 
-     <div class="col-sm-2">
-       <div class="range">
-	 <div class="selector-wrapper">
-	   <select class="selectpicker" id="barChartParameterSelector" data-width="178px">
+
+       <div class="col-sm-12">
+	 <h2>Overskrift</h2>
+	 Tekst here #1
+       </div>
+
+
+       <div class="col-sm-2">
+	 <div class="range">
+	   <div class="selector-wrapper">
+	     <select class="selectpicker" id="barChartParameterSelector" data-width="178px">
+	       <option value="transferred_bytes">Traffic</option>
+	       <option selected="selected" value="unique_users">Unique users</option>
+	       <option value="total_hits">Requests</option>
+	       <option value="htmlhits">Pageviews</option>
+	     </select>
+	   </div>
+
+	   <br/>
+	   Select interval: <br/>
+	   <div style="padding-top:16px;">
+	     <input class="range-slider" type="hidden" value="-2,4" style="display: none;">
+	   </div>
+	 </div>
+	 <div class="range matches_type_info_box">
+	 </div>
+       </div>
+       <div class="col-sm-10">
+	 <svg id="barchart" width="1000" height="500"></svg>
+       </div>
+
+       <div class="col-sm-12">
+	 <h2>Overskrift 2</h2>
+	 Tekst here #2
+       </div>
+
+       <div class="col-sm-2">
+	 <div class="selector-wrapper" style="padding-top:50px">
+	   <select class="selectpicker" id="heatmapParameterSelector" data-width="178px">
 	     <option value="transferred_bytes">Traffic</option>
 	     <option selected="selected" value="unique_users">Unique users</option>
 	     <option value="total_hits">Requests</option>
 	     <option value="htmlhits">Pageviews</option>
 	   </select>
 	 </div>
+       </div>
+       <div class="col-sm-10">
+	 <svg id="heatmap" width="1000" height="500"></svg>
+       </div>
 
-	 <br/>
-	 Select interval: <br/>
-	 <div style="padding-top:16px;">
-	   <input class="range-slider" type="hidden" value="-2,4" style="display: none;">
-	 </div>
-       </div>
-       <div class="range matches_type_info_box">
-       </div>
-     </div>
-     <div class="col-sm-10">
-       <svg id="barchart" width="1000" height="500"></svg>
-     </div>
-
-     <div class="col-sm-2">
-       <div class="selector-wrapper" style="padding-top:50px">
-	 <select class="selectpicker" id="heatmapParameterSelector" data-width="178px">
-	   <option value="transferred_bytes">Traffic</option>
-	   <option selected="selected" value="unique_users">Unique users</option>
-	   <option value="total_hits">Requests</option>
-	   <option value="htmlhits">Pageviews</option>
-	 </select>
-       </div>
-     </div>
-     <div class="col-sm-10">
-       <svg id="heatmap" width="1000" height="500"></svg>
-     </div>
-     </div>
-     <div id="tooltip" style="position: absolute; visibility: hidden;"></div>
-     <div id="match_box1" class="tooltip_box" style="text-align:center;width:70px;position: absolute; visibility: hidden;" >
-       <div id="match_info1">
-	 <div class="home_team flag-icon flag-icon-gr"></div> -
-	 <div class="away_team flag-icon flag-icon-br"></div> <br />
-	 <span class="match_group" style="font-size:xx-small;line-height:0.8">Group B</span>
-	 <span class="match_time" style="font-size:xx-small;"><i>7/7/98 - 18:00<i/></span>
-       </div>
-     </div> 
-     <div id="match_box2" class="tooltip_box" style="text-align:center;width:70px;position: absolute; visibility: hidden;" >
-       <div id="match_info2">
-	 <div class="home_team flag-icon flag-icon-gr"></div> -
-	 <div class="away_team flag-icon flag-icon-br"></div> <br />
-	 <span class="match_group" style="font-size:xx-small;line-height:0.8">Group B</span>
-	 <span class="match_time" style="font-size:xx-small;"><i>7/7/98 - 18:00<i/></span>
+       <div class="col-sm-12">
+	 <h2>Data sources</h2>
+	 Tekst here #2
        </div>
      </div>
 </div>
 
+
+<div id="tooltip" style="position: absolute; visibility: hidden;"></div>
+<div id="match_box1" class="tooltip_box" style="text-align:center;width:70px;position: absolute; visibility: hidden;" >
+  <div id="match_info1">
+    <div class="home_team flag-icon flag-icon-gr"></div> -
+    <div class="away_team flag-icon flag-icon-br"></div> <br />
+    <span class="match_group" style="font-size:xx-small;line-height:0.8">Group B</span>
+    <span class="match_time" style="font-size:xx-small;"><i>7/7/98 - 18:00<i/></span>
+  </div>
+</div> 
+<div id="match_box2" class="tooltip_box" style="text-align:center;width:70px;position: absolute; visibility: hidden;" >
+  <div id="match_info2">
+    <div class="home_team flag-icon flag-icon-gr"></div> -
+    <div class="away_team flag-icon flag-icon-br"></div> <br />
+    <span class="match_group" style="font-size:xx-small;line-height:0.8">Group B</span>
+    <span class="match_time" style="font-size:xx-small;"><i>7/7/98 - 18:00<i/></span>
+  </div>
+</div>
 </body>
 
 </html>
