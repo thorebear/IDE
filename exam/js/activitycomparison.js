@@ -90,14 +90,14 @@ function create_activity_comparison(data, parameter, color, maxValue){
       .attr('stroke-width', '2')
       .attr('fill', color);
 
-    var offset = 30;
+    wc.ac_offset = 30;
 
     ac_comp.selectAll('rect')
       .data(weekdata)
       .enter()
       .append('rect')
       .attr('class', 'bar')
-      .attr('x', function(d){ return wc.acxScale(d.week) + offset } )
+      .attr('x', function(d){ return wc.acxScale(d.week) + wc.ac_offset } )
       .attr('y', function(d){ return wc.ac_height - wc.acyScale(d.parameter)} )
       .attr('width', wc.acxScale.rangeBand() )
       .attr('height', function(d){ return wc.acyScale(d.parameter)})
@@ -134,14 +134,29 @@ function update_activity_comparison(data, parameter, color){
       .attr('fill', getColor(parameter))
       .attr('text-anchor', 'middle');
 
-    comp_bars.transition()
+    comp_bars.transition(500)
+      .delay(500)
       .attr('y', function(d){ return wc.ac_height - wc.acyScale(d.parameter)} )
-      .attr('height', function(d){ return wc.acyScale(d.parameter)});
+      .attr('height', function(d){ return wc.acyScale(d.parameter)})
+      .each("start", function(d){
+        d3.select(this)
+          .transition(20)
+          .attr('width', 5 )
+          .attr('x', function(d){ return wc.acxScale(d.week) +1.35*wc.ac_offset} )
+          .attr('fill', 'white')
+      })
+      .each("end", function(d){
+        d3.select(this)
+          .transition(20)
+          .attr('width', wc.acxScale.rangeBand() )
+          .attr('x', function(d){ return wc.acxScale(d.week) +wc.ac_offset} )
+          .attr('fill', color)
+      });
 
     comp_bars.enter()
       .append('rect')
       .attr('class', 'bar')
-      .attr('x', function(d){ return wc.acxScale(d.week) +offset} )
+      .attr('x', function(d){ return wc.acxScale(d.week) +wc.ac_offset} )
       .attr('y', function(d){ return wc.ac_height - wc.acyScale(d.parameter)} )
       .attr('width', wc.acxScale.rangeBand() )
       .attr('height', function(d){ return wc.acyScale(d.parameter)})
