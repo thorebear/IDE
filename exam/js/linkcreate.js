@@ -43,3 +43,9 @@ function linkcreate3() {
 
     $("#barChartParameterSelector").trigger("change");
 }
+
+function linkcreate4() {
+    $("#heatmapParameterSelector").selectpicker('val', 'htmlhits');
+
+    $("#heatmapParameterSelector").trigger("change");
+}

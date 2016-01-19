@@ -1,307 +1,307 @@
 <!DOCTYPE html>
 <html>
 
-   <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>   
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>   
 
-      <!-- BOOTSTRAP CSS -->
-      <link rel="stylesheet" 
-	    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-      <link rel="stylesheet" 
-	    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-      <link rel="stylesheet"
-	    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/css/bootstrap-select.min.css">
-      <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+    <!-- BOOTSTRAP CSS -->
+    <link rel="stylesheet" 
+	  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" 
+	  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet"
+	  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/css/bootstrap-select.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
-      <!-- Our CSS -->
-      <link rel="stylesheet" href="style.css" type="text/css" />
+    <!-- Our CSS -->
+    <link rel="stylesheet" href="style.css" type="text/css" />
 
+    <link rel="stylesheet" href="css/flag-icon.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/jquery.range.css" type="text/css" />
 
-      <link rel="stylesheet" href="css/flag-icon.min.css" type="text/css" />
-      <link rel="stylesheet" href="css/jquery.range.css" type="text/css" />
+    <!-- JQUERY -->
+    <script type="text/javascript" 
+	    src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
-      <!-- JQUERY -->
-      <script type="text/javascript" 
-	      src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript"
+	    src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+    <!-- Include Date Range Picker -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 
-      <script type="text/javascript"
-	      src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
-      <!-- Include Date Range Picker -->
-      <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-      <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <!-- BOOSTRAP JS -->
+    <!-- Latest compiled and minified JavaScript -->
+    <script type="text/javascript"
+	    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+	    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/js/bootstrap-select.min.js"></script>
 
+    <!-- color brewer  -->
+    <script src="js/colorbrewer.js"></script>
+    <!-- D3 -->
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
+    <!-- Our js code -->
+    <script src="js/loader.js"></script>
+    <script src="js/visual.js"></script>
+    <script src="js/checkboxes.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/selector.js"></script>
+    <script src="js/heatmap.js"></script>
+    <script src="js/activitycomparison.js"></script>
+    <script src="js/infohelper.js"></script>
+    <script src="js/barchart.js"></script>
+    <script src="js/linkcreate.js"></script>
+    <script src="js/jquery.range-min.js"></script>
 
-      <!-- BOOSTRAP JS -->
-      <!-- Latest compiled and minified JavaScript -->
-      <script type="text/javascript"
-	      src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-      <script type="text/javascript"
-	      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/js/bootstrap-select.min.js"></script>
+    <title>Interactive Data Exploration - Final project</title>
+  </head>
 
-      <!-- color brewer  -->
-      <script src="js/colorbrewer.js"></script>
-      <!-- D3 -->
-      <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <body>
 
-      <!-- Our js code -->
-      <script src="js/loader.js"></script>
-      <script src="js/visual.js"></script>
-      <script src="js/checkboxes.js"></script>
-      <script src="js/helpers.js"></script>
-      <script src="js/selector.js"></script>
-      <script src="js/heatmap.js"></script>
-      <script src="js/activitycomparison.js"></script>
-      <script src="js/infohelper.js"></script>
-      <script src="js/barchart.js"></script>
-      <script src="js/linkcreate.js"></script>
-      <script src="js/jquery.range-min.js"></script>
+    <div class="container">
+      <h1>Welcome to the World Cup <small>from a servers perspective</small></h1>
+      <h4>By Thorbjørn Christensen and Mads Thoudahl</h4>
 
-      <title>Interactive Data Exploration - Final project</title>
-   </head>
+      <div class="col-sm-12">
+	<p>From 10 June to 12 July 1998 France hosted the 16th FIFA World Cup where 32 nations played a total of 64 matches to decide the new world champions of men's football. The official webpage for the World Cup france98.com was hosted by 33 different servers and the webpage received a total of 1.352.804.107 requests in the period from 30 April 1998 to 26 July 1998.</p>
+	<p>The following figures shows information about the activity on the france98.com webpage, by visulising information retrived from the request log for the more than 1 billion requests. </p>
+      </div>
 
-   <body>
+      <div class="col-sm-9">
+	<div class="alert alert-info" id="linechartlink">
+	  <b>Instruction:</b> Select which parameters* to show and the time-span for a single point to the left. Select a predefined date range to the right or choose a custom range. Hover the mouse over a point or a bar to get additional information. 
+	</div>
+      </div>
+      <div class="col-sm-3">
+ 	<div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 260px">
+	  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+	  <span></span> <b class="caret"></b>
+	</div>
+      </div>
+      <div class="col-sm-12">
+	<div class="col-sm-2">
+	  <div class="checkbox-wrapper">
+	    <input type="checkbox" name="transferred_bytes_checkbox" checked>
+	    <input type="checkbox" name="unique_users_checkbox">
+	    <input type="checkbox" name="total_hits_checkbox">
+	    <input type="checkbox" name="htmlhits_checkbox">
+	  </div>
 
-     <div class="container">
-       <h1>Welcome to the World Cup <small>from a servers perspective</small></h1>
+	  <div class="selector-wrapper">
+	    <select class="selectpicker" id="timeIntervalSelector" data-width="178px">
+	      <option value="quaterData">Pr. 15 minutes</option>
+	      <option value="hourData">Hourly</option>
+	      <option selected="selected" value="dayData">Daily</option>
+	    </select>
+	  </div>
+	  
+	  <div class="info_box matches_type_info_box">
+	  </div>
 
+	  <div class="alert alert-info info_alert">
+	    <b>Instruction:</b> Hover the mouse over a nations name to highlight their matches in the selected time range.
+	  </div>
+	</div>
+	<div class="col-sm-10">	 
+	  <svg id="line_chart" width="1100" height="500"></svg>
+	</div>
+      </div>
 
-       <div class="col-sm-12">
-	 <p>From 10 June to 12 July 1998 France hosted the 16th FIFA World Cup where 32 nations played a total of 64 matches to decide the new world champitions of men's football. The official webpage for the World Cup france98.com and was hosted by 33 different servers and the webpage received a total of 1.352.804.107 requests in the period from 30 April 1998 to 26 July 1998.</p>
-	 <p>The following figure shows information about the activity on the france98.com webpage, by visulising information retrived from the request log for the more than 1 billion requests. </p>
-       </div>
-
-       <div class="col-sm-9">
-	 <div class="alert alert-info" id="linechartlink">
-	   <b>Instruction:</b> Select which parameters* to show and the time-period for a single point to the left. Select a predefined date range to the right or choose a custom one. Hover over a point or a bar to get additional information. 
-	 </div>
-       </div>
-       <div class="col-sm-3">
- 	 <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 260px">
-	   <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-	   <span></span> <b class="caret"></b>
-	 </div>
-       </div>
-       <div class="col-sm-12">
-	 <div class="col-sm-2">
-	   <div class="checkbox-wrapper">
-	     <input type="checkbox" name="transferred_bytes_checkbox" checked>
-	     <input type="checkbox" name="unique_users_checkbox">
-	     <input type="checkbox" name="total_hits_checkbox">
-	     <input type="checkbox" name="htmlhits_checkbox">
-	   </div>
-
-	   <div class="selector-wrapper">
-	     <select class="selectpicker" id="timeIntervalSelector" data-width="178px">
-	       <option value="quaterData">Pr. 15 minutes</option>
-	       <option value="hourData">Hourly</option>
-	       <option selected="selected" value="dayData">Daily</option>
-	     </select>
-	   </div>
-	   
-	   <div class="info_box matches_type_info_box">
-	   </div>
-
-	   <div class="alert alert-info info_alert">
-	     <b>Instruction:</b> Hover over a nations name to highlight their matches in the selected time-period.
-	   </div>
-	 </div>
-	 <div class="col-sm-10">	 
-	   <svg id="line_chart" width="1100" height="500"></svg>
-	 </div>
-       </div>
-
-       <div class="group-coloumn">
-	 <div class="col-sm-6 row">
-	   <div class="col-sm-3 group">
-	     <span class="group_name">Group A:</span><br/>
-	     <div class="group_team"><div class="flag-icon flag-icon-br"></div> Brazil<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-no"></div> Norway<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-ma"></div> Morocco<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-gb-sct"></div> Scotland</div>
-	   </div>
-	   <div class="col-sm-3 group">
-	     <span class="group_name">Group B:</span><br/>
-	     <div class="group_team"><div class="flag-icon flag-icon-it"></div> Italy<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-cl"></div> Chile<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-at"></div> Austria<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-cm"></div> Cameroon</div>
-	   </div>
-	   <div class="col-sm-3 group">
-	     <span class="group_name">Group C:</span><br/>
-	     <div class="group_team"><div class="flag-icon flag-icon-fr"></div> France<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-dk"></div> Denmark<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-za"></div> South Africa<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-sa"></div> Saudi Arabia</div>
-	   </div>
-	   <div class="col-sm-3 group">
-	     <span class="group_name">Group D:</span><br/>
-	     <div class="group_team"><div class="flag-icon flag-icon-ng"></div> Nigeria<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-py"></div> Paraguay<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-es"></div> Spain<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-bg"></div> Bulgaria</div>
-	   </div>
-	 </div>
-	 <div class="col-sm-6 row">
-	   <div class="col-sm-3 group">
-	     <span class="group_name">Group E:</span><br/>
-	     <div class="group_team"><div class="flag-icon flag-icon-nl"></div> Netherlands<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-mx"></div> Mexico<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-be"></div> Belgium<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-kr"></div> Korea Republic</div>
-	   </div>
-	   <div class="col-sm-3 group">
-	     <span class="group_name">Group F:</span><br/>
-	     <div class="group_team"><div class="flag-icon flag-icon-de"></div> Germany<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-zz"></div> Yugoslavia<br/></div>
-	     <div class="group_team"><div class="group_team flag-icon flag-icon-ir"></div> Iran<br/></div>
-	     <div class="group_team"><div class="group_team flag-icon flag-icon-us"></div> USA</div>
-	   </div>
-	   <div class="col-sm-3 group">
-	     <span class="group_name">Group G:</span><br/>
-	     <div class="group_team"><div class="flag-icon flag-icon-ro"></div> Romania<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-gb-eng"></div> England<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-co"></div> Colombia<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-tn"></div> Tunisia</div>
-	   </div>
-	   <div class="col-sm-3 group">
-	     <span class="group_name">Group H:</span><br/>
-	     <div class="group_team"><div class="flag-icon flag-icon-ar"></div> Argentina<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-hr"></div> Croatia<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-jm"></div> Jamaica<br/></div>
-	     <div class="group_team"><div class="flag-icon flag-icon-jp"></div> Japan</div>
-	   </div>
-	 </div>
-       </div>
+      <div class="group-coloumn">
+	<div class="col-sm-6 row">
+	  <div class="col-sm-3 group">
+	    <span class="group_name">Group A:</span><br/>
+	    <div class="group_team"><div class="flag-icon flag-icon-br"></div> Brazil<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-no"></div> Norway<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-ma"></div> Morocco<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-gb-sct"></div> Scotland</div>
+	  </div>
+	  <div class="col-sm-3 group">
+	    <span class="group_name">Group B:</span><br/>
+	    <div class="group_team"><div class="flag-icon flag-icon-it"></div> Italy<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-cl"></div> Chile<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-at"></div> Austria<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-cm"></div> Cameroon</div>
+	  </div>
+	  <div class="col-sm-3 group">
+	    <span class="group_name">Group C:</span><br/>
+	    <div class="group_team"><div class="flag-icon flag-icon-fr"></div> France<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-dk"></div> Denmark<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-za"></div> South Africa<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-sa"></div> Saudi Arabia</div>
+	  </div>
+	  <div class="col-sm-3 group">
+	    <span class="group_name">Group D:</span><br/>
+	    <div class="group_team"><div class="flag-icon flag-icon-ng"></div> Nigeria<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-py"></div> Paraguay<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-es"></div> Spain<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-bg"></div> Bulgaria</div>
+	  </div>
+	</div>
+	<div class="col-sm-6 row">
+	  <div class="col-sm-3 group">
+	    <span class="group_name">Group E:</span><br/>
+	    <div class="group_team"><div class="flag-icon flag-icon-nl"></div> Netherlands<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-mx"></div> Mexico<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-be"></div> Belgium<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-kr"></div> Korea Republic</div>
+	  </div>
+	  <div class="col-sm-3 group">
+	    <span class="group_name">Group F:</span><br/>
+	    <div class="group_team"><div class="flag-icon flag-icon-de"></div> Germany<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-zz"></div> Yugoslavia<br/></div>
+	    <div class="group_team"><div class="group_team flag-icon flag-icon-ir"></div> Iran<br/></div>
+	    <div class="group_team"><div class="group_team flag-icon flag-icon-us"></div> USA</div>
+	  </div>
+	  <div class="col-sm-3 group">
+	    <span class="group_name">Group G:</span><br/>
+	    <div class="group_team"><div class="flag-icon flag-icon-ro"></div> Romania<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-gb-eng"></div> England<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-co"></div> Colombia<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-tn"></div> Tunisia</div>
+	  </div>
+	  <div class="col-sm-3 group">
+	    <span class="group_name">Group H:</span><br/>
+	    <div class="group_team"><div class="flag-icon flag-icon-ar"></div> Argentina<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-hr"></div> Croatia<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-jm"></div> Jamaica<br/></div>
+	    <div class="group_team"><div class="flag-icon flag-icon-jp"></div> Japan</div>
+	  </div>
+	</div>
+      </div>
 
 
-       <div class="col-sm-12">
-	 <h2>Observations</h2>
-	 <p>By playing around with the visualisation about we where able to make many different observations, e.g. the traffic on the server is lower under the final than under the semi-finals and the number of unique users under the bronze match is lower than under any other playoff match. We have selected two observation that we want to explore more, by creating additional visualisations.</p>
+      <div class="col-sm-12">
+	<h2>Observations</h2>
+	<p>By playing around with the visualization above we where able to make many different observations, to name a few the traffic on the server is lower under the final than under the semi-finals and the number of unique users under the bronze match is lower than under any other playoff match. We have selected two observation that we want to explore more by creating additional visualisations. The next two sections will go into detail with these two observations.</p>
 
-	 <h3>Activity before, under and after matches</h3>
-	 <p><a href="#linechartlink" onclick="linkcreate2()">While looking at the time-range for the dates for the first matches in every group</a> it seems clear that the activity on the server is higher just before, under and just after a match than on any other time. It also seems that the match played earliest a given day will create more traffic on the webpage, that any matches played later. The activity on the server is steadily increasing through-out the match and seems to be at a maximum just around the final whistle. The fact the webpage in general receive much less attention is ignored for now, we will talk about this in the next section. <br/>
-	   When comparing two matches which are played on the same time of the day, both on weekdays and both with same impact (e.g. both 1st play day of the group stage) there are still some huge difference in how much attention each match draw to the webpage, e.g. Croatia plays Bulgaria in the first round of Group D Friday June 12 14:30 and England plays Turkey on the first round of Group G Monday June 15 14:30, the maximum load (the quarter under the match with highest load) under the Croatia match was 4.4 GB opposite to a maximum load of 6.5 GB under the England match.<br /> This suggest that maybe some nations draw more attention to the webpage while playing than others, to investigate this more fully we have created the following bar-chart where the amount of activity on the server is showed around the time for kick-off for each of the nation's matches. 
-	 </p>
-
-
-	 <div class="alert alert-info" id="barchartlink">
-	   <b>Instructions:</b> Select which parameter* to use to the left, select the interval around kick-off to use data from (0H refers to kick-off, so the interval [-2H,4H] means to gather data from 2 hours before the kick to 4 hours after the kick-off, which is approximately 2 hours after the end of the match assuming the match does not go into overtime. <i>Note that if the interval is too wide it may overlap with other matches</i>.
-	 </div>
-       </div>
-
-       <div class="col-sm-2">
-	 <div class="range">
-	   <div class="selector-wrapper">
-	     <select class="selectpicker" id="barChartParameterSelector" data-width="178px">
-	       <option value="transferred_bytes">Traffic</option>
-	       <option selected="selected" value="unique_users">Unique users</option>
-	       <option value="total_hits">Requests</option>
-	       <option value="htmlhits">Pageviews</option>
-	     </select>
-	   </div>
-	   Select interval: <br/>
-	   <div style="padding-top:16px;">
-	     <input class="range-slider" type="hidden" value="-2,4" style="display: none;">
-	   </div>
-	 </div>
-	 <div class="range matches_type_info_box">
-	 </div>
-       </div>
-       <div class="col-sm-10">
-	 <svg id="barchart" width="1000" height="500"></svg>
-       </div>
-       <div class="col-sm-12">
-	 <p>
-	   <a href="#barchartlink" onclick="linkcreate3()">Let's take a look at the time from kick-off and two hours forward, while using unique users as parameter.</a> While looking at this chart there are a few things you need to have in mind: 1) Matches played in the weekend gets lower attention (see next section) and not every team played the same amount of matches in the week 1, 2) on the last play-day of the group stage two matches in every group was played simultaneously so this count for activity for both matches, even through most of the interest could be for only one of the matches, 3) the opposition could be the reason for the activity meaning that the amount of activity showing of on a team could be because of really attractive / less attractive oppositions. By only looking at the activity under the group stage matches, which is comparable since every team plays 3 matches in the group, we see that nations like Japan, Yugoslavia, Iran, Jamaica, Croatia and Argentina has the lowest amount of unique users on the webpage under the match while the nations like Brazil, Scotland, Norway, Italy, Chile, England and Romania has much more activity on the webpage under there matches.
-	 </p>
-       </div>
-
-       <div class="col-sm-12">
-	 <h3>Activity in the weekends</h3>
-	 <p>In general the activity on the server seems much lower in the weekend on any week day. The trend is clear when <a href="#linechartlink" onclick="linkcreate1()">watching the whole world cup with daily and pageviews</a>. Even on Thursday 2 July, where there are no matches played, the webpage has more pageviews than Saturday 4 July despite that 2 quarter finals are played on this day. In general we also see that Sundays has less pageviews than Saturdays, except the last weekend of the world cup where sunday has the most views, but that comparison seems a little unfair since both the bronze match and final are played on this Sunday, in opposite to a Saturday without any matches.</p>
-	 <p> To be able to investigate the webpage activity on the different times and weekdays, we have create a heatmap that shows the amount of activity on a given time on a given weekday. The data is the visualization is <b>TODO</b>. 
-	   <div class="alert alert-info">
-	     <b>Instructions: </b> Select which parameter* to show the heatmap over in the drop-down box to the left. 
-	   </div>
-
-	 <div class="selector-wrapper">
-	   <select class="selectpicker" id="heatmapParameterSelector" data-width="178px">
-	     <option value="transferred_bytes">Traffic</option>
-	     <option selected="selected" value="unique_users">Unique users</option>
-	     <option value="total_hits">Requests</option>
-	     <option value="htmlhits">Pageviews</option>
-	   </select>
-	 </div>
-       </div>
-       <div class="col-sm-12 row">
-       <div class="col-sm-7">
-	 <svg id="heatmap" width="740" height="400"></svg>
-       </div>
-       <div class="col-sm-5">
-	 <svg id="activity_comparison" width="500" height="400"></svg>
-	 </div>
-       </div>
+	<h3>Activity before, under and after matches</h3>
+	<p><a href="#linechartlink" onclick="linkcreate2()">While looking at a time range containing all the first matches in every group</a> it seems clear that the activity on the server is higher just before, under and just after a match than on any other time. It also seems that the match played earliest a given day will create more traffic on the webpage, that any matches played later. The activity on the server is steadily increasing through-out the match and seems to be at a maximum just around the final whistle. The fact that the webpage in general receive much less traffic on weekends is dealt with in the next section. <br/>
+	  When comparing two matches which are played on the same time of the day, both on weekdays and both with same impact (e.g. both 1st play day of the group stage) there are still some huge difference in how many users each match draw to the webpage, e.g. Croatia plays Bulgaria in the first round of Group D Friday June 12 14:30 and England plays Turkey on the first round of Group G Monday June 15 14:30, the maximum load (the quarter under the match with highest load) under the Croatia match was 4.4 GB opposite to a maximum load of 6.5 GB under the England match.<br /> This suggest that maybe some nations draw more traffic to the webpage while playing than others. To investigate this more we have created the following bar-chart where the amount of activity on the server is showed around the time for kick-off for each of a nation's matches. 
+	</p>
 
 
-       <div class="col-sm-12">
-	 <p>Regardless of which parameter that is selected, it is very clear that the activity in the weekends is much lower than on any weekday. This is despite the fact that many interesting matches was played in the weekends including two quarter finals, bronze match and the final, and we saw in the last section that days with matches draw much more attention to the webpage than days without matches. One reason that the webpage retrieve so little attention could be that the spread of the internet was not very huge in 1998, and many people was only connected to the internet in their proffesional life, which could explain the lower activity in the weekends. Another reason could be that people used the webpage to see the result after a match was finished when they where unable to watch the match in television, and the time their where unable to watch a match in television was mostly in the weekdays (some of the matches was played during work hours local time, and many of the matches was playing during work hour US time). In determining the reason for such low activity in the weekends it could be interesting to know how many users of the webpage that where from USA, but since the request log is anonymized we are not able to do this. The number of internet users in the US in 1998 was much higher than in any other country (source: <a href="http://news.bbc.co.uk/2/hi/technology/8552410.stm">BBC</a>), but the interest for football is much lower in USA than in most of the other participating nations (source: <a href="http://repucom.net/global-interest-football/">Repucom.net</a>). Our <a href="#barchartlink">bar-chart</a> suggest that the interrest from the US is average, assuming a connection between activity from a nation and activity on the webpage during matches involving that nation.</p>
-       </div>
+	<div class="alert alert-info" id="barchartlink">
+	  <b>Instructions:</b> Select which parameter* to use to the left, select the interval around kick-off to use data from (0H refers to kick-off, so the interval [-2H,4H] means to gather data from 2 hours before kick-off to 4 hours after the kick-off, which is approximately 2 hours after the end of the match assuming the match does not go into overtime. <i>Note that if the interval is too wide it may overlap with other matches played later or earlier.</i>.
+	</div>
+      </div>
+
+      <div class="col-sm-2">
+	<div class="range">
+	  <div class="selector-wrapper">
+	    <select class="selectpicker" id="barChartParameterSelector" data-width="178px">
+	      <option value="transferred_bytes">Traffic</option>
+	      <option selected="selected" value="unique_users">Unique users</option>
+	      <option value="total_hits">Requests</option>
+	      <option value="htmlhits">Pageviews</option>
+	    </select>
+	  </div>
+	  Select interval: <br/>
+	  <div style="padding-top:16px;">
+	    <input class="range-slider" type="hidden" value="-2,4" style="display: none;">
+	  </div>
+	</div>
+	<div class="range matches_type_info_box">
+	</div>
+      </div>
+      <div class="col-sm-10">
+	<svg id="barchart" width="1000" height="500"></svg>
+      </div>
+      <div class="col-sm-12">
+	<p>
+	  <a href="#barchartlink" onclick="linkcreate3()">Let's take a look at the time from kick-off and two hours forward and using unique users as parameter.</a> While looking at this chart there are a few things you need to have in mind: 1) Matches played in the weekend gets lower webpage activity in general (see next section) and not every team played the same amount of matches in the weekends, 2) on the last play-day of the group stage two matches in every group was played simultaneously so the figure counts activity for both matches, even through most of the interest could be for only one of the matches, and 3) the opposition could be the reason for the activity meaning that the amount of activity showing on a team could be because of really attractive / less attractive oppositions. By only looking at the activity under the group stage matches, which is comparable since every team plays 3 matches in the group stage, we see that nations like Japan, Yugoslavia, Iran, Jamaica, Croatia and Argentina has the lowest amount of unique users on the webpage during their matches while nations like Brazil, Scotland, Norway, Italy, Chile, England and Romania draws much more activity to the webpage during their matches.
+	</p>
+      </div>
+
+      <div class="col-sm-12">
+	<h3>Activity in the weekends</h3>
+	<p>In general the activity on the webpage is much lower in the weekend than on any week day. The trend is clear when <a href="#linechartlink" onclick="linkcreate1()">watching the whole world cup with daily time span and pageviews as parameter</a>. Even on Thursday 2 July, where there was no matches played, the webpage has more pageviews than Saturday 4 July despite that 2 quarter finals are played on this day. In general we also see that Sundays has less pageviews than Saturdays, except the last weekend of the world cup, but a comparison of this weekend seems a little unfair since both the bronze match and final are played on this Sunday, in opposite to a Saturday without any matches.</p>
+	<p> To be able to investigate the webpage activity on the different times and weekdays in more details, we have create a heatmap that shows the amount of activity on a given time on a given weekday: 
+	  <div class="alert alert-info" id="heatmaplink">
+	    <b>Instructions: </b> Select which parameter* to show the heatmap over in the drop-down just below. Compare two time-periods week-by-week in the chart to the right by clicking on one of the time-period and afterwards hover the mouse over the other. 
+	  </div>
+
+	  <div class="selector-wrapper">
+	    <select class="selectpicker" id="heatmapParameterSelector" data-width="178px">
+	      <option value="transferred_bytes">Traffic</option>
+	      <option selected="selected" value="unique_users">Unique users</option>
+	      <option value="total_hits">Requests</option>
+	      <option value="htmlhits">Pageviews</option>
+	    </select>
+	  </div>
+      </div>
+      <div class="col-sm-12 row">
+	<div class="col-sm-7">
+	  <svg id="heatmap" width="740" height="400"></svg>
+	</div>
+	<div class="col-sm-5">
+	  <svg id="activity_comparison" width="500" height="400"></svg>
+	</div>
+      </div>
 
 
-       <div class="col-sm-12">
-	 <h2>Data sources</h2>
-	 <h4>Request log</h4>
-	 <p>The request log for france98.com is obtained from:</p>
-	 <li>M. Arlitt and T. Jin, "1998 World Cup Web Site Access Logs", August 1998. Available at <a href="http://ita.ee.lbl.gov/html/contrib/WorldCup.html">http://ita.ee.lbl.gov/html/contrib/WorldCup.html</a>.</li><br/>
-	 The request log data is preproccessed using python and the resulting JSON files can be found here:
-	 <ul>
-	   <li><a href="data/wc98_log_0.25hour.json">wc98_log_0.25hour.json</a></li>
-	   <li><a href="data/wc98_log_1hour.json">wc98_log_1hour.json</a></li>
-	   <li><a href="data/wc98_log_2hour.json">wc98_log_2hour.json</a></li>
-	   <li><a href="data/wc98_log_6hour.json">wc98_log_6hour.json</a></li>
-	   <li><a href="data/wc98_log_12hour.json">wc98_log_12hour.json</a></li>
-	   <li><a href="data/wc98_log_24hour.json">wc98_log_24hour.json</a></li>
-	 </ul>
+      <div class="col-sm-12">
+	<p>Regardless of which parameter that is selected, it is very clear that the activity in the weekends is much lower than on any weekday. This is despite the fact that many interesting matches was played in the weekends including two quarter finals, bronze match and the final, combined with the fact that we saw in the last section that days with matches draw much more traffic to the webpage than days without matches. One reason that the webpage retrieves so little attention could be that the internet was not very wide-spread in 1998, and many people was only connected to the internet in their proffesional life, which could explain the lower activity in the weekends. Another reason could be that people used the webpage to see the result after a match was finished when they where unable to watch the match in television, and the time their where unable to watch a match in television was mostly in the weekdays (some of the matches was played during work hours local time, and many of the matches was playing during work hour US time). In determining the reason for such low activity in the weekends it could be interesting to know the number of US users of the webpage, but since the request log is anonymized we cannot know this. The number of internet users in the US in 1998 was much higher than in any other country (source: <a href="http://news.bbc.co.uk/2/hi/technology/8552410.stm">BBC</a>), but the interest for football is much lower in USA than in most of the other participating nations (source: <a href="http://repucom.net/global-interest-football/">Repucom.net</a>). Our <a href="#barchartlink">bar-chart</a> suggest that the interrest from the US is average, assuming a connection between activity from a nation and activity on the webpage during matches involving that nation. <br/>
 
-	 <h4>Match data</h4>
-	 <p>Data about the matches is obtained from:
-	 <li>"FIFA official webpage", January 2016. <a href="http://www.fifa.com/worldcup/archive/france1998/matches/index.html">http://www.fifa.com/worldcup/archive/france1998/matches/index.html</a> 
-	 </li><br/>
-	The data is converted to JSON and the result can be found here: <a href="data/worldcup.json">worldcup.json</a></p>
-       </div>
+	  By looking at the <a href="#heatmaplink" onclick="linkcreate4()">heatmap of pageviews</a> it seems very odd that Tuesdays from 8:00-9:00 has a much higher average number of pageviews compared to the same time-span on any other week days. By investigating this time span week-by-week in the chart to the right it is clear that the average number of unique users in this period is very high because it had a very huge number of pageviews in this time span in a single week (week 20). In week 20 the World Cup had not started yet, so we have no idea why the number of pageviews is so high, it could be some sort of performance test. By comparing numbers of pageviews on Tuesdays from 8:00-9:00 with the time span 8:00-9:00 on any other weekday we see that the amout of pageviews is approximately average when omitting week 20.
+	</p>
+      </div>
 
-     <div class="col-sm-12">
-       <h2>Libraries used</h2>
-       To make the visualizations and this page a number of different javascript library is used. They are listed here:
-       <ul>
-	 <li><a href="http://d3js.org/">D3</a>: Library for manipulating elements based on data.</li>
-	 <li><a href="https://jquery.com/">jQuery</a>: Library to simplify java-script code. </li>
-	 <li><a href="http://www.datejs.com/">Datejs</a>: Date library used for manipulating dates. </li>
-	 <li><a href="http://getbootstrap.com/">Bootstrap</a>: Used for layout and appearance of the page.</li>
-	 <li><a href="http://momentjs.com/">Momentjs</a>: Used for displaying and manipulating dates. 
-	 <li><a href="http://lipis.github.io/flag-icon-css/">flag-icon-css</a>: Used to display nations flag in css.</li>
 
-	 <li><a href="http://bootstrap-switch.org">Bootstrap Switch</a>: Bootstrap compatible checkboxes</li>
-	 <li><a href="https://silviomoreto.github.io/bootstrap-select/">bootstrap-select</a>: Bootstrap compatible drop-down boxes</li>
+      <div class="col-sm-12">
+	<h2>Data sources</h2>
+	<h4>Request log</h4>
+	<p>The request log for france98.com is obtained from:</p>
+	<li>M. Arlitt and T. Jin, "1998 World Cup Web Site Access Logs", August 1998. Available at <a href="http://ita.ee.lbl.gov/html/contrib/WorldCup.html">http://ita.ee.lbl.gov/html/contrib/WorldCup.html</a>.</li><br/>
+	The request log data is preproccessed using python and the resulting JSON files can be found here:
+	<ul>
+	  <li><a href="data/wc98_log_0.25hour.json">wc98_log_0.25hour.json</a></li>
+	  <li><a href="data/wc98_log_1hour.json">wc98_log_1hour.json</a></li>
+	  <li><a href="data/wc98_log_2hour.json">wc98_log_2hour.json</a></li>
+	  <li><a href="data/wc98_log_6hour.json">wc98_log_6hour.json</a></li>
+	  <li><a href="data/wc98_log_12hour.json">wc98_log_12hour.json</a></li>
+	  <li><a href="data/wc98_log_24hour.json">wc98_log_24hour.json</a></li>
+	</ul>
 
-	 <li><a href="http://www.daterangepicker.com/">Date Range Picker</a>: Library for choosing date ranges.
-	   <li><a href="http://nitinhayaran.github.io/jRange/demo/">jRange</a>: Creating range selectors</li>
-       </ul>
-       <h2>Notes</h2>
-       <p><small>* Notes about parameters:
-	   <ul>
-	     <li>Traffic: Total size of <em>all</em> requests in the time frame.</li>
-	     <li>Unique users: Number of different users making at least one request in the time frame.</li>
-	     <li>Requests: Total number of entries in the request log in the time frame.</li>
-	     <li>Pageviews: Number of request for a html-page in the request log in the time frame.</li>
-	     </ul>
+	<h4>Match data</h4>
+	<p>Data about the matches is obtained from:
+	  <li>"FIFA official webpage", January 2016. <a href="http://www.fifa.com/worldcup/archive/france1998/matches/index.html">http://www.fifa.com/worldcup/archive/france1998/matches/index.html</a> 
+	  </li><br/>
+	  The data is converted to JSON and the result can be found here: <a href="data/worldcup.json">worldcup.json</a></p>
+      </div>
 
-       </small></p>
-     </div>
-     </div>
+      <div class="col-sm-12">
+	<h2>Libraries used</h2>
+	To make the visualizations and this page a number of different javascript library is used. They are listed here:
+	<ul>
+	  <li><a href="http://d3js.org/">D3</a>: Library for manipulating elements based on data.</li>
+	  <li><a href="https://jquery.com/">jQuery</a>: Library to simplify java-script code. </li>
+	  <li><a href="http://www.datejs.com/">Datejs</a>: Date library used for manipulating dates. </li>
+	  <li><a href="http://getbootstrap.com/">Bootstrap</a>: Used for layout and appearance of the page.</li>
+	  <li><a href="http://momentjs.com/">Momentjs</a>: Used for displaying and manipulating dates. 
+	  <li><a href="http://lipis.github.io/flag-icon-css/">flag-icon-css</a>: Used to display nations flag in css.</li>
+
+	  <li><a href="http://bootstrap-switch.org">Bootstrap Switch</a>: Bootstrap compatible checkboxes</li>
+	  <li><a href="https://silviomoreto.github.io/bootstrap-select/">bootstrap-select</a>: Bootstrap compatible drop-down boxes</li>
+
+	  <li><a href="http://www.daterangepicker.com/">Date Range Picker</a>: Library for choosing date ranges.
+	  <li><a href="http://nitinhayaran.github.io/jRange/demo/">jRange</a>: Creating range selectors</li>
+	</ul>
+	<h2>Notes</h2>
+	<p><small>* Notes about parameters:
+	    <ul>
+	      <li>Traffic: Total size of <em>all</em> requests in the time frame.</li>
+	      <li>Unique users: Number of different users making at least one request in the time frame.</li>
+	      <li>Requests: Total number of entries in the request log in the time frame.</li>
+	      <li>Pageviews: Number of request for a html-page in the request log in the time frame.</li>
+	    </ul>
+
+	</small></p>
+      </div>
+    </div>
 </div>
 </div>
 

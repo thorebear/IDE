@@ -32,7 +32,6 @@ function create_line_chart(dataSet, startTime, endTime){
      	.domain([startTime, endTime])
 	.range([margin_left, svg_width - margin_right]);
 
-
     var xAxis = d3.svg.axis()
 	.scale(xScale)
 	.orient('bottom')

@@ -17,7 +17,6 @@ $(document).ready(function() {
 		    selector_init();
 		    bar_chart_init();
 		    heatmap_init();
-//		    activity_comparison_init();
 		});
 	    });
 	});
