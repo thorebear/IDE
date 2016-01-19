@@ -23,8 +23,7 @@ function create_heat_map(parameter){
     // cut the initial 3 days to start on a 'fresh' week
     var tmpData = extract_heatmap_data(wcData.slice(72), parameter); 
     var hmData  = aggregate_heatmap_data(tmpData);
-    console.log(wcData.slice(72))
-
+    
     var values  = hmData.map(function(obj){ return obj.max });
     var maxParValue = Math.max(...values);
 
