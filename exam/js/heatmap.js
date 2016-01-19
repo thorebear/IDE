@@ -78,7 +78,8 @@ function create_heat_map(parameter){
 	.data(hmData)
 	.enter()
 	.append('rect')
-	.attr('class', 'hm_box')
+	.attr('class','hm_box')
+	.attr('id', function(d,i) { return "hm_box_id_" + i })
 	.attr('x', function(d) {
             return xScale(d.hour);
 	})
@@ -87,6 +88,8 @@ function create_heat_map(parameter){
 	})
 	.attr('width', hm_width/nHours-boxPadding)
 	.attr('height', hm_height/nDays-boxPadding)
+	.style('stroke','black')
+	.style('stroke-width', 0)
 	.attr('fill', function(d) {
             return colorScale(d.average);
 	})
@@ -96,12 +99,21 @@ function create_heat_map(parameter){
 		showTooltipHeatMap(d.day, d.hour, parameter, d.average, d3.event.pageX, d3.event.pageY);
             });
             _this.on("mouseover", function() {
+		if (parseInt(_this.style("stroke-width")) === 0){
+		    _this.style("stroke-width", 1);
+		}
 		update_activity_comparison(d, parameter, colorScale(d.average))
             });
             _this.on("click", function() {
+		hm_svg.selectAll('.hm_box').style("stroke-width", 0);
+		_this.style("stroke-width", "2");
 		create_activity_comparison(d, parameter, colorScale(d.average), maxParValue);
             });
             _this.on("mouseout", function() {
+		if (parseInt(_this.style("stroke-width")) === 1){
+		    _this.style("stroke-width", 0);
+		}
+
 		hideTooltipHeatMap();
 		//update_activity_comparison([] , parameter, colorScale(d.average))
             });

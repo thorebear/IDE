@@ -48,4 +48,6 @@ function linkcreate4() {
     $("#heatmapParameterSelector").selectpicker('val', 'htmlhits');
 
     $("#heatmapParameterSelector").trigger("change");
+
+    d3.select("#hm_box_id_32").on("click")();
 }
